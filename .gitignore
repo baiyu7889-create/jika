@@ -1,0 +1,6 @@
+.vercel
+.DS_Store
+.playwright-cli/
+output/
+tmp/
+*.zip
