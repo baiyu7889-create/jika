@@ -1,0 +1,1483 @@
+<!doctype html>
+<html lang="zh-CN" class="prototype-mode">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070a10" />
+  <link rel="icon" href="data:," />
+  <title>搜同破解 · 运营验收原型</title>
+  <script>
+    if(new URLSearchParams(location.search).get('prototype')==='ops'){
+      document.documentElement.classList.add('prototype-mode');
+      document.title='搜同破解 · 运营验收原型';
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #070a10;
+      --surface: #111721;
+      --fg: #f5f1e8;
+      --muted: #929baa;
+      --border: #27303c;
+      --accent: #e2b45f;
+      --mine-bg: #dcecff;
+      --mine-surface: #f4f9ff;
+      --mine-fg: #0b1d36;
+      --mine-muted: #55708f;
+      --mine-border: #b9d1ec;
+      --mine-accent: #efbd48;
+
+      --accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+      --fg-soft: color-mix(in oklch, var(--fg) 7%, transparent);
+      --font-display: 'Songti SC', 'STSong', 'Iowan Old Style', Georgia, serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', system-ui, sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', Menlo, monospace;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --radius: 18px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    button, input { font: inherit; }
+    button { cursor: pointer; touch-action: manipulation; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid rgba(20,159,213,.32); outline-offset: 2px; }
+    button:active { transform: scale(.985); }
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(55% 80% at 50% 0%, color-mix(in oklch, var(--accent) 7%, var(--bg)), var(--bg) 62%);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .stage { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .caption {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .caption strong { color: var(--fg); font-weight: 500; }
+
+    .device {
+      position: relative;
+      width: 390px;
+      height: 844px;
+      padding: 10px;
+      border-radius: 54px;
+      background: color-mix(in oklch, var(--surface) 76%, black);
+      box-shadow: 0 30px 80px color-mix(in oklch, black 60%, transparent), inset 0 0 0 2px black;
+      isolation: isolate;
+    }
+    .device::before, .device::after {
+      content: '';
+      position: absolute;
+      top: 116px;
+      bottom: 108px;
+      width: 3px;
+      background: color-mix(in oklch, var(--fg) 9%, black);
+    }
+    .device::before { left: -2px; }
+    .device::after { right: -2px; }
+    .rail { position: absolute; width: 4px; border-radius: 3px; background: black; }
+    .rail.silent { left: -3px; top: 176px; height: 30px; }
+    .rail.up { left: -3px; top: 220px; height: 58px; }
+    .rail.down { left: -3px; top: 288px; height: 58px; }
+    .rail.power { right: -3px; top: 246px; height: 98px; }
+    .island {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      width: 122px;
+      height: 35px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: black;
+      z-index: 30;
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border-radius: 44px;
+      background: var(--bg);
+    }
+    .statusbar {
+      position: relative;
+      z-index: 20;
+      flex: 0 0 47px;
+      padding: 17px 24px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .statusbar .right { display: inline-flex; align-items: center; gap: 5px; }
+    .statusbar svg { width: 16px; height: 11px; fill: currentColor; }
+    .statusbar .battery { width: 24px; }
+    .app { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    .content { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: none; }
+    .content::-webkit-scrollbar { display: none; }
+    .home-indicator { flex: 0 0 calc(20px + var(--safe-bottom)); position: relative; z-index: 20; background: var(--surface); }
+    .home-indicator::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: calc(6px + var(--safe-bottom));
+      width: 132px;
+      height: 5px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: var(--fg);
+    }
+
+    .pad { padding-inline: 18px; }
+    .stack { display: flex; flex-direction: column; gap: 14px; }
+    .row { display: flex; align-items: center; gap: 10px; }
+    .row-between { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .header { padding: 10px 18px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .header h1, .h1, .h2 { font-family: var(--font-display); margin: 0; letter-spacing: -.02em; }
+    .header h1, .h1 { font-size: 25px; line-height: 1.1; }
+    .h2 { font-size: 20px; line-height: 1.2; }
+    .h3 { font-size: 15px; font-weight: 650; margin: 0; }
+    .meta { color: var(--muted); font-size: 12px; }
+    .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .eyebrow { margin: 0 0 4px; color: var(--muted); font: 10px/1.4 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; }
+    .icon-btn {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--fg);
+    }
+    .icon-btn svg, .tab svg, .action svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+
+    .tabs, .chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar, .chips::-webkit-scrollbar { display: none; }
+    .top-tabs { padding: 2px 18px 11px; gap: 20px; }
+    .top-tab {
+      min-height: 44px;
+      padding: 12px 0 8px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .top-tab.active { color: var(--fg); border-color: var(--accent); font-weight: 650; }
+    .chip {
+      min-height: 38px;
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .chip.active { color: var(--fg); border-color: var(--fg); }
+
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+    .card-pad { padding: 16px; }
+    .placeholder {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 22%, var(--accent-soft), transparent 28%),
+        linear-gradient(145deg, color-mix(in oklch, var(--surface) 65%, var(--bg)), var(--surface));
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .placeholder::before {
+      content: '';
+      width: 42%;
+      aspect-ratio: 3/4;
+      border-radius: 46% 46% 20% 20%;
+      background: linear-gradient(180deg, color-mix(in oklch, var(--fg) 26%, transparent), color-mix(in oklch, var(--fg) 5%, transparent));
+      filter: blur(.2px);
+    }
+    .placeholder span { position: absolute; bottom: 12px; font: 10px var(--font-mono); letter-spacing: .08em; }
+    .ratio-video { aspect-ratio: 16/10; }
+    .ratio-poster { aspect-ratio: 3/4; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: color-mix(in oklch, var(--bg) 78%, transparent);
+      border: 1px solid color-mix(in oklch, var(--fg) 20%, transparent);
+      color: var(--fg);
+      font: 10px var(--font-mono);
+    }
+    .btn-primary, .btn-secondary {
+      min-height: 48px;
+      width: 100%;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-weight: 650;
+    }
+    .btn-primary { border: 0; background: var(--accent); color: var(--bg); }
+    .btn-secondary { border: 1px solid var(--border); background: transparent; color: var(--fg); }
+
+    .video-stage { position: relative; min-height: 598px; background: var(--surface); overflow: hidden; }
+    .video-stage .placeholder { position: absolute; inset: 0; border: 0; }
+    .video-stage .placeholder::before { width: 72%; transform: translateY(28px); }
+    .video-shade { position: absolute; inset: 30% 0 0; background: linear-gradient(transparent, color-mix(in oklch, var(--bg) 94%, transparent)); }
+    .video-copy { position: absolute; left: 18px; right: 72px; bottom: 20px; z-index: 2; }
+    .video-copy p { margin: 6px 0 0; color: color-mix(in oklch, var(--fg) 82%, var(--muted)); }
+    .short-author-link { display:block; width:max-content; max-width:100%; padding:0; border:0; background:none; color:inherit; text-align:left; }
+    .short-author-link .h3 { margin:0; }
+    .trial { position: absolute; top: 16px; left: 18px; z-index: 3; }
+    .action-rail { position: absolute; right: 12px; bottom: 22px; z-index: 3; display: flex; flex-direction: column; gap: 15px; }
+    .action { width: 48px; min-height: 48px; border: 0; background: transparent; color: var(--fg); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; }
+    .action-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--fg-soft); border: 1px solid var(--border); }
+
+    .tabbar {
+      flex: 0 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--border);
+      background: color-mix(in oklch, var(--surface) 92%, transparent);
+      backdrop-filter: blur(18px);
+    }
+    .tab { min-height: 58px; border: 0; background: transparent; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 9px; }
+    .tab.active { color: var(--accent); }
+
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .poster .placeholder { aspect-ratio: 4/5; }
+    .poster-body { padding: 10px; }
+    .poster-title { font-size: 13px; font-weight: 600; line-height: 1.35; }
+    .poster-meta { margin-top: 5px; display: flex; justify-content: space-between; color: var(--muted); font: 10px var(--font-mono); }
+    .section-title { margin: 20px 0 10px; }
+
+    .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+    .tool { min-height: 128px; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--fg); text-align: left; }
+    .tool-mark { width: 34px; height: 34px; margin-bottom: 22px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 10px; color: var(--muted); }
+    .tool-mark svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+    .tool p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+
+    .post { padding: 15px 0; border-top: 1px solid var(--border); }
+    .post:first-child { border-top: 0; }
+    .avatar { width: 38px; height: 38px; flex: 0 0 38px; border-radius: 50%; background: var(--fg-soft); border: 1px solid var(--border); }
+    .post p { margin: 10px 0; }
+    .post-media { height: 146px; border: 1px solid var(--border); border-radius: 14px; background: linear-gradient(145deg, var(--surface), var(--fg-soft)); }
+    .post-actions { margin-top: 10px; display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+
+    .profile-head { padding: 8px 18px 18px; }
+    .member-banner {
+      position: relative;
+      min-height: 138px;
+      padding: 18px;
+      border: 1px solid color-mix(in oklch, var(--fg) 15%, var(--border));
+      border-radius: 20px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 88% 18%, color-mix(in oklch, var(--accent) 18%, transparent), transparent 28%),
+        linear-gradient(135deg, color-mix(in oklch, var(--surface) 78%, var(--accent)), var(--surface));
+    }
+    .member-banner::after { content: ''; position: absolute; right: -20px; bottom: -44px; width: 150px; height: 150px; border: 1px solid color-mix(in oklch, var(--fg) 16%, transparent); border-radius: 50%; }
+    .member-banner p { margin: 6px 0 18px; color: var(--muted); }
+    .mini-cta { position: relative; z-index: 1; min-height: 40px; padding: 9px 14px; border: 0; border-radius: 12px; background: var(--accent); color: var(--bg); font-weight: 650; }
+    .asset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    .asset { padding: 13px 8px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); text-align: center; }
+    .asset::before { content: ''; display: block; width: 24px; height: 24px; margin: 0 auto 6px; border-radius: 50%; background: radial-gradient(circle at 32% 28%, var(--surface), var(--accent) 35%, color-mix(in oklch, var(--accent) 45%, var(--fg))); box-shadow: 0 7px 14px var(--accent-soft); }
+    .asset strong { display: block; font: 18px var(--font-mono); }
+    .asset span { color: var(--muted); font-size: 10px; }
+    .menu { margin-top: 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+    .menu-row { width: 100%; min-height: 50px; padding: 0 15px; border: 0; border-top: 1px solid var(--border); background: transparent; color: var(--fg); display: flex; align-items: center; justify-content: space-between; text-align: left; }
+    .menu-row:first-child { border-top: 0; }
+
+    .backbar { min-height: 52px; padding: 4px 12px; display: grid; grid-template-columns: 44px 1fr 44px; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+    .backbar strong { text-align: center; font-family: var(--font-display); font-size: 17px; }
+    .back-btn { width: 44px; height: 44px; border: 0; background: transparent; color: var(--fg); font-size: 24px; }
+    .notice { padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--fg-soft); color: var(--muted); font-size: 12px; }
+    .notice strong { color: var(--fg); }
+    .progress-line { position:absolute; left:0; right:0; bottom:0; z-index:4; height:3px; background:var(--border); overflow:hidden; }
+    .progress-line span { display: block; height: 100%; background: var(--accent); }
+    .detail-player { position:relative; aspect-ratio:16/10; background:#05070a; color:white; overflow:hidden; isolation:isolate; }
+    .detail-player .placeholder { position: absolute; inset: 0; border: 0; }
+    .detail-player.is-fullscreen { position:absolute; inset:0; z-index:45; aspect-ratio:auto; }
+    .detail-player.is-fullscreen .placeholder::before { width:45%; }
+    .player-visual { position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 52% 26%,#4b5969 0,#1f252d 31%,#06080b 78%); }
+    .player-visual::before { content:''; position:absolute; width:42%; height:105%; left:30%; top:9%; border-radius:48% 48% 17% 17%; background:linear-gradient(180deg,rgba(239,242,246,.72),rgba(34,40,50,.42)); transform:rotate(-5deg); }
+    .player-visual::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 42%,rgba(0,0,0,.72)); }
+    .player-loading { position:absolute; inset:0; z-index:5; display:grid; place-items:center; background:rgba(1,3,6,.46); }
+    .loading-ring { width:38px; height:38px; border:3px solid rgba(255,255,255,.24); border-top-color:white; border-radius:50%; animation:player-spin .72s linear infinite; }
+    .loading-copy { position:absolute; top:calc(50% + 30px); font-size:10px; color:rgba(255,255,255,.74); }
+    @keyframes player-spin { to { transform:rotate(360deg); } }
+    .player-center { position:absolute; left:calc(50% - 29px); top:calc(50% - 29px); z-index:8; width:58px; height:58px; border:1px solid rgba(255,255,255,.28); border-radius:50%; background:rgba(0,0,0,.46); color:white; display:grid; place-items:center; backdrop-filter:blur(10px); pointer-events:auto; }
+    .player-center svg { width:25px; height:25px; fill:currentColor; stroke:currentColor; }
+    .player-ui { position:absolute; left:0; right:0; bottom:0; z-index:6; padding:34px 12px 9px; background:linear-gradient(transparent,rgba(0,0,0,.88)); }
+    .player-progress { display:block; width:100%; height:16px; margin:0; appearance:none; background:transparent; cursor:pointer; }
+    .player-progress::-webkit-slider-runnable-track { height:3px; border-radius:4px; background:linear-gradient(90deg,#25b6e7 0 var(--progress),rgba(255,255,255,.32) var(--progress)); }
+    .player-progress::-webkit-slider-thumb { appearance:none; width:11px; height:11px; margin-top:-4px; border-radius:50%; background:white; box-shadow:0 0 0 3px rgba(37,182,231,.26); }
+    .player-bar { display:flex; align-items:center; gap:7px; min-height:30px; }
+    .player-spacer { flex:1; }
+    .player-icon { min-width:30px; height:30px; padding:0 5px; border:0; background:transparent; color:white; display:grid; place-items:center; font-size:10px; }
+    .player-icon svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .player-icon .fill { fill:currentColor; stroke:none; }
+    .player-time { font:9px var(--font-mono); color:rgba(255,255,255,.86); white-space:nowrap; }
+    .trial-overlay { position:absolute; inset:0; z-index:7; display:grid; place-content:center; justify-items:center; padding:42px 24px 58px; text-align:center; background:radial-gradient(circle at 50% 42%,rgba(21,34,50,.72),rgba(2,4,7,.94) 68%); }
+    .trial-lock { width:44px; height:44px; display:grid; place-items:center; border-radius:50%; background:rgba(255,255,255,.11); border:1px solid rgba(255,255,255,.2); }
+    .trial-lock svg { width:21px; height:21px; fill:none; stroke:white; stroke-width:1.8; }
+    .trial-overlay strong { margin-top:10px; font-size:17px; }
+    .trial-overlay p { margin:4px 0 12px; color:rgba(255,255,255,.68); font-size:10px; }
+    .trial-overlay .trial-cta { min-height:34px; padding:0 16px; border:0; border-radius:18px; background:white; color:#10151c; font-size:11px; font-weight:800; }
+    .player-mini-status { position:absolute; top:10px; left:12px; z-index:4; display:flex; gap:6px; }
+    .player-chip { padding:4px 7px; border-radius:4px; background:rgba(0,0,0,.56); color:white; font:8px var(--font-mono); }
+    .detail-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .detail-actions button { min-height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--muted); }
+    .detail-section { padding:14px 10px; border-top:8px solid #f4f6f9; background:white; }
+    .detail-section-title { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+    .detail-section-title strong { font-size:14px; }
+    .detail-section-title span { color:#929ba6; font-size:9px; }
+    .recommendation-section .media-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 8px; }
+    .recommendation-section .media-card { min-width:0; }
+    .comment-item { display:grid; grid-template-columns:34px 1fr auto; gap:9px; padding:11px 0; border-top:1px solid #edf1f5; }
+    .comment-item:first-of-type { border-top:0; }
+    .comment-avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(145deg,#84d4ef,#6a58ad); }
+    .comment-item p { margin:3px 0; font-size:11px; color:#303844; }
+    .comment-item small { color:#98a2ad; font-size:8px; }
+    .comment-like { border:0; background:none; color:#929ba6; font-size:9px; }
+    .comment-compose { display:grid; grid-template-columns:1fr auto; gap:7px; margin-top:9px; }
+    .comment-compose input { min-width:0; height:38px; padding:0 12px; border:1px solid #e0e7ee; border-radius:19px; background:#f6f8fb; color:#18202a; }
+    .comment-compose button { min-width:58px; border:0; border-radius:19px; background:#11151b; color:white; font-size:10px; }
+    .profile-page { min-height:100%; background:#f7f9fc; }
+    .profile-hero { position:relative; padding:28px 15px 16px; background:linear-gradient(145deg,#dff7ff,#ecedff 54%,#fff5df); }
+    .profile-hero::after { content:''; position:absolute; right:-22px; top:-38px; width:150px; height:150px; border-radius:50%; background:rgba(255,255,255,.42); filter:blur(2px); }
+    .profile-identity { position:relative; z-index:2; display:grid; grid-template-columns:68px 1fr auto; gap:11px; align-items:center; }
+    .profile-avatar-lg { width:68px; height:68px; border:4px solid white; border-radius:50%; background:linear-gradient(145deg,#fa776d,#5735a1); box-shadow:0 8px 18px rgba(52,72,110,.18); }
+    .profile-identity h2 { margin:0; font-size:18px; }
+    .profile-identity p { margin:3px 0 0; color:#64758a; font-size:9px; }
+    .follow-btn { height:32px; padding:0 12px; border:0; border-radius:16px; background:#11151b; color:white; font-size:10px; }
+    .profile-bio { position:relative; z-index:2; margin:13px 0 0; color:#405167; font-size:10px; line-height:1.6; }
+    .profile-stats { display:grid; grid-template-columns:repeat(4,1fr); padding:13px 8px; background:white; border-bottom:1px solid #e8edf2; text-align:center; }
+    .profile-stats strong { display:block; font-size:14px; }
+    .profile-stats span { color:#8d98a5; font-size:8px; }
+    .profile-content-tabs { display:grid; grid-template-columns:1fr 1fr; background:#fff; border-bottom:1px solid #e7edf3; }
+    .profile-content-tabs button { min-height:42px; border:0; background:none; color:#7c8794; font-size:12px; }
+    .profile-content-tabs button.active { color:#111820; font-weight:800; box-shadow:inset 0 -2px #111820; }
+    .profile-search-box { padding:10px; background:#fff; }
+    .profile-search-row { display:grid; grid-template-columns:20px 1fr; gap:7px; align-items:center; min-height:38px; padding:0 12px; border:1px solid #dfe7ef; border-radius:20px; background:#f5f8fb; color:#7b8794; }
+    .profile-search-row svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; }
+    .profile-search-row input { min-width:0; border:0; outline:0; background:transparent; color:#17202b; font-size:11px; }
+    .profile-search-help { display:block; margin:6px 5px 0; color:#8d98a5; font-size:9px; }
+    .profile-post-list { display:grid; gap:8px; padding-bottom:10px; }
+    .profile-post-card { width:100%; padding:12px; border:1px solid #e4eaf0; border-radius:10px; background:#fff; color:#18202a; text-align:left; }
+    .profile-post-card strong { display:block; font-size:12px; }
+    .profile-post-card p { margin:6px 0; color:#677484; font-size:10px; line-height:1.55; }
+    .post-detail { min-height:100%; background:white; }
+    .post-detail-body { padding:14px 12px; }
+    .post-detail-title { margin:13px 0 7px; font-size:18px; line-height:1.45; }
+    .post-detail-copy { color:#404b58; font-size:12px; line-height:1.75; }
+    .post-detail-media { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:12px 0; }
+    .post-detail-media .media-thumb { aspect-ratio:1; border-radius:7px; }
+    .post-editor { min-height:100%; background:#f6f8fb; }
+    .editor-form { padding:12px; }
+    .editor-card { margin-bottom:10px; padding:13px; border:1px solid #e4e9ef; border-radius:12px; background:white; }
+    .editor-label { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; font-size:12px; font-weight:800; }
+    .editor-label small { color:#96a0ac; font-size:8px; font-weight:500; }
+    .topic-grid { display:flex; flex-wrap:wrap; gap:7px; }
+    .topic-option { min-height:30px; padding:0 11px; border:1px solid #e1e7ed; border-radius:16px; background:white; color:#596575; font-size:10px; }
+    .topic-option.active { border-color:#11151b; background:#11151b; color:white; }
+    .editor-input,.editor-textarea { width:100%; border:0; outline:0; background:transparent; color:#17202a; font:inherit; }
+    .editor-input { height:36px; font-size:15px; font-weight:750; }
+    .editor-textarea { min-height:128px; resize:none; line-height:1.7; font-size:12px; }
+    .media-add-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .media-add { min-height:80px; border:1px dashed #cfd8e2; border-radius:9px; background:#f8fafc; color:#6d7988; font-size:10px; }
+    .media-add.active { border-style:solid; border-color:#5a87aa; background:#eaf7ff; color:#254d68; }
+    .editor-submit { width:100%; min-height:46px; border:0; border-radius:12px; background:#11151b; color:white; font-weight:800; }
+    .state-list { margin: 14px 0; }
+    .state-row { position: relative; min-height: 48px; padding-left: 28px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .state-row::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+    .state-row::after { content: ''; position: absolute; left: 3px; top: 19px; width: 9px; height: 9px; border-radius: 50%; background: var(--border); }
+    .state-row.done::after, .state-row.current::after { background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+    .state-row.current { color: var(--fg); }
+    .state-row.pending { color: var(--muted); }
+    .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font: 10px var(--font-mono); }
+    .status-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .result-row { width: 100%; min-height: 62px; padding: 10px 0; border: 0; border-top: 1px solid var(--border); background: transparent; color: var(--fg); display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 10px; text-align: left; }
+    .result-row:first-child { border-top: 0; }
+    .result-thumb { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--border); background: var(--fg-soft); }
+    .segmented { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg); }
+    .segmented button { min-height: 40px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); }
+    .segmented button.active { background: var(--surface); color: var(--fg); }
+    .field-label { display: block; margin: 12px 0 6px; color: var(--muted); font-size: 12px; }
+    .textarea { min-height: 90px; resize: vertical; }
+    .danger { color: color-mix(in oklch, var(--accent) 45%, var(--fg)); }
+    .sheet-foot { position: sticky; bottom: calc(-22px - var(--safe-bottom)); margin: 18px -18px calc(-22px - var(--safe-bottom)); padding: 14px 18px calc(18px + var(--safe-bottom)); border-top: 1px solid var(--border); background: color-mix(in oklch, var(--surface) 94%, transparent); backdrop-filter: blur(18px); }
+    .member-copy { position: relative; z-index: 2; max-width: 66%; }
+    .member-figure { position: absolute; z-index: 1; right: 14px; bottom: -16px; width: 104px; height: 132px; border-radius: 48% 48% 22% 22%; background: linear-gradient(160deg, color-mix(in oklch, var(--fg) 30%, transparent), color-mix(in oklch, var(--accent) 45%, var(--surface))); box-shadow: 0 16px 30px color-mix(in oklch, var(--fg) 22%, transparent); }
+    .member-figure::after { content: '3D'; position: absolute; top: 12px; left: 50%; transform: translateX(-50%); color: color-mix(in oklch, var(--fg) 48%, transparent); font: 10px var(--font-mono); }
+    .app.mine-theme { --bg: var(--mine-bg); --surface: var(--mine-surface); --fg: var(--mine-fg); --muted: var(--mine-muted); --border: var(--mine-border); --accent: var(--mine-accent); }
+    .app.mine-theme .content { background: radial-gradient(circle at 82% 10%, color-mix(in oklch, var(--accent) 20%, transparent), transparent 28%), linear-gradient(180deg, var(--mine-bg), color-mix(in oklch, var(--mine-bg) 72%, var(--surface))); }
+
+    .overlay { position: absolute; inset: 0; z-index: 50; display: grid; align-items: end; background: color-mix(in oklch, black 62%, transparent); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+    .overlay.open { opacity: 1; pointer-events: auto; }
+    .sheet { max-height: 88%; overflow: auto; padding: 20px 18px calc(22px + var(--safe-bottom)); border-radius: 26px 26px 0 0; background: var(--surface); border-top: 1px solid var(--border); transform: translateY(18px); transition: transform .2s ease; }
+    .overlay.open .sheet { transform: translateY(0); }
+    .sheet-handle { width: 38px; height: 4px; margin: -8px auto 18px; border-radius: 999px; background: var(--border); }
+    .sheet h2 { font-family: var(--font-display); font-size: 24px; margin: 0; }
+    .sheet p { color: var(--muted); }
+    .option { padding: 14px 0; border-top: 1px solid var(--border); }
+    .option:first-of-type { border-top: 0; }
+    .check { display: flex; align-items: flex-start; gap: 9px; margin: 12px 0; color: var(--muted); font-size: 12px; }
+    .check input { margin-top: 3px; accent-color: var(--accent); }
+    .input { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 13px; background: var(--bg); color: var(--fg); outline: none; }
+    .input:focus { border-color: var(--accent); }
+    .close-sheet { width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 50%; background: transparent; color: var(--fg); }
+
+    .age-gate { position: absolute; inset: 0; z-index: 80; display: flex; flex-direction: column; padding: 28px 22px 24px; background: var(--bg); }
+    .age-art { flex: 1; min-height: 250px; display: grid; place-items: center; position: relative; overflow: hidden; }
+    .age-art::before { content: ''; width: 240px; height: 240px; border: 1px solid var(--border); border-radius: 50%; box-shadow: 0 0 80px var(--accent-soft); }
+    .age-mark { position: absolute; font-family: var(--font-display); font-size: 68px; letter-spacing: -.07em; }
+    .age-mark small { color: var(--accent); font: 16px var(--font-mono); letter-spacing: 0; vertical-align: top; }
+    .age-gate h1 { font-family: var(--font-display); margin: 0; font-size: 28px; }
+    .age-gate p { margin: 8px 0 18px; color: var(--muted); }
+    .legal { font-size: 11px; color: var(--muted); text-align: center; margin-top: 10px; }
+    .legal a { color: var(--fg); }
+    .hidden { display: none !important; }
+    .toast { position: absolute; left: 50%; bottom: 88px; z-index: 100; transform: translate(-50%, 12px); opacity: 0; padding: 9px 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--fg); color: var(--bg); white-space: nowrap; transition: .2s ease; font-size: 12px; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 600px) {
+      body { padding: 0; display: block; background: var(--bg); }
+      .stage, .device { width: 100vw; height: 100dvh; }
+      .stage { gap: 0; }
+      .caption, .device > .rail, .device > .island { display: none; }
+      .device { padding: 0; border-radius: 0; background: var(--bg); box-shadow: none; }
+      .device::before, .device::after { display: none; }
+      .screen { border-radius: 0; }
+      .statusbar { display: none; }
+      .home-indicator { display: none; }
+      .tabbar { padding-bottom: var(--safe-bottom); }
+    }
+
+    @media (min-width: 601px) and (max-height: 900px) {
+      .stage { transform: scale(.72); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+
+    /* Document screenshot framework alignment - light dense portal + black short-feed */
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --fg: #11151b;
+      --muted: #74808f;
+      --border: #e4eaf1;
+      --accent: #11151b;
+      --brand: #139fd5;
+      --violet: #7565ee;
+      --yellow: #ffd84d;
+      --font-display: 'PingFang SC', 'Noto Sans CJK SC', sans-serif;
+      --font-body: 'PingFang SC', 'Noto Sans CJK SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body { background: #eaf0f7; color: var(--fg); }
+    .caption { color: #687483; }
+    .caption strong { color: #11151b; }
+    .device { background: #0b0e13; box-shadow: 0 30px 80px rgba(38,51,69,.22), inset 0 0 0 2px #05070a; }
+    .screen, .app, .content { background: var(--bg); color: var(--fg); }
+    .statusbar { background: #f7f9fc; color: #11151b; }
+    .home-indicator { background: #fff; }
+    .home-indicator::after { background: #11151b; }
+    .screen.short-screen .statusbar { background: #05070a; color: #fff; }
+    .screen.short-screen .home-indicator { background: #05070a; }
+    .screen.short-screen .home-indicator::after { background: #fff; }
+
+    .portal-page { min-height: 100%; background: #fff; }
+    .portal-head {
+      position: sticky; top: 0; z-index: 8; display: grid; grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 8px; padding: 10px 11px 8px;
+      background: linear-gradient(180deg,#dff9ff 0%,rgba(255,255,255,.96) 100%);
+    }
+    .brand-logo { font-weight: 950; font-style: italic; letter-spacing: -.08em; font-size: 18px; color:#10141a; white-space: nowrap; }
+    .brand-logo i { color: #15a6d6; font-style: normal; }
+    .search-pill { height: 34px; border: 0; border-radius: 18px; background: rgba(255,255,255,.86); color: #9aa4af; display:flex; align-items:center; gap:6px; padding:0 11px; text-align:left; font-size:11px; box-shadow: inset 0 0 0 1px rgba(18,39,55,.05); }
+    .search-pill svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.8; }
+    .publish-pill { height:34px; padding:0 11px; border:0; border-radius:18px; background:#101319; color:white; font-size:11px; font-weight:700; white-space:nowrap; }
+    .publish-pill::before { content:'●'; margin-right:5px; font-size:8px; }
+
+    .portal-tabs { display:flex; align-items:center; gap:19px; overflow:auto; padding:0 12px; height:36px; background:#fff; scrollbar-width:none; }
+    .portal-tabs::-webkit-scrollbar { display:none; }
+    .portal-tab { position:relative; flex:0 0 auto; border:0; background:none; padding:8px 0; color:#303844; font-size:12px; }
+    .portal-tab.active { color:#11151b; font-weight:800; }
+    .portal-tab.active::after { content:''; position:absolute; left:25%; right:25%; bottom:0; height:2px; border-radius:2px; background:#11151b; }
+    .portal-tab.hot { color:#e15763; }
+
+    .channel-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:9px 5px; padding:8px 10px 10px; background:#fff; }
+    .channel-carousel { overflow-x:auto; overflow-y:hidden; padding:0 10px 10px; background:#fff; scrollbar-width:none; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; touch-action:pan-x; }
+    .channel-carousel::-webkit-scrollbar { display:none; }
+    .channel-carousel-track { display:flex; width:max-content; gap:5px; animation:channel-loop 16s ease-in-out infinite alternate; }
+    .channel-carousel .channel { flex:0 0 58px; scroll-snap-align:start; }
+    .channel { min-width:0; border:0; padding:0; background:none; color:#4b5663; text-align:center; font-size:9px; line-height:1.2; }
+    .channel-cover { position:relative; display:block; width:100%; aspect-ratio:1.16/1; overflow:hidden; border-radius:7px; margin-bottom:4px; background:linear-gradient(145deg,var(--c1,#d9f2fb),var(--c2,#7358b0)); box-shadow:0 2px 5px rgba(36,55,75,.08); }
+    .channel-cover::before { content:''; position:absolute; width:48%; height:88%; left:31%; top:18%; border-radius:45% 45% 17% 17%; background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(16,25,37,.35)); transform:rotate(5deg); }
+    .channel-cover b { position:absolute; inset:auto 2px 3px; color:white; font-size:7px; text-shadow:0 1px 2px rgba(0,0,0,.55); white-space:nowrap; overflow:hidden; }
+    .channel:nth-child(4n+1) .channel-cover { --c1:#f6c2b3; --c2:#905b8d; }
+    .channel:nth-child(4n+2) .channel-cover { --c1:#9fe1db; --c2:#4c91bb; }
+    .channel:nth-child(4n+3) .channel-cover { --c1:#c8b7ef; --c2:#4c3f83; }
+    .channel:nth-child(4n) .channel-cover { --c1:#ffca5e; --c2:#e55b53; }
+
+    .shortcut-row { display:grid; grid-template-columns:repeat(4,1fr); padding:9px 22px 11px; background:#fff; border-top:1px solid #f0f3f7; }
+    .shortcut { border:0; background:none; color:#202731; font-size:10px; }
+    .shortcut-icon { width:42px; height:42px; display:grid; place-items:center; margin:0 auto 4px; border-radius:13px; color:white; font-size:17px; font-weight:900; background:linear-gradient(145deg,#51c8ea,#7566ef); box-shadow:0 7px 15px rgba(75,116,196,.18); }
+    .shortcut:nth-child(2) .shortcut-icon { background:linear-gradient(145deg,#ff89d2,#9764ea); }
+    .shortcut:nth-child(3) .shortcut-icon { background:linear-gradient(145deg,#ffc34d,#f07d5b); }
+    .shortcut:nth-child(4) .shortcut-icon { background:linear-gradient(145deg,#55d4f0,#8d72ed); }
+
+    .dense-section { padding:0 10px 13px; background:#fff; }
+    .dense-title { display:flex; align-items:center; justify-content:space-between; min-height:34px; font-size:13px; }
+    .dense-title strong { font-size:14px; }
+    .dense-title span { color:#9aa3ad; font-size:10px; }
+    .discovery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; padding-bottom:12px; }
+    .discovery-card { min-height:58px; padding:9px 8px; border:0; border-radius:8px; color:#27303b; text-align:left; background:linear-gradient(145deg,#eefbff,#f2efff); }
+    .discovery-card:nth-child(3n+2) { background:linear-gradient(145deg,#fff6df,#fff0f1); }
+    .discovery-card:nth-child(3n) { background:linear-gradient(145deg,#ebfff4,#eef6ff); }
+    .discovery-card strong { display:block; font-size:11px; }
+    .discovery-card span { display:block; margin-top:4px; color:#8995a3; font-size:8px; }
+    .tiny-filters { display:flex; gap:18px; overflow:auto; height:35px; align-items:center; border-top:1px solid #edf1f5; border-bottom:1px solid #edf1f5; scrollbar-width:none; }
+    .tiny-filter { border:0; background:none; padding:8px 0; color:#434c58; font-size:11px; white-space:nowrap; }
+    .tiny-filter.active { color:#12161c; font-weight:800; border-bottom:2px solid #12161c; }
+    .media-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px 7px; }
+    .media-card { min-width:0; background:white; color:#171b21; }
+    .media-card-main { display:block; width:100%; border:0; padding:0; background:none; color:inherit; text-align:left; }
+    .media-thumb { position:relative; display:block; width:100%; aspect-ratio:1.62; overflow:hidden; border-radius:3px; background:linear-gradient(145deg,var(--p1,#b5dce9),var(--p2,#60699b)); }
+    .media-thumb::before { content:''; position:absolute; width:52%; height:110%; left:28%; top:15%; border-radius:44% 44% 15% 15%; background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(33,36,48,.42)); transform:rotate(-7deg); }
+    .media-card:nth-child(3n+2) .media-thumb { --p1:#f7c79a; --p2:#a54c59; }
+    .media-card:nth-child(3n) .media-thumb { --p1:#a8d5bf; --p2:#4e587c; }
+    .media-badge { position:absolute; top:4px; right:4px; z-index:2; padding:2px 5px; border-radius:3px; background:#fff3b4; color:#9f6b00; font-size:7px; }
+    .media-duration { position:absolute; right:4px; bottom:3px; z-index:2; padding:1px 4px; border-radius:2px; background:rgba(0,0,0,.62); color:white; font-size:7px; }
+    .media-name { display:block; margin-top:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; font-weight:650; }
+    .media-meta { display:flex; justify-content:space-between; margin-top:2px; color:#929ba6; font-size:8px; }
+    .media-author-link { display:flex; align-items:center; gap:4px; max-width:100%; margin-top:4px; padding:0; border:0; background:none; color:#7c8794; font-size:8px; text-align:left; }
+    .media-author-link::before { content:''; flex:0 0 13px; width:13px; height:13px; border-radius:50%; background:linear-gradient(145deg,#79cce6,#695aa1); }
+    .ad-matrix { display:grid; grid-template-columns:repeat(4,1fr); gap:5px; margin:3px 0 8px; }
+    .ad-tile { min-height:35px; display:grid; place-items:center; padding:3px; border-radius:3px; background:linear-gradient(145deg,#39424c,#15181d); color:white; font-size:9px; text-align:center; }
+    .ad-label { position:absolute; left:4px; top:4px; z-index:2; color:white; font-size:7px; opacity:.85; }
+
+    .short-theme, .short-theme .content { background:#05070a; color:white; }
+    .short-theme .tabbar { background:#05070a; border-top-color:#252a32; }
+    .short-theme .tab { color:#88919d; }
+    .short-theme .tab.active { color:white; }
+    .short-theme .video-stage { min-height:620px; background:#080b10; }
+    .short-theme .top-tabs { justify-content:center; padding:0 46px 6px; background:#05070a; }
+    .short-theme .top-tab { color:#c8ccd2; }
+    .short-theme .top-tab.active { color:white; border-color:white; }
+    .short-theme .placeholder { background:linear-gradient(145deg,#38404b,#0e1117); }
+    .short-theme .placeholder::before { background:linear-gradient(180deg,#b4aeb0,#333746); }
+    .short-theme .video-copy { bottom:16px; }
+    .short-theme .action { color:white; text-shadow:0 1px 3px rgba(0,0,0,.8); }
+    .short-theme .action-avatar { border-color:rgba(255,255,255,.7); background:rgba(255,255,255,.2); }
+    .short-theme .btn-primary { min-height:32px; padding:7px 12px; border-radius:16px; background:white; color:#11151b; font-size:10px; }
+    .short-theme .badge { background:rgba(0,0,0,.58); color:white; border-color:rgba(255,255,255,.35); }
+    .short-feed-nav { display:grid; grid-template-columns:76px minmax(0,1fr) 76px; align-items:center; min-height:48px; background:#05070a; }
+    .short-feed-nav > button { width:38px; height:38px; display:grid; place-items:center; border:0; background:none; color:white; font-size:28px; }
+    .short-feed-nav > button svg, .short-nav-actions button svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; }
+    .short-feed-nav .top-tabs { min-width:0; padding:0; gap:18px; }
+    .short-nav-actions { display:flex; align-items:center; justify-content:flex-end; gap:2px; padding-right:4px; }
+    .short-nav-actions button { width:34px; height:42px; display:grid; place-items:center; align-content:center; gap:1px; padding:0; border:0; background:none; color:white; }
+    .short-theme [data-od-id="short-video-feed"] { min-height:100%; display:flex; flex-direction:column; }
+    .short-theme .video-stage { flex:1; min-height:0; }
+
+    .ai-hero-list { padding:10px; background:#fff; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .ai-hero { position:relative; aspect-ratio:1; min-width:0; overflow:hidden; border:0; border-radius:10px; padding:13px 12px; display:flex; flex-direction:column; justify-content:flex-end; background:linear-gradient(145deg,#e4e0ff,#c8eff6); color:#5d47bd; text-align:left; box-shadow:inset 0 0 0 1px rgba(100,82,190,.06); }
+    .ai-hero:nth-child(2) { background:linear-gradient(145deg,#dff4ff,#d9e5ff); color:#286da9; }
+    .ai-hero:nth-child(3) { background:linear-gradient(145deg,#e2faee,#d4eef9); color:#257c68; }
+    .ai-hero:nth-child(4) { background:linear-gradient(145deg,#fff0d9,#f1e2ff); color:#8b5d2c; }
+    .ai-hero strong { position:relative; z-index:2; display:block; max-width:92%; font-size:16px; line-height:1.22; font-weight:900; }
+    .ai-hero span { position:relative; z-index:2; display:block; margin-top:5px; color:#6d7492; font-size:8px; line-height:1.45; }
+    .ai-hero::after { content:''; position:absolute; width:68px; height:88px; right:-6px; top:-18px; border-radius:48% 48% 20% 20%; background:linear-gradient(160deg,rgba(255,255,255,.88),rgba(118,106,150,.58)); transform:rotate(12deg); box-shadow:0 10px 20px rgba(86,73,147,.16); }
+    .ai-notification { width:calc(100% - 20px); min-height:58px; display:grid; grid-template-columns:34px 1fr auto; gap:9px; align-items:center; margin:10px; padding:10px 12px; border:1px solid #bcefd8; border-radius:12px; background:linear-gradient(135deg,#effff7,#edfbff); color:#18342a; text-align:left; }
+    .ai-notification > span { width:32px; height:32px; display:grid; place-items:center; border-radius:50%; background:#24b678; color:white; font-weight:900; }
+    .ai-notification strong, .ai-notification small { display:block; }
+    .ai-notification small { margin-top:2px; color:#6b8178; font-size:9px; }
+    .ai-notification b { color:#168f66; font-size:10px; }
+    .ai-upload-zone { display:grid; place-items:center; min-height:116px; margin-top:12px; padding:14px; border:1px dashed #b7c6d8; border-radius:14px; background:#f6f9fd; text-align:center; }
+    .ai-upload-zone.is-ready { border-style:solid; border-color:#79d4b0; background:#effcf6; }
+    .ai-upload-zone strong, .ai-upload-zone small { display:block; }
+    .ai-upload-zone small { margin:5px 0 10px; color:#7a8795; font-size:10px; }
+    .ai-result-preview { position:relative; min-height:210px; display:grid; place-items:center; overflow:hidden; margin:14px 0; border-radius:16px; background:linear-gradient(145deg,#a9d7e7,#6b5d9d 65%,#182131); color:white; }
+    .ai-result-preview::before { content:''; width:42%; height:78%; border-radius:48% 48% 22% 22%; background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(24,29,43,.45)); }
+    .ai-result-mark { position:absolute; left:10px; bottom:10px; padding:5px 8px; border-radius:8px; background:rgba(0,0,0,.55); font-size:9px; }
+    .ai-error-card { margin:12px 0; padding:12px; border:1px solid #ffd2c9; border-radius:12px; background:#fff6f3; color:#8d392b; font-size:11px; line-height:1.55; }
+    .result-thumb.is-success { background:linear-gradient(145deg,#7ee7c0,#53a7dc); }
+    .community-card-button { width:100%; display:block; padding:0; border:0; background:none; color:inherit; text-align:left; }
+    .community-preview { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:9px; }
+    .community-preview span { min-height:64px; border-radius:7px; background:linear-gradient(145deg,#b7dce6,#6c719a); }
+    .community-preview span:nth-child(2) { background:linear-gradient(145deg,#f5c293,#a95869); }
+    .community-preview span:nth-child(3) { background:linear-gradient(145deg,#afe0c4,#4e6881); }
+    .community-preview.single { grid-template-columns:1fr; }
+    .community-preview.single span { min-height:120px; }
+
+    .community-head { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding:10px 11px 7px; background:linear-gradient(180deg,#dff9ff,#fff); }
+    .community-segment { justify-self:center; display:flex; padding:3px; border-radius:18px; background:#eef3f7; }
+    .community-segment button { height:28px; padding:0 14px; border:0; border-radius:15px; background:transparent; font-size:12px; }
+    .community-segment .active { background:#fff; box-shadow:0 2px 7px rgba(36,53,71,.1); font-weight:800; }
+    .community-fab { position:absolute; right:14px; bottom:calc(68px + var(--safe-bottom)); z-index:32; min-width:74px; height:46px; padding:0 17px; border:0; border-radius:24px; background:#11151b; color:white; font-size:12px; font-weight:800; box-shadow:0 10px 24px rgba(17,21,27,.28); }
+    .community-fab::before { content:'●'; margin-right:7px; font-size:8px; }
+
+    .mine-theme, .mine-theme .content { background:linear-gradient(180deg,#d8efff 0,#eff7ff 42%,#f6f9fd 100%); color:#132238; }
+    .mine-theme .tabbar { background:rgba(247,251,255,.96); border-color:#d9e7f3; }
+    .mine-theme .tab { color:#8493a6; }
+    .mine-theme .tab.active { color:#0879df; }
+    .mine-page { padding:4px 11px 18px; }
+    .mine-profile { display:grid; grid-template-columns:52px 1fr auto; gap:10px; align-items:center; padding:8px 3px 13px; }
+    .mine-avatar { width:52px; height:52px; border-radius:50%; border:3px solid white; background:linear-gradient(145deg,#fa6b63,#693bbb); box-shadow:0 4px 12px rgba(52,73,112,.2); }
+    .mine-profile strong { display:block; font-size:16px; }
+    .mine-profile small { color:#6a7d95; font-size:9px; }
+    .mine-login { border:1px solid #2b6baf; border-radius:14px; background:white; color:#1c5f9f; padding:6px 10px; font-size:9px; }
+    .mine-stats { display:grid; grid-template-columns:repeat(3,1fr); text-align:center; padding-bottom:11px; }
+    .mine-stats strong { display:block; color:#0b78dd; font-size:17px; }
+    .mine-stats span { color:#64778e; font-size:9px; }
+    .operation-grid { display:grid; grid-template-columns:1.35fr .78fr; grid-template-rows:73px 73px; gap:7px; }
+    .operation-card { position:relative; overflow:hidden; border:0; border-radius:10px; padding:11px; background:linear-gradient(135deg,#0574dd,#11b8ee); color:white; text-align:left; box-shadow:0 8px 18px rgba(0,100,200,.17); }
+    .operation-card.main { grid-row:1/3; }
+    .operation-card strong { display:block; position:relative; z-index:2; font-size:14px; }
+    .operation-card small { position:relative; z-index:2; font-size:8px; opacity:.85; }
+    .operation-card::after { content:''; position:absolute; width:76px; height:95px; right:5px; bottom:-20px; border-radius:50% 50% 22% 22%; background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(11,40,91,.3)); transform:rotate(6deg); }
+    .operation-card:not(.main) { background:linear-gradient(135deg,#0b58c9,#2389ee); }
+    .operation-card:last-child { background:linear-gradient(135deg,#15a3dc,#2e65d7); }
+    .operation-card .yellow { display:inline-block; margin-top:25px; padding:5px 10px; border-radius:12px; background:#ffd64a; color:#2c3a4a; font-size:9px; font-weight:800; }
+    .mine-icon-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:11px 4px; margin-top:8px; padding:12px 6px; border-radius:10px; background:rgba(255,255,255,.78); }
+    .mine-entry { border:0; background:none; color:#2b3b50; font-size:9px; }
+    .mine-entry i { display:grid; place-items:center; width:28px; height:28px; margin:0 auto 5px; border-radius:9px; background:linear-gradient(145deg,#62c5f0,#214ea7); color:white; font-style:normal; box-shadow:0 4px 10px rgba(39,91,157,.18); }
+    .income-box { margin-top:8px; padding:12px; border-radius:10px; background:rgba(255,255,255,.78); }
+    .income-box h3 { margin:0 0 10px; font-size:12px; }
+    .income-row { display:grid; grid-template-columns:repeat(3,1fr); text-align:center; }
+    .income-row strong { display:block; color:#1475d0; }
+    .income-row span { color:#8191a3; font-size:8px; }
+
+    .tabbar { min-height:58px; background:rgba(255,255,255,.97); border-top:1px solid #e8edf2; backdrop-filter:blur(18px); }
+    .tab { color:#98a2ad; font-size:9px; }
+    .tab.active { color:#11151b; }
+    .tab svg { width:20px; height:20px; stroke-width:1.6; }
+    .detail-player { background:#05070a; }
+    .detail-player .placeholder { background:linear-gradient(145deg,#313943,#080a0e); color:white; }
+    .card, .tool, .menu { box-shadow:none; }
+    .overlay { background:rgba(5,9,14,.56); }
+    .sheet { background:#fff; color:#11151b; border-color:#e4eaf1; }
+    .sheet p, .meta { color:#74808f; }
+    .sheet-foot { background:rgba(255,255,255,.96); border-color:#e4eaf1; }
+    .btn-primary { background:#11151b; color:white; }
+    .btn-secondary { border-color:#dce3eb; color:#11151b; }
+    .input { background:#f7f9fc; color:#11151b; border-color:#dfe6ee; }
+    .age-gate { justify-content:center; padding:22px; background:rgba(7,11,16,.68); }
+    .age-art { display:none; }
+    .age-gate > div:last-child { padding:24px 20px 20px; border-radius:17px; background:white; color:#11151b; box-shadow:0 18px 60px rgba(0,0,0,.3); }
+    .age-gate h1 { font-size:21px; text-align:center; }
+    .age-gate p { color:#66717e; font-size:12px; }
+    .age-gate .eyebrow { text-align:center; color:#149bd1; }
+    .age-gate .legal, .age-gate .legal a { color:#7b8794; }
+    .toast { background:#11151b; color:white; border:0; }
+    @media (hover:hover) {
+      .media-card:hover .media-thumb, .channel:hover .channel-cover { filter:brightness(1.04); }
+      .publish-pill:hover, .btn-primary:hover { background:#25303b; }
+    }
+
+    /* Latest reference framework: home / short / library / community / mine */
+    .light-screen { background:#fff; color:#111820; }
+    .light-screen .statusbar { color:#0d1117; background:#fff; }
+    .home-theme, .home-theme .content { background:#fff; color:#111820; }
+    .home-theme .tabbar { background:rgba(255,255,255,.97); }
+    .reference-home { min-height:100%; background:#fff; color:#111820; }
+    .reference-head {
+      position:sticky;
+      top:0;
+      z-index:12;
+      padding:10px 11px 0;
+      background:linear-gradient(135deg,#e9fbff 0%,#cbf3ff 44%,#b7dcff 100%);
+      box-shadow:0 1px 0 rgba(116,164,198,.12);
+    }
+    .reference-search-row { display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:8px; }
+    .reference-brand { display:block; overflow:visible; font-size:17px; justify-self:start; }
+    .reference-logo {
+      width:34px;
+      height:34px;
+      border:0;
+      border-radius:50%;
+      background:conic-gradient(from 15deg,#48d6ef,#78df75,#f5d84d,#ff7a59,#a169ef,#48d6ef);
+      box-shadow:inset 0 0 0 9px rgba(255,255,255,.2);
+      position:relative;
+    }
+    .reference-logo::after { content:''; position:absolute; left:11px; top:10px; border-left:10px solid white; border-top:7px solid transparent; border-bottom:7px solid transparent; }
+    .reference-search {
+      height:39px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:0 14px;
+      border:1.5px solid rgba(255,255,255,.92);
+      border-radius:24px;
+      background:rgba(255,255,255,.32);
+      color:#65717f;
+      text-align:left;
+      font-size:12px;
+    }
+    .reference-search svg { width:20px; height:20px; flex:0 0 20px; fill:none; stroke:#17212c; stroke-width:2; }
+    .reference-publish { border:0; background:none; color:#16202b; font-size:9px; padding:0; }
+    .reference-publish i { display:grid; place-items:center; width:27px; height:27px; margin:0 auto 1px; border-radius:9px; background:#22303c; color:#78dcff; font-size:14px; font-style:normal; box-shadow:inset 0 0 0 3px rgba(255,255,255,.82); }
+    .reference-tabs { display:flex; gap:23px; overflow-x:auto; margin:7px -11px 0; padding:0 12px; scrollbar-width:none; }
+    .reference-tabs::-webkit-scrollbar { display:none; }
+    .reference-tab { position:relative; min-height:39px; padding:9px 0 8px; border:0; background:none; color:#687286; white-space:nowrap; font-size:15px; }
+    .reference-tab.active { color:#151a20; font-weight:850; }
+    .reference-tab.active::after { content:''; position:absolute; left:50%; bottom:3px; width:18px; height:6px; transform:translateX(-50%); border-radius:50%; background:rgba(55,181,238,.42); }
+    .reference-tab.active::before { content:'✦'; position:absolute; right:-7px; top:2px; color:#168dea; font-size:8px; }
+
+    .reference-section { padding:11px 11px 0; background:#fff; }
+    .reference-title { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:32px; }
+    .reference-title strong { font-size:16px; font-weight:750; }
+    .reference-title small { color:#8b929a; font-size:10px; }
+    .reference-more { border:0; background:none; color:#92979e; font-size:12px; padding:3px 0; }
+    .reference-more::after { content:' ›'; font-size:18px; vertical-align:-1px; }
+    .reference-ad-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:9px 8px; padding:7px 0 9px; }
+    .reference-ad-carousel { overflow-x:auto; overflow-y:hidden; margin:0 -11px; padding:0 11px 10px; scrollbar-width:none; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; touch-action:pan-x; }
+    .reference-ad-carousel::-webkit-scrollbar { display:none; }
+    .reference-ad-track { display:flex; width:max-content; gap:8px; animation:reference-ad-loop 16s ease-in-out infinite alternate; }
+    .reference-ad-carousel .reference-ad { flex:0 0 64px; scroll-snap-align:start; }
+    .reference-ad { min-width:0; border:0; padding:0; background:none; color:#5e6670; font-size:8px; }
+    .reference-ad-icon { position:relative; display:grid; place-items:center; width:100%; aspect-ratio:1; overflow:hidden; border-radius:10px; color:white; font-size:8px; font-weight:800; line-height:1.15; text-shadow:0 1px 2px rgba(0,0,0,.28); background:linear-gradient(145deg,var(--ad1,#4ecce7),var(--ad2,#245cba)); }
+    .reference-ad-icon::before { content:''; position:absolute; width:70%; height:70%; left:30%; top:22%; border-radius:48% 48% 18% 18%; background:rgba(255,255,255,.27); transform:rotate(-12deg); }
+    .reference-ad:nth-child(5n+2) .reference-ad-icon { --ad1:#f69bc3; --ad2:#854bc8; }
+    .reference-ad:nth-child(5n+3) .reference-ad-icon { --ad1:#f5bf45; --ad2:#e75f31; }
+    .reference-ad:nth-child(5n+4) .reference-ad-icon { --ad1:#53d29b; --ad2:#1879a7; }
+    .reference-ad:nth-child(5n) .reference-ad-icon { --ad1:#6575e9; --ad2:#25234e; }
+    .reference-ad-icon b { position:relative; z-index:2; font-size:7px; }
+    .reference-ad > span:last-child { display:block; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .reference-shortcuts { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:8px 8px 3px; }
+    .reference-shortcut { border:0; background:none; color:#5c6570; font-size:9px; padding:0; }
+    .reference-shortcut i { display:grid; place-items:center; width:47px; height:43px; margin:0 auto 4px; border-radius:12px; background:linear-gradient(160deg,#ffda49,#ff983f); color:white; font-size:11px; font-style:normal; font-weight:900; box-shadow:0 6px 14px rgba(243,137,50,.18); }
+    .reference-shortcut:nth-child(2) i { background:linear-gradient(160deg,#8755ed,#58c9ff); }
+    .reference-shortcut:nth-child(3) i { background:linear-gradient(160deg,#ff675a,#f14f3d); }
+    .reference-shortcut:nth-child(4) i { background:linear-gradient(160deg,#5f7cf4,#f06cd4); }
+    .reference-discovery { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding:7px 0 11px; }
+    .reference-discovery-card { position:relative; aspect-ratio:1.05; overflow:hidden; border:0; border-radius:8px; padding:0; color:white; background:linear-gradient(145deg,var(--cover1,#3a576f),var(--cover2,#192331)); }
+    .reference-discovery-card::before { content:''; position:absolute; width:64%; height:104%; left:22%; top:10%; border-radius:48% 48% 18% 18%; background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(35,49,63,.35)); transform:rotate(-8deg); }
+    .reference-discovery-card:nth-child(3n+2) { --cover1:#c68f6a; --cover2:#654047; }
+    .reference-discovery-card:nth-child(3n) { --cover1:#77b5a8; --cover2:#314c69; }
+    .reference-discovery-card span { position:absolute; inset:auto 0 0; z-index:2; padding:7px 3px; background:linear-gradient(transparent,rgba(13,20,28,.78)); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .reference-filter { display:flex; gap:21px; overflow-x:auto; padding:5px 1px 8px; border-bottom:1px solid #eff1f3; scrollbar-width:none; }
+    .reference-filter button { border:0; background:none; color:#4f5760; padding:5px 0; white-space:nowrap; font-size:13px; }
+    .reference-filter button.active { color:#15191e; font-weight:850; }
+    .reference-loading { min-height:112px; display:flex; align-items:center; justify-content:center; gap:8px; color:#36aef3; font-size:13px; }
+    .reference-spinner { width:19px; height:19px; border-radius:50%; border:3px solid #cfeeff; border-top-color:#36aef3; animation:ref-spin .8s linear infinite; }
+    @keyframes ref-spin { to { transform:rotate(360deg); } }
+    @keyframes reference-ad-loop { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @keyframes channel-loop { from { transform:translateX(0); } to { transform:translateX(-48%); } }
+    .reference-ad-carousel:hover .reference-ad-track, .reference-ad-carousel:focus-within .reference-ad-track, .reference-ad-carousel:active .reference-ad-track,
+    .channel-carousel:hover .channel-carousel-track, .channel-carousel:focus-within .channel-carousel-track, .channel-carousel:active .channel-carousel-track { animation-play-state:paused; }
+    @media (prefers-reduced-motion:reduce) {
+      .reference-ad-track, .channel-carousel-track { animation:none; }
+    }
+
+    .reference-media-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px 8px; padding:9px 0 16px; }
+    .reference-media-card { min-width:0; color:#14191f; }
+    .reference-media-main { display:block; width:100%; border:0; background:none; color:inherit; padding:0; text-align:left; }
+    .reference-media-thumb { position:relative; display:block; aspect-ratio:1.52; overflow:hidden; border-radius:8px; background:linear-gradient(145deg,var(--mv1,#89b6c8),var(--mv2,#344761)); }
+    .reference-media-thumb::before { content:''; position:absolute; width:56%; height:112%; left:27%; top:9%; border-radius:48% 48% 20% 20%; background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(24,32,44,.36)); transform:rotate(-5deg); }
+    .reference-media-card:nth-child(4n+2) .reference-media-thumb { --mv1:#e1a56f; --mv2:#814653; }
+    .reference-media-card:nth-child(4n+3) .reference-media-thumb { --mv1:#9fc4a9; --mv2:#415c65; }
+    .reference-media-card:nth-child(4n) .reference-media-thumb { --mv1:#b8a9df; --mv2:#56496f; }
+    .reference-media-badge { position:absolute; z-index:3; right:5px; top:5px; padding:2px 7px; border-radius:4px; background:#57b9ef; color:white; font-size:9px; }
+    .reference-media-badge.coin { background:#ff625e; }
+    .reference-media-overlay { position:absolute; z-index:3; left:7px; right:7px; bottom:5px; display:flex; justify-content:space-between; color:#fff; font-size:9px; text-shadow:0 1px 3px rgba(0,0,0,.8); }
+    .reference-media-name { display:block; margin-top:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; }
+    .reference-media-author { display:flex; align-items:center; gap:4px; max-width:100%; margin-top:4px; padding:0; border:0; background:none; color:#7d8791; font-size:8px; text-align:left; }
+    .reference-media-author::before { content:''; flex:0 0 13px; width:13px; height:13px; border-radius:50%; background:linear-gradient(145deg,#72c9e8,#66549d); }
+    .reference-section-block { position:relative; padding-bottom:9px; border-bottom:8px solid #f6f7f9; }
+    .reference-section-block .reference-media-grid { transition:opacity .18s ease,filter .18s ease; }
+    .reference-section-block.section-refreshing .reference-media-grid { opacity:.38; filter:saturate(.45); pointer-events:none; }
+    .section-refreshing-indicator { position:absolute; z-index:3; left:50%; top:48%; display:none; align-items:center; gap:6px; padding:7px 11px; transform:translate(-50%,-50%); border-radius:16px; background:rgba(255,255,255,.94); color:#278fc8; box-shadow:0 7px 20px rgba(44,87,120,.15); font-size:10px; white-space:nowrap; }
+    .reference-section-block.section-refreshing .section-refreshing-indicator { display:flex; }
+    .reference-section-subtitle { color:#959aa1; margin-left:5px; font-size:10px; font-weight:400; }
+    .reference-section-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 0 8px; }
+    .reference-section-actions button { min-height:36px; border:0; border-radius:20px; background:#f2f7fd; color:#4c555f; font-size:11px; }
+    .reference-section-actions button:disabled { color:#8aa9ba; cursor:wait; }
+    .reference-feed { padding:12px 11px 16px; }
+    .reference-feed-card { padding:0 0 18px; border-bottom:7px solid #f5f6f8; margin-bottom:14px; }
+    .reference-author { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .reference-author .avatar { width:35px; height:35px; }
+    .reference-author .reference-profile-link { display:flex; align-items:center; gap:8px; min-width:0; padding:0; border:0; background:none; color:#1b232c; text-align:left; }
+    .reference-author .reference-follow { margin-left:auto; border:0; border-radius:17px; padding:7px 14px; color:#2877dd; background:#eef5ff; }
+    .reference-feed-cover { position:relative; display:block; width:100%; aspect-ratio:1.62; overflow:hidden; border:0; border-radius:6px; background:linear-gradient(145deg,#bed7e1,#536579); }
+    .reference-feed-cover::before { content:''; position:absolute; width:62%; height:115%; left:20%; top:6%; border-radius:48% 48% 17% 17%; background:linear-gradient(180deg,rgba(255,255,255,.76),rgba(35,44,54,.32)); }
+    .reference-feed-cover span { position:absolute; bottom:7px; z-index:2; color:white; font-size:10px; text-shadow:0 1px 3px rgba(0,0,0,.8); }
+    .reference-feed-cover span:first-of-type { left:8px; }
+    .reference-feed-cover span:last-child { right:8px; }
+    .reference-feed-card h3 { margin:8px 0; font-size:14px; font-weight:600; }
+    .reference-feed-actions { display:flex; justify-content:space-between; color:#707780; font-size:11px; }
+    .reference-feed-actions button { border:0; background:none; color:inherit; padding:0; }
+
+    .reference-page-head { position:sticky; top:0; z-index:10; display:grid; grid-template-columns:38px 1fr 38px; align-items:center; min-height:52px; padding:0 10px; background:linear-gradient(135deg,#eafcff,#bcdeff); }
+    .reference-page-head strong { text-align:center; font-size:17px; }
+    .reference-page-head button { width:35px; height:35px; border:0; background:none; font-size:29px; line-height:1; color:#111820; }
+    .reference-category-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px 9px; padding:14px 11px 20px; }
+    .reference-category-card { position:relative; aspect-ratio:.96; overflow:hidden; border:0; border-radius:9px; background:linear-gradient(145deg,var(--cat1,#6ea5bb),var(--cat2,#29384b)); color:white; padding:0; }
+    .reference-category-card:nth-child(3n+2) { --cat1:#d49e73; --cat2:#654458; }
+    .reference-category-card:nth-child(3n) { --cat1:#8cbaaa; --cat2:#3d5365; }
+    .reference-category-card::before { content:''; position:absolute; width:66%; height:100%; left:22%; top:9%; border-radius:48% 48% 17% 17%; background:rgba(255,255,255,.34); transform:rotate(-6deg); }
+    .reference-category-card span { position:absolute; z-index:2; inset:auto 0 0; padding:7px 3px; background:rgba(26,31,38,.42); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .reference-bottom-note { padding:0 0 30px; text-align:center; color:#9ba1a8; font-size:13px; }
+    .reference-list-head .reference-filter { padding:4px 11px 7px; background:#fff; }
+
+    .tabbar { min-height:61px; }
+    .tab { gap:2px; font-size:10px; }
+    .tab svg { width:20px; height:20px; padding:2px; border-radius:6px; background:linear-gradient(#d9dde1,#a7acb1); color:white; stroke-width:2; box-shadow:inset 0 1px 1px rgba(255,255,255,.9); }
+    .tab.active { color:#279fea; }
+    .tab.active svg { background:linear-gradient(#7de8ff,#24a8ef); color:white; }
+
+    /* Operations review: pure interactive H5 without the presentation device shell. */
+    html.prototype-mode body {
+      min-height:100dvh;
+      padding:0;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      background:#e8eef5;
+    }
+    html.prototype-mode .stage {
+      width:min(100vw,430px);
+      height:100dvh;
+      gap:0;
+      transform:none;
+    }
+    html.prototype-mode .device {
+      width:100%;
+      height:100%;
+      padding:0;
+      border-radius:0;
+      background:var(--bg);
+      box-shadow:none;
+    }
+    html.prototype-mode .caption,
+    html.prototype-mode .device > .rail,
+    html.prototype-mode .device > .island,
+    html.prototype-mode .statusbar,
+    html.prototype-mode .home-indicator { display:none; }
+    html.prototype-mode .device::before,
+    html.prototype-mode .device::after { display:none; }
+    html.prototype-mode .screen { border-radius:0; }
+    html.prototype-mode .tabbar { padding-bottom:var(--safe-bottom); }
+    @media (max-width:430px) {
+      html.prototype-mode body { display:block; background:var(--bg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="caption"><strong>搜同破解</strong> · H5 / APP · MVP 1.0</div>
+    <div class="device" data-od-id="device">
+      <span class="rail silent" aria-hidden="true"></span><span class="rail up" aria-hidden="true"></span><span class="rail down" aria-hidden="true"></span><span class="rail power" aria-hidden="true"></span>
+      <span class="island" aria-hidden="true"></span>
+      <div class="screen">
+        <div class="statusbar">
+          <span class="num">9:41</span>
+          <span class="right">
+            <svg viewBox="0 0 17 11" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx=".6"/><rect x="4" y="5" width="3" height="6" rx=".6"/><rect x="8" y="3" width="3" height="8" rx=".6"/><rect x="12" y="0" width="3" height="11" rx=".6"/></svg>
+            <svg viewBox="0 0 17 11" aria-hidden="true"><path d="M8.5 1.5c-3 0-5.8 1.1-8 3.1L2 6.1a9.8 9.8 0 0 1 13 0l1.5-1.5c-2.2-2-5-3.1-8-3.1zM3.5 7.6 5 9.1a5.2 5.2 0 0 1 7 0l1.5-1.5a7.4 7.4 0 0 0-10 0zm3 3 2 2 2-2a2.8 2.8 0 0 0-4 0z"/></svg>
+            <svg class="battery" viewBox="0 0 25 11" aria-hidden="true"><rect x=".5" y=".5" width="21" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-opacity=".5"/><rect x="22" y="3.5" width="1.5" height="4" rx=".4"/><rect x="2" y="2" width="18" height="7" rx="1.4"/></svg>
+          </span>
+        </div>
+
+        <div class="app" data-od-id="app">
+          <main id="content" class="content" data-od-id="content"></main>
+          <nav id="tabbar" class="tabbar" data-od-id="tabbar" aria-label="主要导航"></nav>
+          <button id="communityFab" class="community-fab hidden" data-action="publish" aria-label="发布社区帖子">发布</button>
+          <div id="overlay" class="overlay" aria-hidden="true"><div id="sheet" class="sheet" data-od-id="sheet"></div></div>
+          <div id="ageGate" class="age-gate" data-od-id="age-confirm">
+            <div class="age-art"><div class="age-mark">搜同<small>破解</small></div></div>
+            <div>
+              <p class="eyebrow">ADULT CONTENT · 18+</p>
+              <h1>仅限成年人进入</h1>
+              <p>继续即表示你已年满18周岁，并同意遵守平台内容规范与隐私政策。</p>
+              <button class="btn-primary" data-action="confirm-age">我已满18岁，继续</button>
+              <button class="btn-secondary" style="margin-top: 9px;" data-action="leave">未满18岁，退出</button>
+              <div class="legal">继续即同意 <a href="#">用户协议</a> 与 <a href="#">隐私政策</a></div>
+            </div>
+          </div>
+          <div id="toast" class="toast" role="status"></div>
+        </div>
+        <div class="home-indicator" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const icons = {
+      short: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/><path d="M4 4v16"/></svg>',
+      long: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg>',
+      ai: '<svg viewBox="0 0 24 24"><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/><circle cx="12" cy="12" r="5"/></svg>',
+      community: '<svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>',
+      mine: '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>',
+      search: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
+      heart: '<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8z"/></svg>',
+      comment: '<svg viewBox="0 0 24 24"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>',
+      bookmark: '<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
+      share: '<svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"/></svg>',
+      plus: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+      image: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>',
+      face: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8 15c1.2 1 2.5 1.5 4 1.5s2.8-.5 4-1.5"/></svg>',
+      book: '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5z"/><path d="M4 6.5v13"/></svg>',
+      more: '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>',
+      play: '<svg viewBox="0 0 24 24"><path class="fill" d="m8 5 11 7-11 7z"/></svg>',
+      pause: '<svg viewBox="0 0 24 24"><path class="fill" d="M7 5h4v14H7zM14 5h4v14h-4z"/></svg>',
+      volume: '<svg viewBox="0 0 24 24"><path d="M5 10v4h4l5 4V6l-5 4zM17 9c1 1 1 5 0 6M19.5 6.5c3 3 3 8 0 11"/></svg>',
+      mute: '<svg viewBox="0 0 24 24"><path d="M5 10v4h4l5 4V6l-5 4zM17 9l5 6M22 9l-5 6"/></svg>',
+      fullscreen: '<svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>',
+      shrink: '<svg viewBox="0 0 24 24"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg>',
+      lock: '<svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>'
+    };
+
+    const catalog = {
+      short1: { id:'short1', kind:'短视频', title:'本周人气精选', entitlement:'membership', trial:18, duration:'01:12', progress:25, views:'18.6万' },
+      lv1: { id:'lv1', kind:'长视频', title:'深夜精选 · 第3集', entitlement:'membership', trial:30, duration:'44:30', progress:63, views:'2.4万' },
+      lv2: { id:'lv2', kind:'长视频', title:'亚洲人气系列 · 第8集', entitlement:'coin', price:30, discount:26, trial:20, duration:'28:04', progress:0, views:'1.8万' },
+      lv3: { id:'lv3', kind:'长视频', title:'本周高分长片', entitlement:'membership', trial:30, duration:'58:21', progress:0, views:'9,632' },
+      lv4: { id:'lv4', kind:'长视频', title:'城市夜航 · 完整版', entitlement:'coin', price:45, discount:39, trial:20, duration:'36:12', progress:0, views:'7,816' },
+      lv5: { id:'lv5', kind:'长视频', title:'海边假日特别篇', entitlement:'membership', trial:30, duration:'49:08', progress:0, views:'6,205' },
+      lv6: { id:'lv6', kind:'长视频', title:'经典校园故事', entitlement:'coin', price:28, discount:24, trial:20, duration:'31:45', progress:0, views:'5,493' },
+      lv7: { id:'lv7', kind:'长视频', title:'人物访谈·远方', entitlement:'membership', trial:30, duration:'42:18', progress:0, views:'4,986' },
+      set1: { id:'set1', kind:'合集', title:'经典系列完整合集', entitlement:'coin', price:120, discount:108, trial:20, duration:'12集', progress:0, views:'3.2万' }
+    };
+
+    const state = {
+      tab:'short', screen:'main', returnScreen:'main', profileReturnScreen:'main', navigationStack:[], contentId:'lv1', loggedIn:false, memberships:[],
+      coins:60, activityCoins:0, frozen:0, aiCredits:0, coupons:0,
+      purchased:new Set(), tasks:[], aiNotifications:[], aiDraft:{tool:'',cost:0,materialReady:false}, orders:[], pending:null, posts:[], activePost:null,
+      libraryTop:'推荐', libraryCategory:'全部', librarySort:'正在看', libraryLoading:false, sectionRefresh:{},
+      profileTab:'videos', profileQuery:'',
+      postDraft:{topic:'影评',image:false,video:false,title:'',body:''},
+      videoComments:[{name:'海风',text:'画质不错，线路二加载更快。',time:'12分钟前',likes:12},{name:'夜航员',text:'希望尽快更新同系列内容。',time:'36分钟前',likes:8}],
+      communityComments:[{name:'蓝屿',text:'镜头分析很细，期待继续更新。',time:'8分钟前',likes:16},{name:'阿泽',text:'视频片段和正文的观点一致。',time:'22分钟前',likes:7}],
+      player:{status:'trialEnded',quality:'高清',line:1,speed:1,current:30,muted:false,fullscreen:false}
+    };
+    const content = document.querySelector('#content');
+    const tabbar = document.querySelector('#tabbar');
+    const overlay = document.querySelector('#overlay');
+    const sheet = document.querySelector('#sheet');
+    const sectionRefreshTimers={};
+
+    function navigationSnapshot() {
+      return {
+        screen:state.screen,
+        tab:state.tab,
+        returnScreen:state.returnScreen,
+        profileReturnScreen:state.profileReturnScreen,
+        contentId:state.contentId,
+        player:{...state.player},
+        activePost:state.activePost,
+        profileTab:state.profileTab,
+        profileQuery:state.profileQuery,
+        libraryTop:state.libraryTop,
+        libraryCategory:state.libraryCategory,
+        librarySort:state.librarySort,
+        scrollTop:content.scrollTop
+      };
+    }
+    function rememberPage() {
+      state.navigationStack.push(navigationSnapshot());
+      if(state.navigationStack.length>30)state.navigationStack.shift();
+    }
+    function restorePreviousPage() {
+      const previous=state.navigationStack.pop();
+      if(!previous)return false;
+      const {scrollTop,...pageState}=previous;
+      stopPlaybackClock();
+      Object.assign(state,pageState);
+      render();
+      requestAnimationFrame(()=>{content.scrollTop=scrollTop||0;});
+      return true;
+    }
+
+    function escapeHTML(value='') {
+      return String(value).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+    }
+    function getAIAllocation(cost) {
+      let rest=cost;
+      const ai=Math.min(state.aiCredits,rest); rest-=ai;
+      const activity=Math.min(state.activityCoins,rest); rest-=activity;
+      const coins=Math.min(state.coins,rest); rest-=coins;
+      return {ai,activity,coins,shortage:rest,label:[ai&&`${ai} AI额度`,activity&&`${activity} 活动币`,coins&&`${coins} 付费金币`].filter(Boolean).join(' + ')||'资产不足'};
+    }
+    function getContentAllocation(cost) {
+      if(state.coupons>0) return {coupon:1,activity:0,coins:0,shortage:0,label:'精品券 1张'};
+      let rest=cost;
+      const activity=Math.min(state.activityCoins,rest); rest-=activity;
+      const coins=Math.min(state.coins,rest); rest-=coins;
+      return {coupon:0,activity,coins,shortage:rest,label:[activity&&`${activity} 活动币`,coins&&`${coins} 付费金币`].filter(Boolean).join(' + ')||'资产不足'};
+    }
+
+    function nav() {
+      const items = [['short','短视频'],['long','长视频'],['ai','AI专区'],['community','社区'],['mine','我的']];
+      tabbar.innerHTML = items.map(([key,label]) => `<button class="tab ${state.tab===key?'active':''}" data-tab="${key}">${icons[key]}<span>${label}</span></button>`).join('');
+    }
+    function header(title, sub='', action='search') {
+      return `<div class="header" data-od-id="header"><div>${sub?`<p class="eyebrow">${sub}</p>`:''}<h1>${title}</h1></div><button class="icon-btn" data-action="${action}" aria-label="${action==='search'?'搜索':'消息'}">${action==='search'?icons.search:icons.comment}</button></div>`;
+    }
+    function placeholder(label, cls='') { return `<div class="placeholder ${cls}"><span>${label}</span></div>`; }
+    function entitlement(item) { return item.entitlement==='membership' ? 'VIP' : '金币'; }
+    function hasVideoMembership() { return state.memberships.some(plan=>plan.video); }
+    function hasCoinDiscount() { return state.memberships.some(plan=>plan.coinDiscount); }
+    function hasAccess(item) { return item.entitlement==='membership' ? hasVideoMembership() : state.purchased.has(item.id); }
+    function durationSeconds(value) { const parts=String(value).split(':').map(Number); return parts.length===2&&parts.every(Number.isFinite)?parts[0]*60+parts[1]:0; }
+    function formatTime(seconds) { const safe=Math.max(0,Math.floor(seconds||0)),m=Math.floor(safe/60),s=safe%60; return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+    function preparePlayer(item) {
+      stopPlaybackClock();
+      const total=durationSeconds(item.duration),owned=hasAccess(item);
+      state.player={status:owned?'paused':'trialEnded',quality:'高清',line:1,speed:1,current:owned?Math.floor(total*(item.progress||0)/100):item.trial,muted:false,fullscreen:false};
+    }
+    function stopPlaybackClock() {
+      clearInterval(startPlayback.clock);
+      startPlayback.clock=null;
+    }
+    function runPlaybackClock(item) {
+      stopPlaybackClock();
+      startPlayback.clock=setInterval(()=>{
+        if(state.screen!=='detail'||state.player.status!=='playing')return stopPlaybackClock();
+        const total=durationSeconds(item.duration);
+        state.player.current=Math.min(total,state.player.current+state.player.speed);
+        const seek=document.querySelector('[data-action="player-seek"]');
+        if(seek){seek.value=state.player.current;seek.style.setProperty('--progress',`${total?state.player.current/total*100:0}%`);}
+        const time=document.querySelector('.player-time');
+        if(time)time.textContent=`${formatTime(state.player.current)} / ${item.duration}`;
+        if(state.player.current>=total){stopPlaybackClock();state.player.status='paused';render();toast('播放完成，进度已记录');}
+      },1000);
+    }
+    function startPlayback(item) {
+      if(!hasAccess(item))return openPaywall(item);
+      stopPlaybackClock();
+      state.player.status='loading';render();toast(`线路${state.player.line}加载中…`);
+      clearTimeout(startPlayback.timer);
+      startPlayback.timer=setTimeout(()=>{if(state.screen!=='detail')return;state.player.status='playing';render();runPlaybackClock(item);toast('播放已开始');},650);
+    }
+
+    const channelNames=['每日精选','高颜时刻','蓝颜推荐','开心棋牌','热门专题','PG娱乐','系列更新','男同乐园','全网片源','编辑推荐','彩虹动漫','经典影集','91精选','科技频道','剧情短片','男孩日记','免费专区','海南专区'];
+    function portalHeader() {
+      return `<header class="portal-head"><span class="brand-logo">S<i>T</i>·ONG</span><button class="search-pill" data-action="search">${icons.search}<span>搜索用户 / 视频 / 喜好</span></button><button class="publish-pill" data-action="message">消息</button></header>`;
+    }
+    function portalTabs(items,active=0) {
+      return `<div class="portal-tabs">${items.map((x,i)=>`<button class="portal-tab ${i===active?'active':''} ${x==='青楼'?'hot':''}">${x}</button>`).join('')}</div>`;
+    }
+    function channelButton(name,i) {
+      return `<button class="channel" data-action="reference-ad" data-value="${name}" aria-label="${name}广告"><span class="channel-cover"><b>${i%4===0?'NEW ':''}${name}</b></span><span>${name}</span></button>`;
+    }
+    function channels() {
+      const names=channelNames.slice(0,18);
+      const carousel=names.slice(6,18);
+      return `<div class="channel-grid" aria-label="三行固定广告位">${names.map(channelButton).join('')}</div><div class="channel-carousel" aria-label="第四行自动轮播广告位"><div class="channel-carousel-track">${carousel.map((name,i)=>channelButton(name,i+6)).join('')}</div></div>`;
+    }
+    function mediaCards(items,showAuthor=true) {
+      return `<div class="media-grid">${items.slice(0,6).map((item,i)=>`<article class="media-card"><button class="media-card-main" data-action="open-detail" data-id="${item.id}"><span class="media-thumb"><span class="media-badge">${entitlement(item)}</span><span class="media-duration">${item.duration}</span></span><span class="media-name">${item.title}</span><span class="media-meta"><span>${i%2?'今日更新':'人气推荐'}</span><span>▶ ${item.views}次</span></span></button>${showAuthor?'<button class="media-author-link" data-action="open-profile" data-source="video" aria-label="查看视频作者个人页">干净演变身影</button>':''}</article>`).join('')}</div>`;
+    }
+
+    const referenceHomeTabs=['关注','推荐','独家','发现','类型','性癖','厂商','地区'];
+    const referenceAds=['蓝颜约会','精选合辑','开元棋牌','专题游戏','热门活动','新作速递','平行世界','男色狂欢','头条解析','男孩日记','免费专区','高清频道','城市故事','动画专区','AI创作','旅行记录','运动生活','经典影库'];
+    const referenceCategories={
+      '发现':['今日精选','编辑推荐','人气合集','城市故事','旅行记录','运动生活','口碑佳作','限时更新','经典重温'],
+      '类型':['剧情短片','纪实访谈','旅行记录','运动健身','校园故事','职场日常','轻松喜剧','音乐现场','动画作品'],
+      '性癖':['角色偏好','情绪氛围','镜头风格','人物关系','故事节奏','视觉审美','轻松日常','深夜陪伴','小众发现'],
+      '厂商':['光影厂牌','城市制作','青禾影像','蓝屿工作室','远山映画','纸飞机社','新锐导演','独立作者','联合出品'],
+      '地区':['内地精选','港台作品','日韩新作','东南亚','欧美佳作','其他地区','城市专题','海岛故事','海外生活']
+    };
+    const referenceTitles=['城市夜航特别篇','海边假日记录','本周高分长片','运动时光：训练日','校园故事新章','人物访谈：远方','午夜电台精选','旅行中的相遇','编辑部特别推荐','经典系列回顾'];
+    const referenceCatalogIds=['lv1','lv2','lv3','lv4','lv5','lv6','lv7'];
+    function referenceHeader() {
+      return `<header class="reference-head" data-od-id="long-home-header"><div class="reference-search-row"><span class="brand-logo reference-brand" aria-label="长视频首页">S<i>T</i>·ONG</span><button class="reference-search" data-action="search">${icons.search}<span>搜索视频 / 用户 / 标签</span></button></div><nav class="reference-tabs" aria-label="长视频分类">${referenceHomeTabs.map(name=>`<button class="reference-tab ${state.libraryTop===name?'active':''}" data-action="home-top" data-value="${name}">${name}</button>`).join('')}</nav></header>`;
+    }
+    function referenceAd(name,i) {
+      const route=name==='AI创作'?'data-action="open-ai"':`data-action="reference-ad" data-value="${name}"`;
+      return `<button class="reference-ad" ${route}><span class="reference-ad-icon"><b>${i%3===0?'NEW ':''}${name.slice(0,4)}</b></span><span>${name}</span></button>`;
+    }
+    function referenceAdMatrix() {
+      const carousel=referenceAds.slice(6,18);
+      return `<section class="reference-section" data-od-id="long-ad-matrix"><div class="reference-ad-grid" aria-label="三行固定广告位">${referenceAds.map(referenceAd).join('')}</div><div class="reference-ad-carousel" aria-label="第四行自动轮播广告位"><div class="reference-ad-track">${carousel.map((name,i)=>referenceAd(name,i+6)).join('')}</div></div></section>`;
+    }
+    function referenceShortcuts() {
+      return `<div class="reference-shortcuts"><button class="reference-shortcut" data-action="wallet"><i>金币</i>金币专区</button><button class="reference-shortcut" data-action="membership"><i>VIP</i>VIP专区</button><button class="reference-shortcut" data-action="home-list-filter" data-value="最热"><i>热榜</i>热门点赞</button><button class="reference-shortcut" data-action="home-list-filter" data-value="正在看"><i>播放</i>最多观看</button></div>`;
+    }
+    function referenceFilter() {
+      const filters=['正在看','最热','推荐','最新','畅销','随机'];
+      return `<div class="reference-filter">${filters.map(name=>`<button class="${state.librarySort===name?'active':''}" data-action="home-list-filter" data-value="${name}">${name}</button>`).join('')}</div>`;
+    }
+    function referenceMediaCards(count=6,offset=0) {
+      return `<div class="reference-media-grid">${Array.from({length:count},(_,i)=>{const index=(offset+i)%referenceTitles.length,item=catalog[referenceCatalogIds[index%referenceCatalogIds.length]],label=entitlement(item),author=index%2?'蓝屿':'干净演变身影';return `<article class="reference-media-card" data-content-index="${index}"><button class="reference-media-main" data-action="open-detail" data-id="${item.id}"><span class="reference-media-thumb"><span class="reference-media-badge ${label==='金币'?'coin':''}">${label}</span><span class="reference-media-overlay"><span>● ${item.views}</span><span>${item.duration}</span></span></span><span class="reference-media-name">${referenceTitles[index]}</span></button><button class="reference-media-author" data-action="open-profile" data-source="video" aria-label="查看${author}个人页">${author}</button></article>`;}).join('')}</div>`;
+    }
+    function referenceDiscovery() {
+      const categories=referenceCategories[state.libraryTop]||referenceCategories['发现'];
+      return `<section class="reference-section"><div class="reference-title"><strong>发现精彩</strong><button class="reference-more" data-action="home-all-categories">查看更多</button></div><div class="reference-discovery">${categories.slice(0,3).map(name=>`<button class="reference-discovery-card" data-action="home-category" data-value="${name}"><span>${name}</span></button>`).join('')}</div>${referenceFilter()}${state.libraryLoading?'<div class="reference-loading"><span class="reference-spinner"></span>正在获取数据</div>':referenceMediaCards(6)}</section>`;
+    }
+    function referenceFeed() {
+      const items=[catalog.lv1,catalog.lv2];
+      return `<section class="reference-feed">${items.map((item,i)=>`<article class="reference-feed-card"><div class="reference-author"><button class="reference-profile-link" data-action="open-profile" data-source="video"><span class="avatar"></span><span><strong>${i?'文静等于悟空':'积极等于鸭子'}</strong><small class="meta" style="display:block;">${i?'已关注':'认证作者'}</small></span></button><button class="reference-follow" data-action="follow">${i?'已关注':'+ 关注'}</button></div><button class="reference-feed-cover" data-action="open-detail" data-id="${item.id}"><span>${item.views}次播放</span><span>${item.duration}</span></button><h3>${i?'《城市里的相遇》EP3':'《城市里的相遇》EP4'}</h3><div class="reference-feed-actions"><button data-action="comments">▢ ${state.videoComments.length}</button><button data-action="favorite">♡ ${i?'9979':'7388'}</button><button data-action="safety-menu">↗ 分享</button></div></article>`).join('')}</section>`;
+    }
+    function referenceThemeSections() {
+      const sections=state.libraryTop==='独家'?[['独家首发','编辑部严选的原创系列'],['新锐作者','持续更新的独立作品']]:[['城市故事','关于相遇、成长与日常'],['运动时光','力量、健康与生活方式']];
+      return sections.map((section,i)=>{const key=`${state.libraryTop}:${section[0]}`,sectionState=state.sectionRefresh[key]||(state.sectionRefresh[key]={offset:i*3,loading:false});return `<section class="reference-section reference-section-block ${sectionState.loading?'section-refreshing':''}" data-section-key="${key}" aria-busy="${sectionState.loading?'true':'false'}"><div class="reference-title"><strong>${section[0]}<span class="reference-section-subtitle">${section[1]}</span></strong><button class="reference-more" data-action="home-category" data-value="${section[0]}">查看更多</button></div>${referenceMediaCards(6,sectionState.offset)}<span class="section-refreshing-indicator"><span class="reference-spinner"></span>正在更换${section[0]}</span><div class="reference-section-actions"><button data-action="refresh-section" data-section="${key}" ${sectionState.loading?'disabled':''}>${sectionState.loading?'刷新中…':'↻ 换一换'}</button><button data-action="home-category" data-value="${section[0]}">▦ 查看更多</button></div></section>`;}).join('');
+    }
+    function renderLongHome() {
+      let body='';
+      if(state.libraryTop==='关注')body=referenceFeed();
+      else if(['推荐','独家'].includes(state.libraryTop))body=referenceThemeSections();
+      else body=`${referenceShortcuts()}${referenceDiscovery()}`;
+      content.innerHTML=`<div class="reference-home" data-od-id="long-video-home">${referenceHeader()}${referenceAdMatrix()}${body}</div>`;
+    }
+    function renderLongCategories() {
+      const categories=referenceCategories[state.libraryTop]||referenceCategories['发现'];
+      content.innerHTML=`<div class="reference-home" data-od-id="long-category-directory"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>发现精彩</strong><span></span></div><div class="reference-category-grid">${categories.map(name=>`<button class="reference-category-card" data-action="home-category" data-value="${name}"><span>《${name}》</span></button>`).join('')}</div><div class="reference-bottom-note">~~ 我也是有底线的 ~~</div></div>`;
+    }
+    function renderLongCategoryVideos() {
+      content.innerHTML=`<div class="reference-home reference-list-head" data-od-id="long-category-videos"><div class="reference-page-head"><button data-action="back-categories" aria-label="返回">‹</button><strong>《${escapeHTML(state.libraryCategory)}》</strong><span></span></div>${referenceFilter()}<section class="reference-section">${state.libraryLoading?'<div class="reference-loading"><span class="reference-spinner"></span>正在获取数据</div>':referenceMediaCards(10)}</section></div>`;
+    }
+
+    function renderShort() {
+      const item=catalog.short1;
+      const leading=state.screen==='shortFeed'?'<button data-action="back-main" aria-label="返回">‹</button>':'<span></span>';
+      content.innerHTML=`<section data-od-id="short-video-feed"><div class="short-feed-nav">${leading}<div class="top-tabs tabs"><button class="top-tab">关注</button><button class="top-tab active">推荐</button><button class="top-tab">发现</button></div><div class="short-nav-actions"><button data-action="search" aria-label="搜索">${icons.search}</button></div></div><div class="video-stage">${placeholder('竖版短视频主视觉')}<div class="video-shade"></div><div class="progress-line"><span style="width:25%"></span></div><span class="trial badge num">${hasAccess(item)?'VIP完整播放':'开通VIP解锁完整版 · 00:18'}</span><div class="video-copy"><button class="short-author-link" data-action="open-profile" data-source="video" aria-label="查看东禾苹果个人页"><h2 class="h3">@东禾苹果</h2></button><p>#城市 #记录 #夜色</p><p class="meta">${item.title} · 高清线路</p><button class="btn-primary" style="margin-top:9px;width:auto;" data-action="play-content" data-id="${item.id}">${hasAccess(item)?'继续播放':'试看已结束'}</button></div><div class="action-rail"><button class="action" data-action="follow"><span class="action-avatar"></span><span>关注</span></button><button class="action" data-action="favorite">${icons.heart}<span class="num">1.5k</span></button><button class="action" data-action="comments">${icons.comment}<span class="num">186</span></button><button class="action" data-action="favorite">${icons.bookmark}<span>收藏</span></button><button class="action" data-action="safety-menu">${icons.share}<span>分享</span></button></div></div></section>`;
+    }
+
+    function renderDetail() {
+      const item=catalog[state.contentId];
+      const player=state.player,total=durationSeconds(item.duration),owned=hasAccess(item),status=owned&&player.status==='trialEnded'?'paused':player.status;
+      const progress=total?Math.min(100,Math.max(0,player.current/total*100)):0;
+      const recommendations=[catalog.lv1,catalog.lv2,catalog.lv3,catalog.lv4,catalog.lv5,catalog.lv6,catalog.lv7].filter(x=>x.id!==item.id).slice(0,6);
+      const trialAction=item.entitlement==='membership'?`data-action="select-plan" data-plan="video_month"`:`data-action="unlock-content" data-id="${item.id}"`;
+      const center=status==='paused'?`<button class="player-center" data-action="player-toggle" aria-label="继续播放">${icons.play}</button>`:'';
+      const loading=status==='loading'?'<div class="player-loading"><span class="loading-ring"></span><span class="loading-copy">正在连接最佳线路…</span></div>':'';
+      const trial=!owned?`<div class="trial-overlay"><span class="trial-lock">${icons.lock}</span><strong>试看已结束</strong><p>已试看 ${formatTime(item.trial)}，解锁后从当前位置继续</p><button class="trial-cta" ${trialAction}>${item.entitlement==='membership'?'开通视频VIP':'使用金币解锁'}</button></div>`:'';
+      content.innerHTML=`<section class="portal-page" data-od-id="video-detail"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${item.kind}详情</strong><button class="back-btn" data-action="safety-menu" aria-label="更多">···</button></div><div class="detail-player ${player.fullscreen?'is-fullscreen':''}" data-od-id="video-player"><div class="player-visual"></div><div class="player-mini-status"><span class="player-chip">${player.quality}</span><span class="player-chip">线路${player.line}</span>${status==='paused'?'<span class="player-chip">已暂停</span>':''}</div>${loading}${center}${trial}<div class="player-ui"><input class="player-progress" type="range" min="0" max="${total}" value="${Math.min(player.current,total)}" style="--progress:${progress}%" data-action="player-seek" aria-label="播放进度"><div class="player-bar"><button class="player-icon" data-action="player-toggle" aria-label="${status==='playing'?'暂停':'播放'}">${status==='playing'?icons.pause:icons.play}</button><span class="player-time">${formatTime(player.current)} / ${item.duration}</span><span class="player-spacer"></span><button class="player-icon" data-action="player-quality" aria-label="清晰度">${player.quality}</button><button class="player-icon" data-action="player-line" aria-label="播放线路">L${player.line}</button><button class="player-icon" data-action="player-speed" aria-label="播放速度">${player.speed.toFixed(1)}×</button><button class="player-icon" data-action="player-mute" aria-label="${player.muted?'取消静音':'静音'}">${player.muted?icons.mute:icons.volume}</button><button class="player-icon" data-action="player-fullscreen" aria-label="${player.fullscreen?'退出全屏':'全屏'}">${player.fullscreen?icons.shrink:icons.fullscreen}</button></div></div></div>${player.fullscreen?'':`${channels()}<div class="pad" style="padding-top:10px;"><div class="row-between"><button class="row" style="border:0;background:none;text-align:left;padding:0;" data-action="open-profile" data-source="video"><span class="avatar"></span><span><strong>干净演变身影</strong><span class="meta" style="display:block;">片库认证作者 · 8.6万粉丝</span></span></button><button class="publish-pill" data-action="follow">关注 +</button></div><h1 class="h3" style="margin-top:12px;line-height:1.5;">${item.title}｜精选系列高清完整版</h1><p class="meta">${item.duration} · ▶ ${item.views}次播放 · ${entitlement(item)}内容</p><div class="chips" style="margin:9px 0;"><span class="chip">#推荐</span><span class="chip">#中文字幕</span><span class="chip">#剧情</span></div><p style="font-size:11px;color:#4e5967;line-height:1.7;">本集为系列精选内容，支持进度记忆、线路切换和清晰度选择；遇到播放问题可切换线路或提交反馈。</p><div class="detail-actions" style="margin-top:10px;"><button data-action="favorite">收藏</button><button data-action="focus-comments">评论 ${state.videoComments.length}</button><button data-action="safety-menu">举报</button></div></div><section class="detail-section recommendation-section" data-od-id="video-recommendations"><div class="detail-section-title"><strong>为你推荐</strong><span>3 行 × 2 列</span></div>${mediaCards(recommendations)}</section><section id="videoComments" class="detail-section" data-od-id="video-comments"><div class="detail-section-title"><strong>评论</strong><span>${state.videoComments.length} 条</span></div>${commentsMarkup(state.videoComments,'video')}</section>`}</section>`;
+    }
+
+    function commentsMarkup(list,kind) {
+      return `${list.map(comment=>`<div class="comment-item"><span class="comment-avatar"></span><div><strong>${escapeHTML(comment.name)}</strong><p>${escapeHTML(comment.text)}</p><small>${comment.time} · 回复</small></div><button class="comment-like">♡ ${comment.likes}</button></div>`).join('')}<div class="comment-compose"><input id="${kind}CommentInput" maxlength="120" placeholder="友善评论，尊重彼此" aria-label="评论内容"><button data-action="submit-comment" data-kind="${kind}">发布</button></div>`;
+    }
+
+    const profilePosts=[
+      {id:'profile-city',author:'干净演变身影',time:'2天前',title:'城市夜航拍摄手记',topic:'创作分享',body:'这次尝试用环境光完成整段拍摄，整理了三个实用经验。',media:2,views:'1,268'},
+      {id:'profile-review',author:'干净演变身影',time:'4天前',title:'本周高分长片观后感',topic:'观后感',body:'节奏克制但人物关系非常完整，值得二刷。',media:1,views:'986'},
+      {id:'profile-seaside',author:'干净演变身影',time:'1周前',title:'海边假日取景路线',topic:'旅行',body:'分享拍摄位置、时间与器材选择。',media:3,views:'2,105'},
+      {id:'profile-story',author:'干净演变身影',time:'2周前',title:'如何看待慢叙事作品',topic:'讨论',body:'欢迎聊聊你更偏好的故事节奏。',media:0,views:'743'}
+    ];
+    function profileResultsMarkup() {
+      const q=state.profileQuery.trim().toLowerCase();
+      if(state.profileTab==='videos'){
+        const works=[catalog.lv1,catalog.lv2,catalog.lv3,catalog.lv4,catalog.lv5,catalog.lv6].filter(item=>!q||`${item.title} ${entitlement(item)} ${item.kind}`.toLowerCase().includes(q));
+        return works.length?mediaCards(works,false):'<div class="notice">没有找到匹配的视频，可尝试标题、标签或“VIP/金币”。</div>';
+      }
+      const posts=profilePosts.filter(post=>!q||`${post.title} ${post.topic} ${post.body}`.toLowerCase().includes(q));
+      return posts.length?`<div class="profile-post-list">${posts.map(post=>`<button class="profile-post-card" data-action="post-detail" data-source="profile" data-id="${post.id}"><strong>${post.title}</strong><p>${post.body}</p><span class="meta">#${post.topic} · 查看详情 ›</span></button>`).join('')}</div>`:'<div class="notice">没有找到匹配的帖子，可尝试标题、话题或正文关键词。</div>';
+    }
+    function renderProfile() {
+      const videos=state.profileTab==='videos';
+      const placeholder=videos?'搜索视频标题、标签或权益':'搜索帖子标题、话题或正文';
+      const helper=videos?'仅搜索该用户已公开的视频作品':'仅搜索该用户已公开的帖子';
+      content.innerHTML=`<div class="profile-page" data-od-id="personal-profile"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>个人主页</strong><button class="back-btn" data-action="post-menu" aria-label="更多">···</button></div><section class="profile-hero"><div class="profile-identity"><span class="profile-avatar-lg"></span><div><h2>干净演变身影</h2><p>ID 620831 · 片库认证作者</p></div><button class="follow-btn" data-action="follow">+ 关注</button></div><p class="profile-bio">记录城市、旅行与故事。内容持续更新，感谢关注与友善交流。</p></section><div class="profile-stats"><div><strong>8.6万</strong><span>粉丝</span></div><div><strong>12.4万</strong><span>获赞</span></div><div><strong>286</strong><span>关注</span></div><div><strong>38</strong><span>作品</span></div></div><div class="profile-content-tabs"><button class="${videos?'active':''}" data-action="profile-tab" data-value="videos">视频 38</button><button class="${videos?'':'active'}" data-action="profile-tab" data-value="posts">帖子 12</button></div><div class="profile-search-box"><label class="profile-search-row">${icons.search}<input id="profileSearch" value="${escapeHTML(state.profileQuery)}" placeholder="${placeholder}" aria-label="${placeholder}"></label><small class="profile-search-help">${helper}</small></div><section class="dense-section"><div class="dense-title"><strong>${videos?'公开视频':'公开帖子'}</strong><span>${videos?'VIP / 金币':'公开内容'}</span></div><div id="profileResults">${profileResultsMarkup()}</div></section></div>`;
+    }
+
+    function renderPostEditor() {
+      const topics=['影评','推荐','剧情讨论','观后感','创作分享','闲聊'];
+      content.innerHTML=`<div class="post-editor" data-od-id="post-editor-page"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>发布帖子</strong><span></span></div><div class="editor-form"><section class="editor-card"><div class="editor-label"><span>选择话题</span><small>必选·不包含求片类别</small></div><div class="topic-grid">${topics.map(topic=>`<button class="topic-option ${state.postDraft.topic===topic?'active':''}" data-action="select-topic" data-value="${topic}">#${topic}</button>`).join('')}</div></section><section class="editor-card"><input id="postTitle" class="editor-input" maxlength="60" placeholder="请输入标题（5-60字）"><textarea id="postBody" class="editor-textarea" maxlength="2000" placeholder="分享你的观点和内容…"></textarea></section><section class="editor-card"><div class="editor-label"><span>添加媒体</span><small>图片与视频可同时添加</small></div><div class="media-add-grid"><button class="media-add ${state.postDraft.image?'active':''}" data-action="add-post-media" data-kind="image">${state.postDraft.image?'✓ 已添加图片':'＋ 添加图片'}</button><button class="media-add ${state.postDraft.video?'active':''}" data-action="add-post-media" data-kind="video">${state.postDraft.video?'✓ 已添加视频':'▶ 添加视频'}</button></div></section><label class="check"><input id="postConsent" type="checkbox" checked>我同意社区规范；含图片或视频的帖子必须先审后发。</label><button class="editor-submit" data-action="submit-post">提交处理</button></div></div>`;
+    }
+    function renderPostDetail() {
+      const post=state.activePost||communityFeedPosts[0];
+      const media=post.media?`<div class="post-detail-media">${Array.from({length:Math.min(3,post.media)},(_,i)=>`<span class="media-thumb">${i===post.media-1&&post.media>1?'<b style="position:absolute;inset:0;display:grid;place-items:center;color:white;z-index:2;">▶ 视频</b>':''}</span>`).join('')}</div>`:'';
+      content.innerHTML=`<div class="post-detail" data-od-id="community-post-detail"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>帖子详情</strong><button class="back-btn" data-action="post-menu" aria-label="更多">···</button></div><article class="post-detail-body"><div class="row"><button class="row" style="border:0;background:none;padding:0;text-align:left;" data-action="open-profile" data-source="community"><span class="avatar"></span><span><strong>${escapeHTML(post.author)}</strong><span class="meta" style="display:block;">${escapeHTML(post.time)} · ${escapeHTML(post.topic)}</span></span></button><button class="follow-btn" style="margin-left:auto;" data-action="follow">+ 关注</button></div><h1 class="post-detail-title">${escapeHTML(post.title)}</h1><div class="chips"><span class="chip">#${escapeHTML(post.topic)}</span></div><p class="post-detail-copy">${escapeHTML(post.body||post.summary)}</p>${media}<div class="row-between"><span class="meta">内容已通过社区处理</span><span class="meta">浏览 ${escapeHTML(post.views||'0')}</span></div><div class="detail-actions" style="margin-top:12px;"><button data-action="favorite">收藏</button><button data-action="focus-post-comments">评论 ${state.communityComments.length}</button><button data-action="post-menu">举报</button></div></article><section id="postComments" class="detail-section"><div class="detail-section-title"><strong>全部评论</strong><span>${state.communityComments.length} 条</span></div>${commentsMarkup(state.communityComments,'community')}</section></div>`;
+      return;
+    }
+
+    function renderAI() {
+      const tools=[['image','AI脱衣',20],['face','AI视频换脸',40],['face','AI图片换脸',20],['book','AI小说',5]];
+      const back=state.screen==='ai'?'<div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>AI 创作</strong><span></span></div>':'';
+      const notice=state.aiNotifications.find(n=>!n.read);
+      content.innerHTML=`<div class="portal-page" data-od-id="ai-tools">${back}${portalHeader()}${portalTabs(['AI科技','我的记录'],0)}${channels()}${notice?`<button class="ai-notification" data-action="view-ai-result" data-id="${notice.taskId}"><span>✓</span><div><strong>生成成功</strong><small>${notice.tool} 已完成，点击查看结果</small></div><b>查看 ›</b></button>`:''}<div class="dense-section"><div class="dense-title"><strong>AI 创作工具</strong><span class="num">额度 ${state.aiCredits} · 金币 ${state.coins} · 冻结 ${state.frozen}</span></div></div><div class="ai-hero-list">${tools.map(([icon,name,cost],i)=>`<button class="ai-hero" data-action="ai-tool" data-tool="${name}" data-cost="${cost}"><strong>${i+1}. ${name}</strong><span>上传授权成年素材 · 预计 ${cost} 额度/金币</span></button>`).join('')}</div><section id="aiRecords" class="dense-section"><div class="dense-title"><strong>任务记录</strong><button class="tiny-filter" data-action="task-record">全部状态 ›</button></div>${state.tasks.length?state.tasks.slice().reverse().map(t=>`<button class="result-row" data-action="task-detail" data-id="${t.id}"><span class="result-thumb ${t.status==='成功'?'is-success':''}"></span><span><strong>${t.tool}</strong><span class="meta num" style="display:block;">${t.id} · 第${t.attempt||1}次</span></span><span class="status-pill">${t.status}</span></button>`).join(''):'<div class="notice">上传素材并发起生成后，可在这里查看生成中、异常退回、成功通知与结果。</div>'}</section></div>`;
+    }
+
+    const communityFeedPosts=[
+      {id:'community-camera',author:'夜航员',time:'18分钟前',topic:'影评',title:'聊聊本周高分长片的镜头语言',summary:'含长文、图片和一段视频，进入详情阅读全文。',body:'这部作品的节奏和镜头设计很值得聊。开场的长镜头建立了人物关系，中段则通过色彩变化推进情绪。',media:2,views:'2,860',comments:28},
+      {id:'community-seaside',author:'蓝屿',time:'32分钟前',topic:'观后感',title:'海边假日特别篇：我最喜欢的三个段落',summary:'从人物、节奏和声音设计聊聊这期内容。',body:'最喜欢的三个段落分别完成了人物介绍、关系推进和情绪回收，声音设计也很克制。',media:3,views:'1,936',comments:16},
+      {id:'community-night',author:'阿泽',time:'1小时前',topic:'创作分享',title:'夜景拍摄如何保留环境层次',summary:'整理了机位、光线和后期调色的实用方法。',body:'先确保主体和背景有一档以上的亮度差，再使用环境光补足轮廓，后期避免整体拉亮。',media:1,views:'986',comments:9},
+      {id:'community-slow',author:'纸飞机',time:'2小时前',topic:'讨论',title:'慢节奏作品为什么更需要完整人物弧光',summary:'无剧透讨论，欢迎分享你最近看过的作品。',body:'慢节奏不等于信息缺失，越缓慢的推进越需要清晰的动机变化和人物回应。',media:0,views:'756',comments:12},
+      {id:'community-list',author:'远山',time:'3小时前',topic:'推荐',title:'本周值得收藏的六部城市题材作品',summary:'按时长、权益和观看场景整理的片单。',body:'片单兼顾短时观看、完整叙事和城市风格，每部都标注了时长与观看权益。',media:3,views:'3,210',comments:31}
+    ];
+    function communityPostCard(post,index) {
+      const media=post.media?`<div class="community-preview ${post.media===1?'single':''}">${Array.from({length:post.media},()=>'<span></span>').join('')}</div>`:'';
+      return `<article class="post" data-od-id="community-post-card"><div class="row"><button class="row" style="border:0;background:none;padding:0;text-align:left;" data-action="open-profile" data-source="community"><span class="avatar"></span><span><strong>${post.author}</strong><span class="meta" style="display:block;">${post.time} · ${post.topic}</span></span></button></div><button class="community-card-button" data-action="post-detail" data-source="community" data-id="${post.id}"><p><strong>${post.title}</strong><br><span class="meta">${post.summary}</span></p>${media}</button><div class="post-actions"><span>浏览 ${post.views}</span><button class="tiny-filter" data-action="post-detail" data-source="community" data-id="${post.id}">评论 ${post.comments}</button><button class="tiny-filter" data-action="post-menu">更多</button></div></article>`;
+    }
+    function renderCommunity() {
+      const pending=state.posts.length?`<article class="post"><div class="row"><span class="avatar"></span><div><strong>我发布的帖子</strong><div class="meta num">刚刚 · ${escapeHTML(state.posts[0].topic)} · 处理中</div></div><span class="status-pill" style="margin-left:auto;">前置处理</span></div><p><strong>${escapeHTML(state.posts[0].title)}</strong><br><span class="meta">处理通过后进入信息流。</span></p></article>`:'';
+      content.innerHTML=`<div class="portal-page" data-od-id="community-feed"><header class="community-head"><span class="brand-logo">S<i>T</i>·ONG</span><div class="community-segment"><button class="active">推荐</button><button>关注</button></div><button class="icon-btn" data-action="search" style="width:34px;height:34px;flex-basis:34px;">${icons.search}</button></header>${portalTabs(['推荐','影评','讨论','观后感','创作分享','闲聊'],0)}${channels()}<section class="dense-section">${pending}<div class="tiny-filters"><button class="tiny-filter active">最新</button><button class="tiny-filter">推荐</button><button class="tiny-filter">最热</button></div><div class="dense-title"><strong>社区帖子</strong></div>${communityFeedPosts.map(communityPostCard).join('')}<div class="reference-bottom-note">继续下滑查看更多讨论</div></section></div>`;
+      return;
+    }
+
+    function renderMine() {
+      const memberLabel=state.memberships.length===1?state.memberships[0].name:state.memberships.length?`${state.memberships.length}项会员权益`:'会员中心';
+      content.innerHTML=`<div class="mine-page" data-od-id="profile-head"><div class="mine-profile"><button class="mine-avatar" data-action="open-profile" aria-label="查看个人主页"></button><button style="border:0;background:none;text-align:left;padding:0;color:inherit;" data-action="open-profile"><strong>${state.loggedIn?'积极橘子':'登录 / 注册'} <small>LV3</small></strong><small>ID: 3080419 · 已完成18岁确认</small></button><button class="mine-login" data-action="login">${state.loggedIn?'设置':'注册 / 登录'}</button></div><div class="mine-stats"><div><strong>0</strong><span>粉丝</span></div><div><strong>0</strong><span>获赞</span></div><div><strong>0</strong><span>关注</span></div></div><div class="operation-grid"><button class="operation-card main" data-action="membership"><strong>${memberLabel}</strong><small>${state.memberships.length?'权益生效中':'开通会员畅享对应权益'}</small><span class="yellow">${state.memberships.length?'查看权益':'立即开通'}</span></button><button class="operation-card" data-action="wallet"><strong>我的钱包</strong><small>余额：${state.coins}</small></button><button class="operation-card" data-action="reserved"><strong>每日签到</strong><small>MVP 1.1 预留</small></button></div><div class="mine-icon-grid">${[['我的收藏','watch-records','♥'],['我的购买','orders','▣'],['我的卡券','membership','券'],['我的帖子','message','帖'],['作品管理','watch-records','◆'],['金币充值','wallet','¥'],['邀请好友','reserved','＋'],['消息中心','message','●']].map(([name,action,icon])=>`<button class="mine-entry" data-action="${action}"><i>${icon}</i>${name}</button>`).join('')}</div><div class="income-box"><h3>我的资产</h3><div class="income-row"><div><strong>${state.coins}</strong><span>付费金币</span></div><div><strong>${state.aiCredits}</strong><span>AI额度</span></div><div><strong>${state.frozen}</strong><span>冻结资产</span></div></div></div><div class="menu"><button class="menu-row" data-action="watch-records"><span>我的影片</span><span>›</span></button><button class="menu-row" data-action="support"><span>在线客服</span><span>›</span></button><button class="menu-row" data-action="privacy"><span>设置与帮助</span><span>›</span></button></div></div>`;
+    }
+
+    function render() {
+      nav(); tabbar.classList.toggle('hidden',state.screen!=='main');
+      const app=document.querySelector('.app'), screen=document.querySelector('.screen');
+      const communityFab=document.querySelector('#communityFab'),showCommunityFab=state.screen==='main'&&state.tab==='community';
+      communityFab.classList.toggle('hidden',!showCommunityFab);communityFab.setAttribute('aria-hidden',String(!showCommunityFab));
+      app.classList.toggle('home-theme',state.screen==='main'&&state.tab==='long');
+      app.classList.toggle('mine-theme',state.screen==='main'&&state.tab==='mine');
+      const shortSurface=state.screen==='shortFeed'||(state.screen==='main'&&state.tab==='short');
+      app.classList.toggle('short-theme',shortSurface);
+      screen.classList.toggle('short-screen',shortSurface);
+      screen.classList.toggle('light-screen',!shortSurface);
+      document.querySelector('meta[name="theme-color"]').content=shortSurface?'#05070a':state.screen==='main'&&state.tab==='mine'?'#d8efff':'#ffffff';
+      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
+      content.scrollTop=0;
+    }
+    function openSheet(html) { sheet.innerHTML=`<div class="sheet-handle"></div>${html}`; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); }
+    function closeSheet() { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); }
+    function sheetTitle(title,sub='') { return `<div class="row-between"><div><h2>${title}</h2>${sub?`<p style="margin:5px 0 0;">${sub}</p>`:''}</div><button class="close-sheet" data-action="close-sheet" aria-label="关闭">×</button></div>`; }
+    function toast(msg) { const el=document.querySelector('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1900); }
+    function ensureLogin(next) { if(state.loggedIn) return next(); openLogin(next); }
+    function openLogin(next) { openSheet(`${sheetTitle('登录后继续','购买、互动与AI任务需要账号')}<div class="segmented" style="margin-top:18px;"><button class="active">手机号</button><button>邮箱</button></div><label class="field-label">手机号或邮箱</label><input class="input" value="demo@example.com" aria-label="手机号或邮箱"><label class="field-label">验证码</label><div class="row"><input class="input" value="123456" aria-label="验证码"><button class="chip">获取验证码</button></div><label class="check"><input id="loginConsent" type="checkbox" checked>我已阅读用户协议、隐私政策和未成年人保护规则。</label><div class="sheet-foot"><button class="btn-primary" id="doLogin">登录 / 注册</button></div>`); document.querySelector('#doLogin').onclick=()=>{ if(!document.querySelector('#loginConsent').checked)return toast('请先同意协议'); state.loggedIn=true; closeSheet(); render(); toast('登录成功，已返回原操作'); if(next)setTimeout(next,220); }; }
+
+    function openPaywall(item) {
+      if(hasAccess(item)) return toast(`已拥有权益，从 ${item.progress?'原进度':'开头'} 继续播放`);
+      if(item.entitlement==='membership') openSheet(`${sheetTitle('试看已结束',`${item.title} · 唯一权益：视频VIP`)}<div class="notice" style="margin-top:16px;"><strong>标准内容</strong>仅支持含视频权益的会员观看，不展示金币价格。</div><button class="result-row" data-action="select-plan" data-plan="trial"><span class="result-thumb"></span><span><strong>新客体验卡</strong><span class="meta" style="display:block;">7天 · 每账号/设备/支付账号限1次</span></span><strong class="num">¥18 ›</strong></button><button class="result-row" data-action="select-plan" data-plan="video_month"><span class="result-thumb"></span><span><strong>视频VIP月卡</strong><span class="meta" style="display:block;">标准视频库 · 高清线路 · 进度同步</span></span><strong class="num">¥39 ›</strong></button><button class="btn-secondary" data-action="membership">查看全部月 / 季 / 年方案</button><p class="meta">方案均不自动续费；AI创作卡不含视频权益，金币精品需另行解锁。</p><button class="btn-secondary" data-action="close-sheet">返回内容</button>`);
+      else {
+        const cost=hasCoinDiscount()?item.discount:item.price, allocation=getContentAllocation(cost);
+        openSheet(`${sheetTitle('解锁精品内容',`${item.title} · 唯一权益：金币`)}<div class="notice" style="margin-top:16px;"><strong>金币精品</strong>不承诺会员免费观看；会员仅享配置折扣。</div><div class="option row-between"><div><strong>本次解锁</strong><div class="meta">已购权益持续保留，依法下架除外</div></div><strong class="num">${cost}金币</strong></div><div class="option row-between"><span>预计扣减</span><strong class="num">${allocation.label}</strong></div><div class="option row-between"><span>可用资产</span><span class="num">券 ${state.coupons} · 活动币 ${state.activityCoins} · 金币 ${state.coins}</span></div><p class="meta">扣减顺序：精品券 → 活动币 → 付费金币。重复购买自动拦截。</p>${allocation.coupon?'<div class="notice">演示默认：1张精品券抵扣本笔订单；实际面值与适用品类仍待产品、财务确认。</div>':''}<button class="btn-primary" data-action="unlock-content" data-id="${item.id}">${allocation.shortage?'资产不足，前往充值':'确认解锁并继续播放'}</button>`);
+      }
+    }
+
+    const plans={
+      trial:{family:'trial',name:'新客体验卡',period:'7天',amount:18,ai:0,coupons:0,video:true,coinDiscount:false,scope:'标准视频 · 限购1次'},
+      video_month:{family:'video',name:'视频VIP月卡',period:'1个月',amount:39,ai:0,coupons:0,video:true,coinDiscount:false,scope:'标准视频库 · 高清线路 · 进度同步'},
+      video_quarter:{family:'video',name:'视频VIP季卡',period:'3个月',amount:99,ai:0,coupons:0,video:true,coinDiscount:false,scope:'标准视频库 · 高清线路 · 进度同步'},
+      video_year:{family:'video',name:'视频VIP年卡',period:'12个月',amount:199,ai:0,coupons:0,video:true,coinDiscount:false,scope:'标准视频库 · 高清线路 · 进度同步'},
+      ai_month:{family:'ai',name:'AI创作卡月卡',period:'1个月',amount:49,ai:300,coupons:0,video:false,coinDiscount:false,scope:'AI创作额度与任务折扣（赠送值按后台配置）'},
+      ai_quarter:{family:'ai',name:'AI创作卡季卡',period:'3个月',amount:128,ai:900,coupons:0,video:false,coinDiscount:false,scope:'AI创作额度与任务折扣（赠送值按后台配置）'},
+      ai_year:{family:'ai',name:'AI创作卡年卡',period:'12个月',amount:299,ai:3600,coupons:0,video:false,coinDiscount:false,scope:'AI创作额度与任务折扣（赠送值按后台配置）'},
+      all_month:{family:'all',name:'全站畅享卡月卡',period:'1个月',amount:69,ai:100,coupons:2,video:true,coinDiscount:true,scope:'视频VIP · AI权益 · 精品折扣（赠送值待确认）'},
+      all_quarter:{family:'all',name:'全站畅享卡季卡',period:'3个月',amount:169,ai:300,coupons:6,video:true,coinDiscount:true,scope:'视频VIP · AI权益 · 精品折扣（赠送值待确认）'},
+      all_year:{family:'all',name:'全站畅享卡年卡',period:'12个月',amount:328,ai:1200,coupons:24,video:true,coinDiscount:true,scope:'视频VIP · AI权益 · 精品折扣（赠送值待确认）'}
+    };
+    function membershipRow(key,label,meta) { const plan=plans[key]; return `<button class="result-row" data-action="select-plan" data-plan="${key}"><span class="result-thumb"></span><span><strong>${label||plan.name}</strong><span class="meta" style="display:block;">${meta||`${plan.period} · ${plan.scope}`}</span></span><strong class="num">¥${plan.amount}</strong></button>`; }
+    function openMembership() { openSheet(`${sheetTitle('会员中心','月 / 季 / 年均可选择 · 默认不自动续费')}<p class="eyebrow" style="margin-top:16px;">体验</p>${membershipRow('trial')}<p class="eyebrow">视频VIP</p>${membershipRow('video_month')}${membershipRow('video_quarter')}${membershipRow('video_year')}<p class="eyebrow">AI创作卡</p>${membershipRow('ai_month')}${membershipRow('ai_quarter')}${membershipRow('ai_year')}<p class="eyebrow">全站畅享卡</p>${membershipRow('all_month')}${membershipRow('all_quarter')}${membershipRow('all_year')}<div class="notice" style="margin-top:14px;">不同卡种可并存并取权益并集；赠送值、升级补差及去重规则待评审确认。会员不享有社区免审特权。</div>`); }
+    function openWallet() { openSheet(`${sheetTitle('金币钱包','付费金币、活动币和冻结金额分账')}<div class="asset-grid" style="margin:18px 0;"><div class="asset"><strong class="num">${state.coins}</strong><span>付费金币</span></div><div class="asset"><strong class="num">${state.activityCoins}</strong><span>活动币</span></div><div class="asset"><strong class="num">${state.frozen}</strong><span>冻结</span></div></div>${[[60,6],[300,30],[980,98],[1980,198],[4980,498]].map(([coins,amount])=>`<button class="result-row" data-action="buy-pack" data-coins="${coins}" data-amount="${amount}"><span class="result-thumb"></span><span><strong>${coins}金币</strong><span class="meta" style="display:block;">付费金币 · 永久有效</span></span><strong class="num">¥${amount}</strong></button>`).join('')}<p class="meta">金币不可提现、不可转让，不作为现金等价物宣传。</p>`); }
+
+    function openOrder(pending) { state.pending=pending; const id=`ORD-${Date.now().toString().slice(-8)}`; state.pending.id=id; openSheet(`${sheetTitle('确认订单','价格、范围与规则已确认')}<div class="card card-pad" style="margin-top:18px;"><div class="row-between"><strong>${pending.title}</strong><strong class="num">${pending.asset?'资产扣减':`¥${pending.amount}`}</strong></div><div class="meta num" style="margin-top:8px;">业务单号 ${id}</div></div><div class="option row-between"><span>适用范围</span><span class="meta">${pending.scope}</span></div><div class="option row-between"><span>自动续费</span><strong>否</strong></div><div class="option row-between"><span>退款规则</span><span class="meta">按支付与使用状态处理</span></div><label class="check"><input id="orderConsent" type="checkbox" checked>我已确认价格、适用范围、排除项与退款规则。</label><div class="sheet-foot"><button class="btn-primary" data-action="confirm-order">创建订单并支付</button></div>`); }
+    function showOrderProcessing() { openSheet(`${sheetTitle('支付处理中','客户端等待服务端回调并主动查单')}<div class="state-list"><div class="state-row done"><span>创建订单</span><span class="meta num">${state.pending.id}</span></div><div class="state-row done"><span>发起支付</span><span class="meta">已完成</span></div><div class="state-row current"><strong>等待支付结果</strong><span class="status-pill">处理中</span></div><div class="state-row pending"><span>权益发放</span><span class="meta">等待服务端</span></div><div class="state-row pending"><span>原位恢复</span><span class="meta">等待查单</span></div></div><div class="notice">重复点击复用同一业务单号；客户端不会自行判定权益到账。</div><div class="sheet-foot"><button class="btn-primary" data-action="query-order">模拟回调并查询订单</button></div>`); }
+    function grantOrder() {
+      const p=state.pending;
+      if(!p) return toast('未找到待处理订单');
+      if(!state.orders.some(o=>o.id===p.id)) {
+        if(p.type==='member'){state.memberships.push({...p.plan,orderId:p.id});state.aiCredits+=p.plan.ai;state.coupons+=p.plan.coupons;}
+        if(p.type==='coins') state.coins+=p.coins;
+        if(p.type==='unlock') {
+          const a=p.allocation||getContentAllocation(p.cost);
+          state.coupons=Math.max(0,state.coupons-a.coupon);
+          state.activityCoins=Math.max(0,state.activityCoins-a.activity);
+          state.coins=Math.max(0,state.coins-a.coins);
+          state.purchased.add(p.item.id);
+        }
+        state.orders.unshift({...p,status:'成功',time:'刚刚',refundReason:''});
+      }
+      const resultText=p.type==='coins'?'余额已更新':p.type==='unlock'?'内容权益已发放':'会员权益已发放';
+      const finishText=p.type==='coins'?'返回钱包':p.type==='unlock'?'原位继续播放':'返回并使用权益';
+      openSheet(`${sheetTitle('权益已到账','服务端查单成功 · 10秒内可用')}<div class="state-list"><div class="state-row done"><span>订单成功</span><span class="meta num">${p.id}</span></div><div class="state-row done"><span>权益发放</span><span class="meta">幂等完成</span></div><div class="state-row done"><strong>${resultText}</strong><span class="status-pill">完成</span></div></div><div class="sheet-foot"><button class="btn-primary" data-action="finish-order">${finishText}</button></div>`);
+      render();
+    }
+
+    function renderAIToolSheet() {
+      const {tool,cost,materialReady}=state.aiDraft,allocation=getAIAllocation(cost);
+      openSheet(`${sheetTitle(tool,'上传素材 → 发起生成 → 后台处理')}<div class="ai-upload-zone ${materialReady?'is-ready':''}"><div><strong>${materialReady?'✓ 素材上传成功':'上传生成素材'}</strong><small>${materialReady?'demo-material.jpg · 已完成格式与安全预检':'支持图片或视频；上传后先校验格式、清晰度和授权'}</small><button class="btn-secondary" data-action="select-material">${materialReady?'重新选择':'选择素材'}</button></div></div><div class="option row-between"><span>预计耗时</span><strong class="num">2-5分钟</strong></div><div class="option row-between"><span>预计冻结</span><strong class="num">${allocation.shortage?'资产不足':allocation.label}</strong></div><label class="check"><input id="aiConsent" type="checkbox">我确认人物均已成年并获得生成授权，不涉及未成年人、强迫、偷拍或侵权公众人物。</label><div class="notice">任务可在后台继续。成功、失败或部分生成均通过站内消息通知；失败资产自动原路退回。</div><div class="sheet-foot"><button class="btn-primary" data-action="submit-ai" data-tool="${tool}" data-cost="${cost}">${allocation.shortage?'资产不足，前往充值':materialReady?'开始生成':'请先上传素材'}</button></div>`);
+    }
+    function openAITool(name,cost) { ensureLogin(()=>{state.aiDraft={tool:name,cost,materialReady:false};renderAIToolSheet();}); }
+    function createAITask(tool,cost,parentId='') {
+      const allocation=getAIAllocation(cost); if(allocation.shortage){openWallet();return null;}
+      state.aiCredits-=allocation.ai;state.activityCoins-=allocation.activity;state.coins-=allocation.coins;state.frozen+=cost;
+      const parent=state.tasks.find(task=>task.id===parentId),task={id:`TASK-${Date.now().toString().slice(-6)}`,tool,cost,source:allocation.label,allocations:allocation,status:'生成中',attempt:(parent?.attempt||0)+1,parentId,createdAt:'刚刚'};
+      state.tasks.push(task);return task;
+    }
+    function refundAITask(t,status,reason) {
+      if(t.assetReturned)return;
+      state.frozen=Math.max(0,state.frozen-t.cost);state.aiCredits+=t.allocations.ai;state.activityCoins+=t.allocations.activity;state.coins+=t.allocations.coins;
+      t.status=status;t.failureReason=reason;t.assetReturned=true;
+    }
+    function openAIException(id) {
+      const t=state.tasks.find(x=>x.id===id);if(!t)return toast('未找到该任务');
+      openSheet(`${sheetTitle('模拟异常分支',`${t.id} · 仅用于验收恢复逻辑`)}<button class="menu-row" data-action="apply-ai-exception" data-kind="generation" data-id="${id}"><span>生成失败</span><span class="meta">模型未产生可用结果</span></button><button class="menu-row" data-action="apply-ai-exception" data-kind="timeout" data-id="${id}"><span>任务超时</span><span class="meta">处理超过服务端时限</span></button><button class="menu-row" data-action="apply-ai-exception" data-kind="review" data-id="${id}"><span>处理拒绝</span><span class="meta">结果未通过安全处理</span></button>`);
+    }
+    function openTaskDetail(id) {
+      const t=state.tasks.find(x=>x.id===id);if(!t)return toast('未找到该任务');
+      const failed=['生成失败','超时已退回','处理拒绝已退回'].includes(t.status),success=t.status==='成功';
+      const steps=failed?['素材已上传','生成异常','资产已退回']:['素材已上传','生成中（含安全处理）','成功通知','查看结果'];
+      const current=failed?2:success?3:1,assetText=failed?`已原路退回 ${t.source}`:success?`已扣除 ${t.source}`:`冻结 ${t.source}`;
+      const appeal=t.status==='处理拒绝已退回'?`<button class="btn-secondary" data-action="ai-appeal" data-id="${t.id}">申诉处理结果</button>`:'';
+      const actions=failed?`<div class="ai-error-card"><strong>${t.status}</strong><br>${t.failureReason}</div>${appeal}<div class="row"><button class="btn-secondary" data-action="ai-tool" data-tool="${t.tool}" data-cost="${t.cost}">修改素材</button><button class="btn-primary" data-action="retry-ai" data-id="${t.id}">重新生成</button></div>`:success?`<button class="btn-primary" data-action="view-ai-result" data-id="${t.id}">查看生成结果</button>`:`<div class="row"><button class="btn-secondary" data-action="ai-exception" data-id="${t.id}">模拟异常</button><button class="btn-primary" data-action="complete-ai" data-id="${t.id}">模拟生成成功</button></div>`;
+      openSheet(`${sheetTitle(t.tool,`${t.id} · ${t.status}`)}<div class="state-list">${steps.map((s,i)=>`<div class="state-row ${i<current?'done':i===current?'current':'pending'}"><span>${s}</span><span class="meta">${i<=current?'已记录':'等待'}</span></div>`).join('')}</div><div class="option row-between"><span>资产结果</span><span class="num">${assetText}</span></div>${actions}`);
+    }
+    function openAIResult(id) {
+      const t=state.tasks.find(x=>x.id===id);if(!t||t.status!=='成功')return toast('结果尚未生成完成');
+      state.aiNotifications.filter(n=>n.taskId===id).forEach(n=>n.read=true);
+      render();
+      openSheet(`${sheetTitle('生成结果',`${t.tool} · ${t.id}`)}<div class="ai-result-preview"><span class="ai-result-mark">AI生成 · 已通过安全处理</span></div><div class="option row-between"><span>本次消耗</span><strong class="num">${t.source}</strong></div><p class="meta">结果已进入“我的记录”。如需新版本，将重新创建任务并按当前规则计费。</p><div class="row"><button class="btn-secondary" data-action="report">举报结果</button><button class="btn-primary" data-action="regenerate-ai" data-id="${t.id}">重新生成</button></div>`);
+    }
+
+    function openSafetyMenu() { openSheet(`${sheetTitle('内容操作','反馈会影响推荐和安全处理')}<button class="menu-row" data-action="not-interested"><span>不感兴趣</span><span class="meta">减少相似推荐</span></button><button class="menu-row"><span>为什么推荐此内容</span><span class="meta">近期观看与热度</span></button><button class="menu-row" data-action="report"><span>举报内容</span><span class="meta">进入处理队列</span></button><button class="menu-row" data-action="block"><span>拉黑账号</span><span class="meta">立即停止展示</span></button>`); }
+    function openPostMenu() { openSheet(`${sheetTitle('帖子操作','举报与拉黑是两个独立能力')}<button class="menu-row" data-action="report"><span>举报帖子</span><span class="meta">选择原因并提交</span></button><button class="menu-row" data-action="block"><span>拉黑用户</span><span class="meta">不再展示其内容</span></button><button class="menu-row"><span>复制合规分享链接</span><span class="meta">不暴露受限媒体</span></button>`); }
+    function openReport() { openSheet(`${sheetTitle('提交举报','举报不会自动下架，处理后反馈结果')}<div class="stack" style="margin-top:16px;"><label class="check"><input type="radio" name="reason" checked>内容违规或未经授权</label><label class="check"><input type="radio" name="reason">未成年人或疑似未成年人</label><label class="check"><input type="radio" name="reason">骚扰、欺诈或外链风险</label></div><label class="field-label">补充说明</label><textarea class="input textarea" placeholder="可选，帮助处理人员判断"></textarea><div class="sheet-foot"><button class="btn-primary" data-action="submit-report">提交举报</button></div>`); }
+    function openComments(kind='video') { const list=kind==='community'?state.communityComments:state.videoComments; openSheet(`${sheetTitle(`评论 · ${list.length}`,'评论与回复均可处理、举报和申诉')}<div style="margin-top:12px;">${commentsMarkup(list,kind)}</div>`); }
+    function submitComment(kind) {
+      const input=document.querySelector(`#${kind}CommentInput`),text=input?.value.trim();
+      if(!text)return toast('请输入评论内容');
+      ensureLogin(()=>{const list=kind==='community'?state.communityComments:state.videoComments;list.unshift({name:'积极橘子',text:text.slice(0,120),time:'刚刚',likes:0});closeSheet();render();if(state.screen==='detail')setTimeout(()=>document.querySelector('#videoComments')?.scrollIntoView({behavior:'smooth'}),50);toast('评论已发布，处理状态可在消息中心查看');});
+    }
+    function openPublish() { ensureLogin(()=>{closeSheet();rememberPage();state.returnScreen='main';state.screen='postEditor';render();}); }
+    function openSearch() { openSheet(`${sheetTitle('全局搜索','视频、合集、帖子、用户和标签')}<div class="row" style="margin-top:16px;"><input id="searchInput" class="input" value="经典系列" aria-label="搜索词"><button class="mini-cta" data-action="run-search">搜索</button></div><div class="chips" style="margin-top:12px;"><span class="chip">视频</span><span class="chip">合集</span><span class="chip">帖子</span><span class="chip">标签</span></div><div id="searchResults"><p class="eyebrow" style="margin-top:18px;">运营热词</p><div class="chips"><span class="chip">今日更新</span><span class="chip">中文字幕</span><span class="chip">人气合集</span></div></div>`); }
+    function openMessages() { ensureLogin(()=>{const ai=state.tasks.slice().reverse().find(t=>t.status==='成功');openSheet(`${sheetTitle('消息中心','评论、关注、帖子、订单和系统通知')}<button class="result-row"><span class="result-thumb"></span><span><strong>订单支付成功</strong><span class="meta" style="display:block;">权益已发放，可原位继续播放</span></span><span class="status-pill">订单</span></button><button class="result-row"><span class="result-thumb"></span><span><strong>帖子处理进度</strong><span class="meta" style="display:block;">图文或视频帖子处理结果将在此反馈</span></span><span class="status-pill">社区</span></button>${ai?`<button class="result-row" data-action="view-ai-result" data-id="${ai.id}"><span class="result-thumb is-success"></span><span><strong>${ai.tool}生成成功</strong><span class="meta" style="display:block;">点击查看结果，可继续重新生成</span></span><span class="status-pill">AI</span></button>`:`<button class="result-row"><span class="result-thumb"></span><span><strong>AI任务状态</strong><span class="meta" style="display:block;">成功、失败和部分结果将在此通知</span></span><span class="status-pill">AI</span></button>`}<button class="btn-secondary" style="margin-top:12px;">全部标为已读</button>`);}); }
+    function openOrders() { ensureLogin(()=>openSheet(`${sheetTitle('订单与购买','会员、金币、解锁和AI消费')}<div class="chips" style="margin-top:14px;"><span class="chip active">全部</span><span class="chip">成功</span><span class="chip">退款</span></div>${state.orders.length?state.orders.map(o=>`<button class="result-row" data-action="order-detail" data-id="${o.id}"><span class="result-thumb"></span><span><strong>${o.title}</strong><span class="meta num" style="display:block;">${o.id} · ${o.time}</span></span><span class="status-pill">${o.status}</span></button>`).join(''):'<div class="notice" style="margin-top:16px;">暂无订单。订单状态支持待支付、成功、失败、退款中、已退款、退款拒绝和拒付。</div>'}`)); }
+    function openOrderDetail(id) {
+      const o=state.orders.find(order=>order.id===id); if(!o)return toast('未找到该订单');
+      const amount=o.asset?`${o.cost} 资产`:`¥${o.amount}`;
+      const actions=o.status==='成功'?`<button class="btn-primary" data-action="request-refund" data-id="${o.id}">申请退款</button>`:o.status==='退款中'?`<div class="notice">演示：生产环境由服务端处理并推送结果，客户端没有审批权限。</div><div class="row"><button class="btn-secondary" data-action="settle-refund" data-result="reject" data-id="${o.id}">模拟处理拒绝</button><button class="btn-primary" data-action="settle-refund" data-result="approve" data-id="${o.id}">模拟处理通过</button></div>`:'';
+      openSheet(`${sheetTitle('订单详情',`${o.id} · ${o.status}`)}<div class="option row-between" style="margin-top:16px;"><span>商品</span><strong>${o.title}</strong></div><div class="option row-between"><span>支付/扣减</span><strong class="num">${amount}</strong></div><div class="option row-between"><span>当前状态</span><span class="status-pill">${o.status}</span></div>${o.refundReason?`<div class="notice">${o.refundReason}</div>`:''}<div class="state-list"><div class="state-row done"><span>订单成功</span><span class="meta">已记录</span></div><div class="state-row ${o.status==='成功'?'pending':'done'}"><span>退款申请</span><span class="meta">${o.status==='成功'?'未申请':'已记录'}</span></div><div class="state-row ${['已退款','退款拒绝'].includes(o.status)?'done':'pending'}"><span>服务端处理结果</span><span class="meta">${['已退款','退款拒绝'].includes(o.status)?o.status:'等待'}</span></div></div>${actions}`);
+    }
+    function requestRefund(id) {
+      const o=state.orders.find(order=>order.id===id); if(!o||o.status!=='成功')return toast('当前订单不可重复申请退款');
+      o.status='退款中';o.refundReason='退款申请已提交；是否可退、到账时效及已消费资产处理以服务端处理为准。';openOrderDetail(id);toast('已提交退款申请');
+    }
+    function settleRefund(id,approved) {
+      const o=state.orders.find(order=>order.id===id); if(!o||o.status!=='退款中')return toast('退款状态已变化，请刷新');
+      if(!approved){o.status='退款拒绝';o.refundReason='演示结果：不满足退款条件，可通过客服提交申诉。';openOrderDetail(id);return;}
+      if(o.type==='member'){
+        if(state.aiCredits<o.plan.ai||state.coupons<o.plan.coupons){o.status='退款拒绝';o.refundReason='演示结果：赠送资产已使用，需人工核算后处理。';openOrderDetail(id);return;}
+        state.aiCredits-=o.plan.ai;state.coupons-=o.plan.coupons;state.memberships=state.memberships.filter(plan=>plan.orderId!==o.id);
+      }
+      if(o.type==='coins'){
+        if(state.coins<o.coins){o.status='退款拒绝';o.refundReason='演示结果：充值金币已使用，需人工核算后处理。';openOrderDetail(id);return;}
+        state.coins-=o.coins;
+      }
+      if(o.type==='unlock'){
+        state.purchased.delete(o.item.id);
+        state.coupons+=o.allocation.coupon;state.activityCoins+=o.allocation.activity;state.coins+=o.allocation.coins;
+      }
+      o.status='已退款';o.refundReason='演示结果：服务端处理通过，相关未消费权益已冲正；实际到账时间以支付渠道为准。';render();openOrderDetail(id);toast('退款结果已同步');
+    }
+    function openWatchRecords() { ensureLogin(()=>openSheet(`${sheetTitle('收藏与观看记录','支持删除、清空和下架状态')}<button class="result-row" data-action="open-detail" data-id="lv1"><span class="result-thumb"></span><span><strong>深夜精选 · 第3集</strong><span class="meta num" style="display:block;">28:16 / 44:30 · 续看</span></span><span>›</span></button><button class="result-row"><span class="result-thumb"></span><span><strong>历史收藏内容</strong><span class="meta" style="display:block;">内容已下架，不再提供播放</span></span><span class="status-pill">不可用</span></button><button class="btn-secondary" style="margin-top:12px;">清空观看记录</button>`)); }
+    function openPrivacy() { openSheet(`${sheetTitle('隐私与设置','设置结果以服务端为准')}<div class="menu"><label class="menu-row"><span>个性化推荐</span><input type="checkbox" checked></label><label class="menu-row"><span>消息通知</span><input type="checkbox" checked></label><button class="menu-row"><span>设备管理</span><span class="meta">1 / 2台 ›</span></button><button class="menu-row"><span>用户协议与隐私政策</span><span>›</span></button><button class="menu-row danger"><span>账号注销</span><span>›</span></button></div>`); }
+
+    document.addEventListener('click',e=>{
+      const tab=e.target.closest('[data-tab]'); if(tab){state.navigationStack=[];state.tab=tab.dataset.tab;state.screen='main';render();return;}
+      const localTab=e.target.closest('.portal-tab,.top-tab,.tiny-filter');
+      if(localTab&&!localTab.dataset.action){localTab.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));localTab.classList.add('active');if(localTab.textContent.trim()==='我的记录'){const record=document.querySelector('#aiRecords');if(record)content.scrollTo({top:record.offsetTop-54,behavior:'smooth'});}toast(`已切换：${localTab.textContent.trim()}`);return;}
+      const segment=e.target.closest('.community-segment button');
+      if(segment){segment.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));segment.classList.add('active');toast(`已切换到${segment.textContent.trim()}`);return;}
+      const shortcut=e.target.closest('.shortcut');
+      if(shortcut){toast(`${shortcut.textContent.trim()}：当前为运营筛选入口`);return;}
+      const target=e.target.closest('[data-action]'); if(!target)return; const action=target.dataset.action;
+      if(action==='confirm-age'){document.querySelector('#ageGate').classList.add('hidden');render();}
+      if(action==='leave')toast('已停止进入，请关闭页面');
+      if(action==='reserved')toast('MVP 1.1 预留，一期暂不开放');
+      if(action==='close-sheet')closeSheet();
+      if(action==='back-main'){if(!restorePreviousPage()){stopPlaybackClock();state.screen=state.screen==='profile'?state.profileReturnScreen:['detail','shortFeed','postDetail','postEditor','longCategories'].includes(state.screen)?state.returnScreen:'main';render();}}
+      if(action==='back-categories'){if(!restorePreviousPage()){state.returnScreen='main';state.screen='longCategories';render();}}
+      if(action==='open-detail'){closeSheet();rememberPage();state.returnScreen=state.screen==='main'?'main':state.screen;state.contentId=target.dataset.id;preparePlayer(catalog[state.contentId]);state.screen='detail';render();}
+      if(action==='open-profile'){stopPlaybackClock();closeSheet();rememberPage();const source=target.dataset.source||((state.tab==='community'||state.screen==='postDetail')?'community':'video');state.profileTab=source==='community'?'posts':'videos';state.profileQuery='';state.profileReturnScreen=state.screen;state.screen='profile';render();}
+      if(action==='post-detail'){stopPlaybackClock();closeSheet();rememberPage();state.returnScreen=state.screen==='profile'?'profile':'main';state.activePost=(target.dataset.source==='profile'?profilePosts:communityFeedPosts).find(post=>post.id===target.dataset.id)||communityFeedPosts[0];state.screen='postDetail';render();}
+      if(action==='profile-tab'){state.profileTab=target.dataset.value;state.profileQuery='';renderProfile();}
+      if(action==='home-reset'){state.libraryTop='推荐';state.librarySort='正在看';render();}
+      if(action==='home-top'){state.libraryTop=target.dataset.value;state.libraryCategory='全部';state.librarySort='正在看';state.libraryLoading=false;render();}
+      if(action==='home-all-categories'){rememberPage();state.returnScreen='main';state.screen='longCategories';render();}
+      if(action==='home-category'){rememberPage();state.libraryCategory=target.dataset.value;state.returnScreen=state.screen==='main'?'main':'longCategories';state.screen='longCategoryVideos';render();}
+      if(action==='home-list-filter'){state.librarySort=target.dataset.value;state.libraryLoading=true;render();clearTimeout(renderLongHome.filterTimer);renderLongHome.filterTimer=setTimeout(()=>{state.libraryLoading=false;render();},520);}
+      if(action==='reference-ad'){e.preventDefault();toast(`${target.dataset.value}：广告跳转由后台配置`);return;}
+      if(action==='open-ai'){state.navigationStack=[];state.tab='ai';state.screen='main';render();return;}
+      if(action==='refresh-section'){
+        const key=target.dataset.section,sectionState=state.sectionRefresh[key],section=target.closest('[data-section-key]');
+        if(!key||!sectionState||sectionState.loading||!section)return;
+        sectionState.loading=true;section.classList.add('section-refreshing');section.setAttribute('aria-busy','true');target.disabled=true;target.textContent='刷新中…';
+        clearTimeout(sectionRefreshTimers[key]);sectionRefreshTimers[key]=setTimeout(()=>{
+          sectionState.offset=(sectionState.offset+6)%referenceTitles.length;sectionState.loading=false;
+          const liveSection=Array.from(document.querySelectorAll('[data-section-key]')).find(node=>node.dataset.sectionKey===key);
+          if(liveSection){const grid=liveSection.querySelector('.reference-media-grid');if(grid)grid.outerHTML=referenceMediaCards(6,sectionState.offset);liveSection.classList.remove('section-refreshing');liveSection.setAttribute('aria-busy','false');const refreshButton=liveSection.querySelector('[data-action="refresh-section"]');if(refreshButton){refreshButton.disabled=false;refreshButton.textContent='↻ 换一换';}}
+          toast(`${key.split(':').pop()}已换一组内容`);
+        },520);return;
+      }
+      if(action==='play-content'){const item=catalog[target.dataset.id];if(!hasAccess(item))return openPaywall(item);state.screen==='detail'?startPlayback(item):toast(`已从 ${item.progress?'原进度':'00:00'} 继续播放`);}
+      if(action==='player-toggle'){const item=catalog[state.contentId];if(!hasAccess(item))return openPaywall(item);if(state.player.status==='loading')return toast('正在加载，请稍候');if(state.player.status==='playing'){stopPlaybackClock();state.player.status='paused';render();toast('已暂停并记录进度');}else startPlayback(item);}
+      if(action==='player-quality'){state.player.quality=state.player.quality==='高清'?'超清':'高清';render();toast(`已切换${state.player.quality}`);}
+      if(action==='player-line'){state.player.line=state.player.line%3+1;if(hasAccess(catalog[state.contentId])&&state.player.status==='playing')startPlayback(catalog[state.contentId]);else{render();toast(`已切换线路${state.player.line}，播放进度已保留`);}}
+      if(action==='player-speed'){const speeds=[1,1.25,1.5,2],i=speeds.indexOf(state.player.speed);state.player.speed=speeds[(i+1)%speeds.length];render();toast(`倍速 ${state.player.speed.toFixed(2)}×`);}
+      if(action==='player-mute'){state.player.muted=!state.player.muted;render();toast(state.player.muted?'已静音':'声音已恢复');}
+      if(action==='player-fullscreen'){state.player.fullscreen=!state.player.fullscreen;render();toast(state.player.fullscreen?'已进入全屏':'已退出全屏');}
+      if(action==='focus-comments'){document.querySelector('#videoComments')?.scrollIntoView({behavior:'smooth'});}
+      if(action==='focus-post-comments'){document.querySelector('#postComments')?.scrollIntoView({behavior:'smooth'});}
+      if(action==='submit-comment')submitComment(target.dataset.kind);
+      if(action==='follow')ensureLogin(()=>toast('已关注，可在“我的关注”查看'));
+      if(action==='favorite')ensureLogin(()=>toast('已收藏，可在“我的收藏”查看'));
+      if(action==='login')state.loggedIn?openPrivacy():openLogin();
+      if(action==='membership')openMembership();
+      if(action==='wallet')ensureLogin(openWallet);
+      if(action==='select-plan')ensureLogin(()=>{const plan=plans[target.dataset.plan];if(!plan)return toast('方案配置异常，请刷新');openOrder({type:'member',title:plan.name,amount:plan.amount,plan,scope:`${plan.period} · ${plan.scope}`});});
+      if(action==='buy-pack')ensureLogin(()=>openOrder({type:'coins',title:`充值${target.dataset.coins}金币`,amount:Number(target.dataset.amount),coins:Number(target.dataset.coins),scope:'付费金币余额'}));
+      if(action==='unlock-content'){const item=catalog[target.dataset.id],cost=hasCoinDiscount()?item.discount:item.price,allocation=getContentAllocation(cost);if(state.purchased.has(item.id))return toast('已购买，禁止重复扣费');if(allocation.shortage)return ensureLogin(openWallet);ensureLogin(()=>openOrder({type:'unlock',title:`解锁：${item.title}`,amount:0,asset:true,item,cost,allocation,scope:'当前精品内容'}));}
+      if(action==='confirm-order'){if(!document.querySelector('#orderConsent')?.checked)return toast('请先确认订单规则');showOrderProcessing();}
+      if(action==='query-order')grantOrder();
+      if(action==='finish-order'){const completed=state.pending;if(!completed)return toast('订单已处理');closeSheet();state.pending=null;const item=state.screen==='detail'?catalog[state.contentId]:null;if(item&&hasAccess(item)&&(completed.type==='unlock'||completed.type==='member')){state.player.status='paused';state.player.current=Math.max(state.player.current,item.trial||0);startPlayback(item);}else{render();toast(completed.type==='coins'?'余额已更新':'会员权益已更新');}}
+      if(action==='ai-tool')openAITool(target.dataset.tool,Number(target.dataset.cost));
+      if(action==='select-material'){state.aiDraft.materialReady=true;renderAIToolSheet();toast('素材上传成功，已完成预检');}
+      if(action==='submit-ai'){if(!state.aiDraft.materialReady)return toast('请先上传并通过素材预检');if(!document.querySelector('#aiConsent')?.checked)return toast('请先完成素材授权确认');const task=createAITask(target.dataset.tool,Number(target.dataset.cost));if(!task)return;closeSheet();render();toast('已开始生成，可离开页面等待通知');}
+      if(action==='task-record')state.tasks.length?openTaskDetail(state.tasks.at(-1).id):toast('暂无AI任务');
+      if(action==='task-detail')openTaskDetail(target.dataset.id);
+      if(action==='ai-exception')openAIException(target.dataset.id);
+      if(action==='apply-ai-exception'){const t=state.tasks.find(x=>x.id===target.dataset.id);if(!t||t.status!=='生成中')return toast('任务状态已变化，请刷新');const map={generation:['生成失败','模型未产生可用结果，请调整素材或参数后重试。'],timeout:['超时已退回','任务超过处理时限，资产已退回，可直接重新生成。'],review:['处理拒绝已退回','生成结果未通过安全处理，请修改素材后重新提交。']},result=map[target.dataset.kind];refundAITask(t,result[0],result[1]);closeSheet();render();openTaskDetail(t.id);toast(`${result[0]}，冻结资产已原路退回`);}
+      if(action==='ai-appeal')openSheet(`${sheetTitle('AI处理申诉',`${target.dataset.id} · 提交后进入人工复核`)}<label class="field-label">申诉说明</label><textarea class="input textarea" placeholder="说明素材授权、人物成年情况与异议理由"></textarea><div class="notice">申诉不恢复已拦截结果；复核结论将通过消息中心反馈。</div><button class="btn-primary" data-action="submit-ai-appeal">提交申诉</button>`);
+      if(action==='submit-ai-appeal'){closeSheet();toast('申诉已提交，复核结果将通过消息反馈');}
+      if(action==='complete-ai'){const t=state.tasks.find(x=>x.id===target.dataset.id);if(!t||t.status!=='生成中')return toast('任务状态已变化，请刷新');state.frozen=Math.max(0,state.frozen-t.cost);t.status='成功';t.completedAt='刚刚';state.aiNotifications.unshift({taskId:t.id,tool:t.tool,read:false,time:'刚刚'});closeSheet();render();toast('生成成功，已发送站内通知');}
+      if(action==='retry-ai'||action==='regenerate-ai'){const source=state.tasks.find(x=>x.id===target.dataset.id);if(!source)return toast('未找到原任务');const task=createAITask(source.tool,source.cost,source.id);if(!task)return;closeSheet();render();openTaskDetail(task.id);toast(action==='retry-ai'?'已重新提交生成':'已创建新的生成任务');}
+      if(action==='view-ai-result')openAIResult(target.dataset.id);
+      if(action==='safety-menu')openSafetyMenu();
+      if(action==='post-menu')openPostMenu();
+      if(action==='not-interested'){closeSheet();toast('已减少相似内容推荐');}
+      if(action==='report')openReport();
+      if(action==='submit-report'){closeSheet();toast('举报已进入处理，结果将通过消息反馈');}
+      if(action==='block'){closeSheet();toast('已拉黑该账号，后续不再展示');}
+      if(action==='publish')openPublish();
+      if(action==='select-topic'){state.postDraft.topic=target.dataset.value;document.querySelectorAll('.topic-option').forEach(button=>button.classList.toggle('active',button===target));}
+      if(action==='add-post-media'){const kind=target.dataset.kind;state.postDraft[kind]=!state.postDraft[kind];target.classList.toggle('active',state.postDraft[kind]);target.textContent=state.postDraft[kind]?(kind==='image'?'✓ 已添加图片':'✓ 已添加视频'):(kind==='image'?'＋ 添加图片':'▶ 添加视频');}
+      if(action==='submit-post'){if(!document.querySelector('#postConsent')?.checked)return toast('请先同意社区规范');const title=document.querySelector('#postTitle')?.value.trim()||'',body=document.querySelector('#postBody')?.value.trim()||'';if(title.length<5)return toast('标题至少 5 个字');if(!body&&!state.postDraft.image&&!state.postDraft.video)return toast('请填写内容或添加图片/视频');state.posts.unshift({title:title.slice(0,60),body:body.slice(0,2000),topic:state.postDraft.topic,image:state.postDraft.image,video:state.postDraft.video,status:'处理中'});state.postDraft={topic:'影评',image:false,video:false,title:'',body:''};state.navigationStack=[];state.screen='main';state.tab='community';render();toast('已提交处理，尚未公开');}
+      if(action==='search')openSearch();
+      if(action==='run-search'){const q=document.querySelector('#searchInput').value.trim(),safeQ=escapeHTML(q),box=document.querySelector('#searchResults');if(!q)return toast('请输入搜索内容');box.innerHTML=q.includes('不存在')?`<div class="notice" style="margin-top:18px;">未找到“${safeQ}”。已记录无结果词，可尝试其他关键词或查看热门内容。</div>`:`<p class="eyebrow" style="margin-top:18px;">“${safeQ}”的搜索结果</p><button class="result-row" data-action="open-detail" data-id="set1"><span class="result-thumb"></span><span><strong>经典系列完整合集</strong><span class="meta" style="display:block;">合集 · 120金币 · 12集</span></span><span>›</span></button><button class="result-row"><span class="result-thumb"></span><span><strong>#${safeQ}</strong><span class="meta" style="display:block;">标签 · 36条内容</span></span><span>›</span></button>`;}
+      if(action==='message')openMessages();
+      if(action==='comments')openComments(state.tab==='community'?'community':'video');
+      if(action==='orders')openOrders();
+      if(action==='order-detail')openOrderDetail(target.dataset.id);
+      if(action==='request-refund')requestRefund(target.dataset.id);
+      if(action==='settle-refund')settleRefund(target.dataset.id,target.dataset.result==='approve');
+      if(action==='watch-records')openWatchRecords();
+      if(action==='support')ensureLogin(()=>openSheet(`${sheetTitle('客服与帮助','可查询订单、权益、流水、AI任务和处理结果')}<div class="notice" style="margin-top:16px;">提交问题时将自动附带业务单号与当前状态，不允许客服直接修改资产。</div><button class="btn-primary" style="margin-top:12px;">发起客服工单</button>`));
+      if(action==='privacy')openPrivacy();
+    });
+    document.addEventListener('input',e=>{if(e.target.id==='postTitle')state.postDraft.title=e.target.value;if(e.target.id==='postBody')state.postDraft.body=e.target.value;if(e.target.id==='profileSearch'){state.profileQuery=e.target.value;const results=document.querySelector('#profileResults');if(results)results.innerHTML=profileResultsMarkup();}});
+    document.addEventListener('input',e=>{const seek=e.target.closest('[data-action="player-seek"]');if(!seek)return;state.player.current=Number(seek.value);seek.style.setProperty('--progress',`${Number(seek.value)/Number(seek.max)*100}%`);const time=seek.parentElement.querySelector('.player-time');if(time)time.textContent=`${formatTime(state.player.current)} / ${catalog[state.contentId].duration}`;});
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closeSheet();});
+    render();
+  </script>
+</body>
+</html>

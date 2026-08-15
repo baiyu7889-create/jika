@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07090d" />
+  <link rel="icon" href="data:," />
+  <title>基咔 · 官方下载</title>
+  <style>
+    :root {
+      --bg:#07090d;
+      --surface:#11151c;
+      --fg:#f4efe5;
+      --muted:#a29c91;
+      --border:#2b2c2f;
+      --accent:#e7b45a;
+      --font-display:'Songti SC','STSong','Iowan Old Style',Georgia,serif;
+      --font-body:-apple-system,BlinkMacSystemFont,'PingFang SC',system-ui,sans-serif;
+      --font-mono:ui-monospace,'SF Mono',Menlo,monospace;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;min-height:100%}
+    body{min-height:100vh;background:var(--bg);color:var(--fg);font-family:var(--font-body);overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 72% 45%,color-mix(in oklch,var(--accent) 13%,transparent),transparent 32%),linear-gradient(115deg,transparent 0 55%,color-mix(in oklch,var(--fg) 3%,transparent) 55% 56%,transparent 56%);}
+    .shell{width:min(100%,1920px);min-height:100vh;margin:auto;padding:40px clamp(28px,6vw,112px);display:flex;flex-direction:column}
+    header{display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:14px;font-family:var(--font-display);font-size:22px}
+    .logo{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;border:1px solid color-mix(in oklch,var(--accent) 54%,var(--border));background:var(--surface);box-shadow:0 0 24px color-mix(in oklch,var(--accent) 14%,transparent);font-weight:700}
+    .logo small{color:var(--accent);font:8px var(--font-mono);align-self:start;margin:7px 0 0 -2px}
+    .verify{font:11px var(--font-mono);letter-spacing:.08em;color:var(--muted)}
+    main{position:relative;flex:1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(420px,.95fr);align-items:center;gap:clamp(40px,7vw,140px);padding:48px 0 32px}
+    .eyebrow{margin:0 0 20px;color:var(--accent);font:12px var(--font-mono);letter-spacing:.14em;text-transform:uppercase}
+    h1{margin:0;font-family:var(--font-display);font-size:clamp(58px,5.4vw,104px);font-weight:500;line-height:1.02;letter-spacing:-.055em}
+    .lead{max-width:34ch;margin:28px 0;color:var(--muted);font-size:clamp(17px,1.25vw,22px);line-height:1.65}
+    .points{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:28px}
+    .point{padding:7px 12px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+    .download{display:grid;grid-template-columns:132px minmax(240px,400px);gap:18px;align-items:stretch}
+    .qr{aspect-ratio:1;border:1px solid var(--border);border-radius:20px;padding:12px;background:var(--fg);display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+    .qr span{background:var(--bg);border-radius:1px}.qr span:nth-child(3n){opacity:.12}.qr span:nth-child(5n){opacity:.35}
+    .download-actions{display:flex;flex-direction:column;gap:10px}
+    .btn{min-height:58px;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--fg);display:flex;align-items:center;justify-content:space-between;text-decoration:none;font-weight:650}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+    .btn small{font:10px var(--font-mono);font-weight:400;opacity:.72}
+    .install{margin-top:18px;padding:13px 15px;border-left:2px solid var(--accent);background:color-mix(in oklch,var(--surface) 72%,transparent);color:var(--muted);font-size:12px;line-height:1.55}
+    .visual{position:relative;min-height:650px;display:grid;place-items:center}
+    .halo{position:absolute;width:min(42vw,620px);aspect-ratio:1;border:1px solid var(--border);border-radius:50%;box-shadow:0 0 100px color-mix(in oklch,var(--accent) 10%,transparent),inset 0 0 80px color-mix(in oklch,var(--accent) 6%,transparent)}
+    .figure{position:relative;width:min(28vw,410px);aspect-ratio:3/4;border-radius:48% 48% 20% 20%;background:linear-gradient(160deg,color-mix(in oklch,var(--fg) 29%,transparent),color-mix(in oklch,var(--surface) 90%,var(--accent)));box-shadow:0 42px 80px color-mix(in oklch,var(--bg) 80%,transparent);overflow:hidden}
+    .figure::before{content:'';position:absolute;left:50%;top:8%;width:35%;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:color-mix(in oklch,var(--fg) 14%,var(--surface));}
+    .figure::after{content:'合规人物主视觉占位';position:absolute;left:50%;bottom:24px;transform:translateX(-50%);white-space:nowrap;color:var(--muted);font:10px var(--font-mono);letter-spacing:.08em}
+    .stamp{position:absolute;right:0;bottom:12%;width:118px;height:118px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--accent);font:11px/1.5 var(--font-mono);transform:rotate(8deg)}
+    footer{display:flex;justify-content:space-between;gap:20px;padding-top:22px;border-top:1px solid var(--border);color:var(--muted);font-size:11px}
+    @media(max-width:920px){.shell{padding:24px 20px}main{grid-template-columns:1fr;padding-top:68px}.visual{min-height:440px;order:-1}.halo{width:360px}.figure{width:250px}h1{font-size:58px}.download{grid-template-columns:104px 1fr}.verify{display:none}footer{flex-direction:column}.stamp{right:8%}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header data-od-id="landing-header"><div class="brand"><span class="logo">基咔<small>JI KA</small></span><span>基咔</span></div><span class="verify">OFFICIAL DOWNLOAD · 18+ ONLY</span></header>
+    <main data-od-id="landing-hero">
+      <section>
+        <p class="eyebrow">H5 & APP · 高清内容平台</p>
+        <h1>全球热门GV资源<br>高清直达无限看</h1>
+        <p class="lead">短视频发现、长视频分类、AI创作与社区讨论，一套账号同步权益和播放进度。</p>
+        <div class="points"><span class="point">每日更新</span><span class="point">高清线路</span><span class="point">会员与金币</span><span class="point">H5 / App 同步</span></div>
+        <div class="download">
+          <div class="qr" aria-label="下载二维码占位"></div>
+          <div class="download-actions"><a class="btn primary" href="index.html"><span>立即进入 H5</span><small>无需安装 →</small></a><a class="btn" href="#"><span>下载 App</span><small>iOS / Android →</small></a></div>
+        </div>
+        <div class="install">推荐使用系统浏览器打开。iPhone 请使用 Safari；Android 下载后按系统提示完成安装。首次进入必须确认已满 18 周岁。</div>
+      </section>
+      <section class="visual" aria-label="人物主视觉占位"><div class="halo"></div><div class="figure"></div><div class="stamp">DAILY<br>UPDATED<br>18+</div></section>
+    </main>
+    <footer data-od-id="landing-footer"><span>仅限成年人使用 · 请遵守当地法律法规</span><span>用户协议 · 隐私政策 · 举报与客服 · 安装帮助</span></footer>
+  </div>
+  <script>document.querySelector('.qr').innerHTML='<span></span>'.repeat(49);</script>
+</body>
+</html>
