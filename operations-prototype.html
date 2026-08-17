@@ -1280,13 +1280,13 @@
     .reference-ad:nth-child(5n) .reference-ad-icon { --ad1:#6575e9; --ad2:#25234e; }
     .reference-ad-icon b { position:relative; z-index:2; font-size:7px; }
     .reference-ad > span:last-child { display:block; margin-top:3px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .reference-shortcuts { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; padding:12px 12px 8px; }
-    .reference-shortcut { min-width:0; border:0; background:none; color:#20242a; font-size:12px; font-weight:650; line-height:1.2; padding:0; -webkit-tap-highlight-color:transparent; }
+    .reference-shortcuts { display:flex; justify-content:center; gap:7px; padding:12px 12px 8px; }
+    .reference-shortcut { min-width:0; flex:1 1 0; max-width:76px; border:0; background:none; color:#20242a; font-size:12px; font-weight:650; line-height:1.2; padding:0; -webkit-tap-highlight-color:transparent; }
     .reference-shortcut-icon { position:relative; display:grid; place-items:center; width:58px; height:54px; margin:0 auto 6px; overflow:hidden; border-radius:15px; background:linear-gradient(155deg,#fff0f4 4%,#f8dce8 100%); box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 5px 12px rgba(215,138,164,.09); transition:transform .18s ease,box-shadow .18s ease; }
     .reference-shortcut-icon::after { content:''; position:absolute; right:-10px; bottom:-14px; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.38); }
-    .reference-shortcut:nth-child(2) .reference-shortcut-icon { background:linear-gradient(155deg,#ffe9f0 0%,#f4e5f7 58%,#e8e4fb 100%); }
-    .reference-shortcut:nth-child(3) .reference-shortcut-icon { background:linear-gradient(155deg,#fff1d4 0%,#ffe2ee 100%); }
-    .reference-shortcut:nth-child(4) .reference-shortcut-icon { background:linear-gradient(155deg,#e6eaff 0%,#d9f3f1 100%); }
+    .reference-shortcut.is-drama .reference-shortcut-icon { background:linear-gradient(155deg,#ffe9f0 0%,#f4e5f7 58%,#e8e4fb 100%); }
+    .reference-shortcut.is-anime .reference-shortcut-icon { background:linear-gradient(155deg,#fff1d4 0%,#ffe2ee 100%); }
+    .reference-shortcut.is-activity .reference-shortcut-icon { background:linear-gradient(155deg,#e6eaff 0%,#d9f3f1 100%); }
     .reference-shortcut-icon svg { position:relative; z-index:1; width:40px; height:40px; overflow:visible; }
     .reference-shortcut:active .reference-shortcut-icon { transform:scale(.93); box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 7px rgba(80,93,116,.12); }
     .reference-discovery { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding:7px 0 11px; }
@@ -1704,6 +1704,16 @@
       {coins:3280,amount:328},{coins:5880,amount:588},{coins:8880,amount:888}
     ];
     const promotionConfig={landing:'landing.html'};
+    const recommendShortcutConfig={
+      maxVisible:5,
+      items:[
+        {id:'hot-ranks',label:'热榜',icon:'rank',type:'ranking',enabled:true,order:10},
+        {id:'short-drama',label:'短剧',icon:'drama',type:'tag',value:'短剧',enabled:true,order:20},
+        {id:'anime',label:'动漫',icon:'anime',type:'tag',value:'动漫',enabled:true,order:30},
+        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',enabled:true,order:40},
+        {id:'campaign-reserve',label:'限时活动',icon:'activity',type:'activity',landing:'landing.html',enabled:false,order:50}
+      ]
+    };
     const appIconOptions=[
       {id:'default',name:'默认图标',copy:'品牌渐变 · 清晰识别',className:'',glyph:'JK'},
       {id:'weather',name:'晴雨助手',copy:'天气风格 · 日常低调',className:'weather',glyph:''},
@@ -2066,25 +2076,24 @@
       const carousel=referenceAds.slice(6,18);
       return `<section class="reference-section" data-od-id="long-ad-matrix"><div class="reference-ad-grid" aria-label="三行固定广告位">${referenceAds.map(referenceAd).join('')}</div><div class="reference-ad-carousel" aria-label="第四行自动轮播广告位"><div class="reference-ad-track">${carousel.map((name,i)=>referenceAd(name,i+6)).join('')}</div></div></section>`;
     }
+    const referenceShortcutIcons={
+      rank:'<svg viewBox="0 0 48 48"><path d="M16 8h16v8c0 7-3.6 12-8 12s-8-5-8-12V8Z" fill="#ffb51f"/><path d="M17 12H9c0 7 3.2 11 10 11M31 12h8c0 7-3.2 11-10 11" fill="none" stroke="#ffd45d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 27v7m-7 5h14" stroke="#f39b0b" stroke-width="5" stroke-linecap="round"/><path d="m24 11 1.5 3 3.5.5-2.5 2.4.6 3.4-3.1-1.6-3.1 1.6.6-3.4-2.5-2.4 3.5-.5Z" fill="#fff3b4"/></svg>',
+      drama:'<svg viewBox="0 0 48 48"><path d="M10 17h30v22H10z" rx="5" fill="#ff6e9d"/><path d="M10 17h30v7H10z" fill="#fff1f6"/><path d="m14 17 5 7m5-7 5 7m5-7 5 7" stroke="#7e63dc" stroke-width="3"/><path d="m21 28 9 5-9 5Z" fill="#fff"/><path d="M8 10h31l2 7H10Z" fill="#ffc44f"/><path d="m12 10 5 7m6-7 5 7m6-7 5 7" stroke="#fff7d8" stroke-width="3"/></svg>',
+      anime:'<svg viewBox="0 0 48 48"><path d="m12 17 4-9 7 7m13 2-4-9-7 7" fill="#7fcff5" stroke="#5799db" stroke-width="2" stroke-linejoin="round"/><path d="M10 25c0-10 6-15 14-15s14 5 14 15-5 15-14 15-14-5-14-15Z" fill="#72c7ef"/><path d="M14 24c3-6 16-8 20 0v7c-2 6-18 6-20 0Z" fill="#fff6ea"/><path d="M18 27h1m10 0h1" stroke="#334b74" stroke-width="4" stroke-linecap="round"/><path d="M21 32c2 2 4 2 6 0" fill="none" stroke="#ef7f9d" stroke-width="2" stroke-linecap="round"/><path d="m14 20 8-8 12 9" fill="#ff82ad" opacity=".72"/></svg>',
+      activity:'<svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg>'
+    };
+    function activeRecommendShortcuts() {
+      const limit=Math.max(0,Math.min(5,Number(recommendShortcutConfig.maxVisible)||5));
+      return recommendShortcutConfig.items.filter(item=>item.enabled).sort((a,b)=>(a.order||0)-(b.order||0)).slice(0,limit);
+    }
+    function referenceShortcut(item) {
+      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
+      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:`打开${item.label}落地页`;
+      return `<button class="reference-shortcut is-${escapeHTML(item.icon||'activity')}" ${action} data-shortcut-id="${escapeHTML(item.id)}" aria-label="${escapeHTML(aria)}"><span class="reference-shortcut-icon" aria-hidden="true">${referenceShortcutIcons[item.icon]||referenceShortcutIcons.activity}</span><span>${escapeHTML(item.label)}</span></button>`;
+    }
     function referenceShortcuts() {
-      return `<div class="reference-shortcuts" data-od-id="long-recommend-shortcuts" aria-label="推荐快捷入口">
-        <button class="reference-shortcut" data-action="open-hot-ranks" aria-label="查看热榜集合">
-          <span class="reference-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M16 8h16v8c0 7-3.6 12-8 12s-8-5-8-12V8Z" fill="#ffb51f"/><path d="M17 12H9c0 7 3.2 11 10 11M31 12h8c0 7-3.2 11-10 11" fill="none" stroke="#ffd45d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 27v7m-7 5h14" stroke="#f39b0b" stroke-width="5" stroke-linecap="round"/><path d="m24 11 1.5 3 3.5.5-2.5 2.4.6 3.4-3.1-1.6-3.1 1.6.6-3.4-2.5-2.4 3.5-.5Z" fill="#fff3b4"/></svg></span>
-          <span>热榜</span>
-        </button>
-        <button class="reference-shortcut" data-action="search-tag" data-value="短剧" aria-label="进入短剧标签集合">
-          <span class="reference-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 17h30v22H10z" rx="5" fill="#ff6e9d"/><path d="M10 17h30v7H10z" fill="#fff1f6"/><path d="m14 17 5 7m5-7 5 7m5-7 5 7" stroke="#7e63dc" stroke-width="3"/><path d="m21 28 9 5-9 5Z" fill="#fff"/><path d="M8 10h31l2 7H10Z" fill="#ffc44f"/><path d="m12 10 5 7m6-7 5 7m6-7 5 7" stroke="#fff7d8" stroke-width="3"/></svg></span>
-          <span>短剧</span>
-        </button>
-        <button class="reference-shortcut" data-action="search-tag" data-value="动漫" aria-label="进入动漫标签集合">
-          <span class="reference-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="m12 17 4-9 7 7m13 2-4-9-7 7" fill="#7fcff5" stroke="#5799db" stroke-width="2" stroke-linejoin="round"/><path d="M10 25c0-10 6-15 14-15s14 5 14 15-5 15-14 15-14-5-14-15Z" fill="#72c7ef"/><path d="M14 24c3-6 16-8 20 0v7c-2 6-18 6-20 0Z" fill="#fff6ea"/><path d="M18 27h1m10 0h1" stroke="#334b74" stroke-width="4" stroke-linecap="round"/><path d="M21 32c2 2 4 2 6 0" fill="none" stroke="#ef7f9d" stroke-width="2" stroke-linecap="round"/><path d="m14 20 8-8 12 9" fill="#ff82ad" opacity=".72"/></svg></span>
-          <span>动漫</span>
-        </button>
-        <button class="reference-shortcut" data-action="promo-jump" data-source="recommend-activity" aria-label="打开活动落地页">
-          <span class="reference-shortcut-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg></span>
-          <span>活动</span>
-        </button>
-      </div>`;
+      const items=activeRecommendShortcuts();
+      return `<div class="reference-shortcuts" data-od-id="long-recommend-shortcuts" data-visible-count="${items.length}" aria-label="推荐快捷入口，当前${items.length}个">${items.map(referenceShortcut).join('')}</div>`;
     }
     function referenceFilter() {
       const filters=['最热','推荐','最新'];
@@ -2956,7 +2965,7 @@
       }
       if(action==='short-like'){const id=target.dataset.id;ensureLogin(()=>{const active=state.shortLiked.has(id);active?state.shortLiked.delete(id):state.shortLiked.add(id);renderShort();toast(active?'已取消点赞':'已点赞');});return;}
       if(action==='open-short-comments'){openComments('video');return;}
-      if(action==='promo-jump'){const url=new URL(promotionConfig.landing,location.href);url.searchParams.set('source',target.dataset.source||'promotion');if(target.dataset.id)url.searchParams.set('content_id',target.dataset.id);location.assign(url.href);return;}
+      if(action==='promo-jump'){const url=new URL(target.dataset.landing||promotionConfig.landing,location.href);url.searchParams.set('source',target.dataset.source||'promotion');if(target.dataset.id)url.searchParams.set('content_id',target.dataset.id);location.assign(url.href);return;}
       if(action==='short-clean'){state.shortCleanScreen=!state.shortCleanScreen;render();toast(state.shortCleanScreen?'已进入清屏模式，轻触画面恢复':'界面已恢复');return;}
       if(action==='toggle-list-state'){const states=['default','loading','empty','error'],index=states.indexOf(state.listState);state.listState=states[(index+1)%states.length];render();}
       if(action==='page-retry'){state.listState='loading';render();setTimeout(()=>{state.listState='default';render();toast('已重新加载');},450);}
