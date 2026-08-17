@@ -332,9 +332,6 @@
     .back-btn { width: 44px; height: 44px; border: 0; background: transparent; color: var(--fg); font-size: 24px; }
     .notice { padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--fg-soft); color: var(--muted); font-size: 12px; }
     .notice strong { color: var(--fg); }
-    .progress-line { position:absolute; left:0; right:0; bottom:0; z-index:4; height:3px; border-radius:3px; background:var(--border); overflow:visible; }
-    .progress-line span { position:relative; display:block; height:100%; border-radius:inherit; background:var(--accent); color:var(--accent); }
-    .progress-line span::after,
     .post-video-progress span::after,
     .record-media-progress i::after,
     .collection-progress span::after,
@@ -354,12 +351,18 @@
     .player-center { position:absolute; left:calc(50% - 29px); top:calc(50% - 29px); z-index:8; width:58px; height:58px; border:1px solid rgba(255,255,255,.28); border-radius:50%; background:rgba(0,0,0,.46); color:white; display:grid; place-items:center; backdrop-filter:blur(10px); pointer-events:auto; }
     .player-center svg { width:25px; height:25px; fill:currentColor; stroke:currentColor; }
     .player-ui { position:absolute; left:0; right:0; bottom:0; z-index:6; padding:34px 12px 9px; background:linear-gradient(transparent,rgba(0,0,0,.88)); }
-    .player-progress { display:block; width:100%; height:16px; margin:0; appearance:none; background:transparent; cursor:pointer; }
+    .progress-line { position:absolute; left:0; right:0; bottom:-2px; z-index:12; width:100%; height:17px; margin:0; appearance:none; background:transparent; cursor:pointer; }
+    .progress-line::-webkit-slider-runnable-track { height:3px; border-radius:4px; background:linear-gradient(90deg,var(--accent) 0 var(--progress),rgba(255,255,255,.38) var(--progress)); }
+    .progress-line::-webkit-slider-thumb { appearance:none; width:13px; height:13px; margin-top:-5px; border:2px solid rgba(255,255,255,.96); border-radius:50%; background:var(--accent); box-shadow:0 1px 6px rgba(0,0,0,.34); }
+    .progress-line::-moz-range-track { height:3px; border-radius:4px; background:rgba(255,255,255,.38); }
+    .progress-line::-moz-range-progress { height:3px; border-radius:4px; background:var(--accent); }
+    .progress-line::-moz-range-thumb { width:13px; height:13px; border:2px solid rgba(255,255,255,.96); border-radius:50%; background:var(--accent); box-shadow:0 1px 6px rgba(0,0,0,.34); }
+    .player-progress { display:block; width:100%; height:20px; margin:0; appearance:none; background:transparent; cursor:pointer; }
     .player-progress::-webkit-slider-runnable-track { height:3px; border-radius:4px; background:linear-gradient(90deg,#25b6e7 0 var(--progress),rgba(255,255,255,.32) var(--progress)); }
-    .player-progress::-webkit-slider-thumb { appearance:none; width:11px; height:11px; margin-top:-4px; border-radius:50%; background:white; box-shadow:0 0 0 3px rgba(37,182,231,.26); }
+    .player-progress::-webkit-slider-thumb { appearance:none; width:15px; height:15px; margin-top:-6px; border:2px solid white; border-radius:50%; background:#25b6e7; box-shadow:0 0 0 4px rgba(37,182,231,.26); }
     .player-progress::-moz-range-track { height:3px; border-radius:4px; background:rgba(255,255,255,.32); }
     .player-progress::-moz-range-progress { height:3px; border-radius:4px; background:#25b6e7; }
-    .player-progress::-moz-range-thumb { width:11px; height:11px; border:0; border-radius:50%; background:white; box-shadow:0 0 0 3px rgba(37,182,231,.26); }
+    .player-progress::-moz-range-thumb { width:15px; height:15px; border:2px solid white; border-radius:50%; background:#25b6e7; box-shadow:0 0 0 4px rgba(37,182,231,.26); }
     .player-bar { display:flex; align-items:center; gap:7px; min-height:30px; }
     .player-spacer { flex:1; }
     .player-icon { min-width:30px; height:30px; padding:0 5px; border:0; background:transparent; color:white; display:grid; place-items:center; font-size:10px; }
@@ -375,7 +378,6 @@
     .player-mini-status { position:absolute; top:10px; left:12px; z-index:4; display:flex; gap:6px; }
     .player-chip { padding:4px 7px; border-radius:4px; background:rgba(0,0,0,.56); color:white; font:8px var(--font-mono); }
     .player-chip.player-trial-hint { border:1px solid rgba(111,210,249,.35); background:rgba(6,25,38,.76); color:#82dcff; }
-    .player-progress:disabled { cursor:not-allowed; opacity:.72; }
     .detail-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .detail-actions button { min-height: 44px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--muted); }
     .detail-section { padding:14px 10px; border-top:8px solid #f4f6f9; background:white; }
@@ -1027,12 +1029,14 @@
     .operation-card:last-child { background:linear-gradient(135deg,#15a3dc,#2e65d7); }
     .operation-card .yellow { display:inline-block; margin-top:25px; padding:5px 10px; border-radius:12px; background:#ffd64a; color:#2c3a4a; font-size:9px; font-weight:800; }
     .mine-finance-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .mine-money-card { min-height:86px; padding:13px; border:1px solid rgba(31,91,143,.12); border-radius:16px; background:rgba(255,255,255,.76); color:#153251; text-align:left; box-shadow:0 10px 28px rgba(49,91,135,.08); }
+    .mine-money-card { position:relative; min-height:86px; padding:13px; border:1px solid rgba(31,91,143,.12); border-radius:16px; background:rgba(255,255,255,.76); color:#153251; text-align:left; box-shadow:0 10px 28px rgba(49,91,135,.08); }
     .mine-money-card span,.mine-money-card strong,.mine-money-card small { display:block; }
     .mine-money-card span { width:30px; height:30px; display:grid; place-items:center; margin-bottom:10px; border-radius:10px; background:linear-gradient(145deg,#58c6ef,#176fca); color:#fff; font-weight:900; }
     .mine-money-card strong { font-size:13px; }
     .mine-money-card small { margin-top:3px; color:#6d839c; font-size:8px; }
     .mine-money-card.recharge span { background:linear-gradient(145deg,#ffe083,#c98b1e); color:#483109; }
+    .mine-money-main { display:block; width:100%; padding:0; border:0; background:none; color:inherit; text-align:left; }
+    .recharge-order-link { position:absolute; top:10px; right:10px; z-index:2; min-height:24px; padding:0 8px; border:1px solid rgba(148,103,14,.22); border-radius:12px; background:#fff7dd; color:#8a620d; font-size:8px; font-weight:750; }
     .mine-member-luxe { position:relative; grid-column:1/-1; min-height:126px; overflow:hidden; padding:19px 18px; border:1px solid rgba(233,195,99,.38); border-radius:20px; background:radial-gradient(circle at 82% 18%,rgba(222,178,77,.28),transparent 32%),linear-gradient(135deg,#090a0d,#1c1b19 58%,#0c0c0d); color:#fff; text-align:left; box-shadow:0 18px 40px rgba(15,23,34,.2); isolation:isolate; }
     .mine-member-luxe::before { content:''; position:absolute; z-index:-1; width:190px; height:190px; right:-50px; top:-74px; border:1px solid rgba(245,211,126,.28); border-radius:50%; box-shadow:0 0 0 34px rgba(245,211,126,.06),0 0 0 68px rgba(245,211,126,.035); animation:mine-luxe-orbit 7s ease-in-out infinite alternate; }
     .mine-member-luxe::after { content:''; position:absolute; z-index:-1; inset:-80% -30%; background:linear-gradient(105deg,transparent 42%,rgba(255,230,164,.14) 50%,transparent 58%); transform:translateX(-36%); animation:mine-luxe-shine 4.8s ease-in-out infinite; }
@@ -1631,8 +1635,7 @@
       ]}
     };
     const campaignConfig={
-      // PDF只定义“首次AI任务减免部分金币”，未定义减免数值；数值由运营后台配置，原型不伪造价格。
-      aiFirstExperience:{enabled:true,discountAmount:null,eligibleTool:'低成本授权模板'}
+      aiFirstExperience:{enabled:true,free:true,limit:1}
     };
     const rechargePacks=[
       {coins:660,amount:66},{coins:1280,amount:128},{coins:1980,amount:198},
@@ -1651,7 +1654,7 @@
     const state = {
       tab:'short', screen:'main', returnScreen:'main', profileReturnScreen:'main', navigationStack:[], contentId:'lv1', loggedIn:false, authMode:'login', loginMethod:'手机号', memberships:[],
       membershipFamily:'all', membershipPlan:'all_year', membershipCheckout:null,
-      coins:60, aiQuota:0, frozen:0, coupons:0,
+      coins:60, aiQuota:0, frozen:0, aiFirstExperienceUsed:false,
       purchased:new Set(), tasks:[], aiNotifications:[], aiDraft:{tool:'',cost:0,materialReady:false}, accountHydrated:false, accountSnapshot:null, orders:[
         {id:'ORD-DEMO-FAILED',type:'coins',title:'充值订单状态样例',amount:6,status:'失败',time:'昨天 20:10',refundReason:'支付渠道返回失败，未扣款、未发放。',granted:false},
         {id:'ORD-DEMO-CLOSED',type:'member',title:'会员订单状态样例',amount:39,status:'关闭',time:'昨天 19:32',refundReason:'超过支付时限，订单已关闭。',granted:false},
@@ -1806,16 +1809,16 @@
     const communitySensitiveTerms=['未成年','加微信','联系方式','外链','辱骂词'];
     function findSensitiveTerm(value='') { return communitySensitiveTerms.find(term=>String(value).includes(term))||''; }
     function getAIAllocation(cost) {
+      if(cost===0)return {quota:0,coins:0,shortage:0,label:'首次体验免费'};
       let rest=cost;
       const quota=Math.min(state.aiQuota,rest);rest-=quota;
       const coins=Math.min(state.coins,rest);rest-=coins;
       return {quota,coins,shortage:rest,label:[quota&&`${quota} AI额度`,coins&&`${coins} 金币`].filter(Boolean).join(' + ')||'可用资产不足'};
     }
     function getContentAllocation(cost) {
-      if(state.coupons>0) return {coupon:1,coins:0,shortage:0,label:'精品券 1张'};
       let rest=cost;
       const coins=Math.min(state.coins,rest);rest-=coins;
-      return {coupon:0,coins,shortage:rest,label:coins?`${coins} 金币`:'资产不足'};
+      return {coins,shortage:rest,label:coins?`${coins} 金币`:'资产不足'};
     }
     function businessId(prefix) { return `${prefix}-${Date.now().toString().slice(-8)}-${Math.floor(Math.random()*90+10)}`; }
     function pushLedger(assetType,delta,before,reason,bizNo,status='成功') {
@@ -1832,6 +1835,7 @@
     }
     function hasAIDiscount() { return aiDiscountRate()<1; }
     function aiTaskCost(tool,baseCost) {
+      if(campaignConfig.aiFirstExperience.enabled&&campaignConfig.aiFirstExperience.free&&!state.aiFirstExperienceUsed)return 0;
       return hasAIDiscount()?Math.ceil(baseCost*aiDiscountRate()):baseCost;
     }
     function createResumeIntent(action,objectId,required) {
@@ -2110,7 +2114,7 @@
       const trialCopy=item.entitlement==='membership'?'开通视频VIP后从当前进度继续观看完整版。':'充值金币后返回当前视频完成解锁。';
       const trialCta=item.entitlement==='membership'?'开通VIP看完整版':'充值金币解锁';
       const trialMask=trialEnded?`<div class="short-trial-mask" data-od-id="short-trial-mask"><div class="short-trial-mask-card"><span class="short-trial-mask-lock">${icons.lock}</span><h2>试看已结束</h2><p>${trialCopy}</p><button class="short-trial-mask-cta" data-action="${trialAction}" data-id="${item.id}">${trialCta}</button><span class="short-trial-swipe">上滑继续看下一条</span></div></div>`:'';
-      return `<article class="short-video-slide ${trialEnded?'is-trial-ended':''}" data-short-index="${index}" data-content-id="${feed.id}"><div class="video-stage" role="button" tabindex="0" aria-label="暂停或继续短视频" data-action="short-toggle" data-id="${item.id}">${placeholder(`竖版短视频主视觉 ${index+1}`)}<div class="video-shade"></div><span class="short-index">${state.shortTab} · ${index+1}/${(state.shortTab==='关注'?shortFeeds.推荐.filter(x=>state.following.has(x.author)):shortFeeds[state.shortTab]).length}</span><div class="progress-line"><span style="width:${progress}%"></span></div>${trialBadge}${center}<div class="video-copy"><button class="short-author-link" data-action="open-profile" data-source="video" aria-label="查看${feed.author}个人页"><h2 class="h3">@${feed.author}</h2></button><p>${feed.tags}</p><p class="meta">${feed.title} · 高清线路</p></div><div class="action-rail" aria-label="短视频操作"><button class="action" data-action="open-profile" data-source="video" aria-label="查看${feed.author}个人页"><span class="action-avatar"></span><span>头像</span></button><button class="action" data-action="short-toggle" data-id="${item.id}" aria-label="播放或暂停短视频，播放量${item.views||0}">${icons.play}<span>${item.views||0}</span></button><button class="action ${liked?'is-liked':''}" data-action="short-like" data-id="${item.id}" aria-label="${liked?'取消点赞':'点赞'}，点赞量${feed.likes||0}">${icons.heart}<span>${feed.likes||0}</span></button><button class="action" data-action="promo-jump" data-source="short-video-share" data-id="${item.id}" aria-label="分享并打开推广落地页">${icons.share}<span>分享</span></button><button class="action" data-action="short-clean">${icons.clean}<span>清屏</span></button></div>${trialMask}<button class="short-clean-restore" data-action="short-clean" aria-label="点击恢复短视频界面">点击恢复界面</button></div></article>`;
+      return `<article class="short-video-slide ${trialEnded?'is-trial-ended':''}" data-short-index="${index}" data-content-id="${feed.id}"><div class="video-stage" role="button" tabindex="0" aria-label="暂停或继续短视频" data-action="short-toggle" data-id="${item.id}">${placeholder(`竖版短视频主视觉 ${index+1}`)}<div class="video-shade"></div><span class="short-index">${state.shortTab} · ${index+1}/${(state.shortTab==='关注'?shortFeeds.推荐.filter(x=>state.following.has(x.author)):shortFeeds[state.shortTab]).length}</span><input class="progress-line" type="range" min="0" max="${total}" value="${elapsed}" style="--progress:${progress}%" data-action="short-seek" data-id="${item.id}" aria-label="短视频播放进度">${trialBadge}${center}<div class="video-copy"><button class="short-author-link" data-action="open-profile" data-source="video" aria-label="查看${feed.author}个人页"><h2 class="h3">@${feed.author}</h2></button><p>${feed.tags}</p><p class="meta">${feed.title} · 高清线路</p></div><div class="action-rail" aria-label="短视频操作"><button class="action" data-action="open-profile" data-source="video" aria-label="查看${feed.author}个人页"><span class="action-avatar"></span><span>头像</span></button><button class="action" data-action="short-toggle" data-id="${item.id}" aria-label="播放或暂停短视频，播放量${item.views||0}">${icons.play}<span>${item.views||0}</span></button><button class="action ${liked?'is-liked':''}" data-action="short-like" data-id="${item.id}" aria-label="${liked?'取消点赞':'点赞'}，点赞量${feed.likes||0}">${icons.heart}<span>${feed.likes||0}</span></button><button class="action" data-action="promo-jump" data-source="short-video-share" data-id="${item.id}" aria-label="分享并打开推广落地页">${icons.share}<span>分享</span></button><button class="action" data-action="short-clean">${icons.clean}<span>清屏</span></button></div>${trialMask}<button class="short-clean-restore" data-action="short-clean" aria-label="点击恢复短视频界面">点击恢复界面</button></div></article>`;
     }
     function startShortPlayback(stack,feeds) {
       clearInterval(shortPlaybackTimer);
@@ -2126,8 +2130,8 @@
         const elapsed=Math.min(limit,(state.shortElapsed[activeItem.id]||0)+1);
         state.shortElapsed[activeItem.id]=elapsed;
         state.shortProgress[`${state.shortTab}:${state.shortIndex}`]=Math.min(100,elapsed/total*100);
-        const slide=stack.querySelector(`[data-short-index="${state.shortIndex}"]`),bar=slide?.querySelector('.progress-line span'),badge=slide?.querySelector('.trial');
-        if(bar)bar.style.width=`${state.shortProgress[`${state.shortTab}:${state.shortIndex}`]}%`;
+        const slide=stack.querySelector(`[data-short-index="${state.shortIndex}"]`),bar=slide?.querySelector('.progress-line'),badge=slide?.querySelector('.trial');
+        if(bar){bar.value=elapsed;bar.style.setProperty('--progress',`${state.shortProgress[`${state.shortTab}:${state.shortIndex}`]}%`);}
         if(badge&&!owned)badge.textContent=`${entitlement(activeItem)}试看 · 剩余 ${formatTime(Math.max(0,limit-elapsed))}`;
         if(!owned&&elapsed>=limit){
           clearInterval(shortPlaybackTimer);shortPlaybackTimer=null;state.shortPaused=true;state.shortCleanScreen=false;state.shortTrialEnded.add(activeItem.id);renderShort();
@@ -2155,7 +2159,7 @@
       const loading=status==='loading'?'<div class="player-loading"><span class="loading-ring"></span><span class="loading-copy">正在连接最佳线路…</span></div>':'';
       const error=status==='error'?`<div class="trial-overlay"><span class="trial-lock">!</span><strong>播放连接失败</strong><p>${escapeHTML(player.error||'当前线路暂不可用，播放进度已保存。')}</p><div class="row"><button class="btn-secondary" data-action="player-line">切换线路</button><button class="btn-primary" data-action="player-retry">重新加载</button></div><button class="btn-secondary" data-action="support">提交播放反馈</button></div>`:'';
       const trial=!owned&&status==='trialEnded'?`<div class="trial-overlay"><span class="trial-lock">${icons.lock}</span><strong>试看已结束</strong><p>已试看 ${formatTime(item.trial)}，解锁后从当前位置继续</p><button class="trial-cta" ${trialAction}>${item.entitlement==='membership'?'开通视频VIP':'使用金币解锁'}</button></div>`:'';
-      content.innerHTML=`<section class="portal-page" data-od-id="video-detail"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${item.kind}详情</strong><button class="back-btn" data-action="safety-menu" aria-label="更多">···</button></div><div class="detail-player ${player.fullscreen?'is-fullscreen':''}" data-od-id="video-player"><div class="player-visual"></div><button class="player-tap-target" data-action="player-toggle" aria-label="${status==='playing'?'暂停视频':'继续播放视频'}"></button><div class="player-mini-status"><span class="player-chip">${player.quality}</span><span class="player-chip">线路${player.line}</span>${trialHint}${status==='paused'?'<span class="player-chip">已暂停</span>':''}</div>${loading}${center}${error}${trial}<div class="player-ui"><input class="player-progress" type="range" min="0" max="${total}" value="${Math.min(player.current,total)}" style="--progress:${progress}%" data-action="player-seek" aria-label="播放进度" ${owned?'':'disabled'}><div class="player-bar"><button class="player-icon" data-action="player-toggle" aria-label="${status==='playing'?'暂停':'播放'}">${status==='playing'?icons.pause:icons.play}</button><span class="player-time">${formatTime(player.current)} / ${item.duration}</span><span class="player-spacer"></span><button class="player-icon" data-action="player-quality" aria-label="清晰度">${player.quality}</button><button class="player-icon" data-action="player-line" aria-label="播放线路">L${player.line}</button><button class="player-icon" data-action="player-speed" aria-label="播放速度">${player.speed.toFixed(1)}×</button><button class="player-icon" data-action="player-mute" aria-label="${player.muted?'取消静音':'静音'}">${player.muted?icons.mute:icons.volume}</button><button class="player-icon" data-action="player-fullscreen" aria-label="${player.fullscreen?'退出全屏':'全屏'}">${player.fullscreen?icons.shrink:icons.fullscreen}</button></div></div></div>${player.fullscreen?'':`${channels()}<div class="pad" style="padding-top:10px;"><div class="row-between"><button class="row" style="border:0;background:none;text-align:left;padding:0;" data-action="open-profile" data-source="video"><span class="avatar"></span><span><strong>干净演变身影</strong><span class="meta" style="display:block;">片库认证作者 · 8.6万粉丝</span></span></button><button class="publish-pill" data-action="follow" data-id="干净演变身影">${state.following.has('干净演变身影')?'已关注':'关注 +'}</button></div><h1 class="h3" style="margin-top:12px;line-height:1.5;">${item.title}｜精选系列高清完整版</h1><p class="meta">${item.duration} · ▶ ${item.views}次播放 · ${entitlement(item)}内容</p><div class="chips" style="margin:9px 0;">${['推荐','中文字幕','剧情'].map(tag=>`<button class="chip" data-action="search-tag" data-value="${tag}">#${tag}</button>`).join('')}</div><p style="font-size:11px;color:#4e5967;line-height:1.7;">本集为系列精选内容，支持进度记忆、线路切换和清晰度选择；遇到播放问题可切换线路或提交反馈。</p><div class="detail-actions" style="margin-top:10px;"><button data-action="favorite" data-id="${item.id}">${state.favorites.has(item.id)?'已收藏':'收藏'}</button><button data-action="focus-comments">评论 ${state.videoComments.length}</button><button data-action="simulate-player-error">模拟播放异常</button></div></div><section class="detail-section recommendation-section" data-od-id="video-recommendations"><div class="detail-section-title"><strong>为你推荐</strong><span>3 行 × 2 列</span></div>${mediaCards(recommendations)}</section><section id="videoComments" class="detail-section" data-od-id="video-comments"><div class="detail-section-title"><strong>评论</strong><span>${state.videoComments.length} 条</span></div>${commentsMarkup(state.videoComments,'video')}</section>`}</section>`;
+      content.innerHTML=`<section class="portal-page" data-od-id="video-detail"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${item.kind}详情</strong><button class="back-btn" data-action="safety-menu" aria-label="更多">···</button></div><div class="detail-player ${player.fullscreen?'is-fullscreen':''}" data-od-id="video-player"><div class="player-visual"></div><button class="player-tap-target" data-action="player-toggle" aria-label="${status==='playing'?'暂停视频':'继续播放视频'}"></button><div class="player-mini-status"><span class="player-chip">${player.quality}</span><span class="player-chip">线路${player.line}</span>${trialHint}${status==='paused'?'<span class="player-chip">已暂停</span>':''}</div>${loading}${center}${error}${trial}<div class="player-ui"><input class="player-progress" type="range" min="0" max="${total}" value="${Math.min(player.current,total)}" style="--progress:${progress}%" data-action="player-seek" aria-label="播放进度"><div class="player-bar"><button class="player-icon" data-action="player-toggle" aria-label="${status==='playing'?'暂停':'播放'}">${status==='playing'?icons.pause:icons.play}</button><span class="player-time">${formatTime(player.current)} / ${item.duration}</span><span class="player-spacer"></span><button class="player-icon" data-action="player-quality" aria-label="清晰度">${player.quality}</button><button class="player-icon" data-action="player-line" aria-label="播放线路">L${player.line}</button><button class="player-icon" data-action="player-speed" aria-label="播放速度">${player.speed.toFixed(1)}×</button><button class="player-icon" data-action="player-mute" aria-label="${player.muted?'取消静音':'静音'}">${player.muted?icons.mute:icons.volume}</button><button class="player-icon" data-action="player-fullscreen" aria-label="${player.fullscreen?'退出全屏':'全屏'}">${player.fullscreen?icons.shrink:icons.fullscreen}</button></div></div></div>${player.fullscreen?'':`${channels()}<div class="pad" style="padding-top:10px;"><div class="row-between"><button class="row" style="border:0;background:none;text-align:left;padding:0;" data-action="open-profile" data-source="video"><span class="avatar"></span><span><strong>干净演变身影</strong><span class="meta" style="display:block;">8.6万粉丝</span></span></button><button class="publish-pill" data-action="follow" data-id="干净演变身影">${state.following.has('干净演变身影')?'已关注':'关注 +'}</button></div><h1 class="h3" style="margin-top:12px;line-height:1.5;">${item.title}｜精选系列高清完整版</h1><p class="meta">${item.duration} · ▶ ${item.views}次播放 · ${entitlement(item)}内容</p><div class="chips" style="margin:9px 0;">${['推荐','中文字幕','剧情'].map(tag=>`<button class="chip" data-action="search-tag" data-value="${tag}">#${tag}</button>`).join('')}</div><p style="font-size:11px;color:#4e5967;line-height:1.7;">本集为系列精选内容，支持进度记忆、线路切换和清晰度选择；遇到播放问题可切换线路或提交反馈。</p><div class="detail-actions" style="margin-top:10px;"><button data-action="favorite" data-id="${item.id}">${state.favorites.has(item.id)?'已收藏':'收藏'}</button><button data-action="focus-comments">评论 ${state.videoComments.length}</button><button data-action="simulate-player-error">模拟播放异常</button></div></div><section class="detail-section recommendation-section" data-od-id="video-recommendations"><div class="detail-section-title"><strong>为你推荐</strong><span>3 行 × 2 列</span></div>${mediaCards(recommendations)}</section><section id="videoComments" class="detail-section" data-od-id="video-comments"><div class="detail-section-title"><strong>评论</strong><span>${state.videoComments.length} 条</span></div>${commentsMarkup(state.videoComments,'video')}</section>`}</section>`;
     }
 
     function commentsMarkup(list,kind) {
@@ -2261,20 +2265,20 @@
       ];
       const back=state.screen==='ai'?'<div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>AI 创作</strong><span></span></div>':'';
       const notice=state.loggedIn?state.aiNotifications.find(n=>!n.read):null;
-      const firstExperience=campaignConfig.aiFirstExperience.enabled?`<div class="notice"><strong>AI首次体验资格</strong><br>仅开放低成本授权模板，每个用户限1次。PDF未约定具体减免值，下单时以运营后台配置和服务端结算为准。</div>`:'';
+      const firstExperience=campaignConfig.aiFirstExperience.enabled?`<div class="notice"><strong>${state.aiFirstExperienceUsed?'AI首次免费体验已使用':'AI首次体验免费'}</strong><br>${state.aiFirstExperienceUsed?'后续任务按页面展示的AI额度或金币结算。':'每个用户限1次，首次提交任一AI工具不消耗AI额度或金币。'}</div>`:'';
       const assetSummary=state.loggedIn?`AI额度 ${state.aiQuota} · 金币 ${state.coins}`:'登录后查看可用资产';
       const taskRows=state.loggedIn&&state.tasks.length?state.tasks.slice().reverse().slice(0,3).map(t=>`<button class="result-row" data-action="open-ai-task-page" data-id="${t.id}"><span class="result-thumb ${t.status==='成功'?'is-success':''}"></span><span><strong>${t.tool}</strong><span class="meta num" style="display:block;">${t.id} · 第${t.attempt||1}次</span></span><span class="status-pill">${t.status}</span></button>`).join(''):`<div class="notice">${state.loggedIn?'上传素材并发起生成后，可在这里查看任务状态。':'登录后可查看AI任务记录与生成结果。'}</div>`;
-      content.innerHTML=`<div class="portal-page" data-od-id="ai-tools">${back}${portalHeader()}${portalTabs(['AI科技','我的记录'],0)}${channels()}${notice?`<button class="ai-notification" data-action="open-ai-result-page" data-id="${notice.taskId}"><span>✓</span><div><strong>生成成功</strong><small>${notice.tool} 已完成，点击查看结果</small></div><b>查看 ›</b></button>`:''}${firstExperience}<div class="dense-section"><div class="dense-title"><strong>AI 创作工具</strong><span class="num">${assetSummary}</span></div></div><div class="ai-hero-list">${tools.map(([icon,name,cost,description],i)=>{const actual=aiTaskCost(name,cost),offer=actual<cost?` · 优惠后均为 ${actual}`:'';return `<button class="ai-hero" data-action="ai-tool" data-tool="${name}" data-cost="${cost}"><strong>${i+1}. ${name}</strong><span>${description} · 标准 ${cost}金币 / ${cost} AI额度${offer}</span></button>`;}).join('')}</div><section id="aiRecords" class="dense-section"><div class="dense-title"><strong>任务记录</strong><button class="tiny-filter" data-action="task-record">全部状态 ›</button></div>${taskRows}</section></div>`;
+      content.innerHTML=`<div class="portal-page" data-od-id="ai-tools">${back}${portalHeader()}${portalTabs(['AI科技','我的记录'],0)}${channels()}${notice?`<button class="ai-notification" data-action="open-ai-result-page" data-id="${notice.taskId}"><span>✓</span><div><strong>生成成功</strong><small>${notice.tool} 已完成，点击查看结果</small></div><b>查看 ›</b></button>`:''}${firstExperience}<div class="dense-section"><div class="dense-title"><strong>AI 创作工具</strong><span class="num">${assetSummary}</span></div></div><div class="ai-hero-list">${tools.map(([icon,name,cost,description],i)=>{const actual=aiTaskCost(name,cost),offer=actual===0?' · 首次体验免费':actual<cost?` · 优惠后 ${actual}`:'';return `<button class="ai-hero" data-action="ai-tool" data-tool="${name}" data-cost="${cost}"><strong>${i+1}. ${name}</strong><span>${description} · 标准 ${cost}金币 / ${cost} AI额度${offer}</span></button>`;}).join('')}</div><section id="aiRecords" class="dense-section"><div class="dense-title"><strong>任务记录</strong><button class="tiny-filter" data-action="task-record">全部状态 ›</button></div>${taskRows}</section></div>`;
     }
 
     function renderAIToolPage() {
       const {tool,cost:baseCost,materialReady}=state.aiDraft,novel=tool==='AI小说',video=tool==='AI视频换脸',cost=aiTaskCost(tool,baseCost);
-      const allocation=getAIAllocation(cost),offer=cost<baseCost?`会员${aiDiscountRate()===.8?'8折':'8.5折'}`:'';
+      const allocation=getAIAllocation(cost),offer=cost===0?'首次体验免费':cost<baseCost?`会员${aiDiscountRate()===.8?'8折':'8.5折'}`:'';
       const title=tool||'AI创作',exampleTitle=novel?'创作配置':'效果示例';
       const consentCopy=novel?'我确认人物设定均为成年人，并同意平台进行内容安全校验。':'我确认素材人物均已成年并获得合法授权，同意平台进行安全校验。';
       const upload=novel?`<div class="ai-novel-form"><label>作品标题<input value="城市夜航" aria-label="作品标题"></label><label>人物设定<input value="两位成年角色 · 都市故事" aria-label="人物设定"></label><label>生成篇幅<select aria-label="生成篇幅"><option>短篇 · 约2000字</option><option>中篇 · 约5000字</option></select></label><button class="btn-secondary" data-action="ai-novel-ready">${materialReady?'✓ 配置已确认':'确认创作配置'}</button></div>`:`<button class="ai-tool-upload ${materialReady?'ready':''}" data-action="select-material"><div><div class="ai-upload-cloud"></div><strong>${materialReady?'素材上传成功':'点击上传人物素材'}</strong><small>${materialReady?'demo-material.jpg · 已通过格式与安全预检':'图片不超过 10M；视频不超过 200M'}</small></div></button>`;
       const examples=novel?'':`<div class="ai-example-grid"><div class="ai-example ${video?'video':''}"><span>${video?'原视频':tool==='AI脱衣'?'处理前':'原图'}</span></div><div class="ai-example ${video?'video':''}"><span>${video?'换脸效果':tool==='AI脱衣'?'处理后':'换脸效果'}</span></div></div>`;
-      content.innerHTML=`<div class="ai-tool-page" data-od-id="ai-tool-page"><header class="ai-tool-head"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${title}</strong><span></span></header><section class="ai-tool-content">${upload}<h2 class="ai-example-title">${exampleTitle}</h2>${examples}<div class="ai-tool-options"><div class="ai-tool-option"><span>计费标准</span><span>${cost} AI额度 / ${cost}金币</span></div><div class="ai-tool-option"><span>预计耗时</span><span>${novel?'1-3分钟':'2-5分钟'}</span></div><div class="ai-tool-option"><span>结果通知</span><span>站内消息 · 可离开页面</span></div><div class="ai-tool-option"><span>异常处理</span><span>失败 / 超时 / 拒绝自动退回</span></div>${offer?`<div class="ai-tool-option"><span>${offer}</span><span>${baseCost} → ${cost}</span></div>`:''}</div><label class="check ai-tool-consent"><input id="aiPageConsent" type="checkbox">${consentCopy}</label></section><footer class="ai-tool-footer"><div class="ai-tool-cost"><span>预计消耗 <strong>${cost} AI额度 / ${cost}金币</strong></span><span>优先扣AI额度，不足部分按1:1扣金币</span></div><button class="ai-tool-submit" data-action="submit-ai" data-tool="${tool}" data-cost="${cost}" data-base-cost="${baseCost}">${allocation.shortage?'资产不足，前往充值':materialReady?`开始生成 · ${allocation.label}`:novel?'请先确认配置':'请先上传素材'}</button></footer></div>`;
+      content.innerHTML=`<div class="ai-tool-page" data-od-id="ai-tool-page"><header class="ai-tool-head"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${title}</strong><span></span></header><section class="ai-tool-content">${upload}<h2 class="ai-example-title">${exampleTitle}</h2>${examples}<div class="ai-tool-options"><div class="ai-tool-option"><span>计费标准</span><span>${cost===0?'首次体验免费':`${cost} AI额度 / ${cost}金币`}</span></div><div class="ai-tool-option"><span>预计耗时</span><span>${novel?'1-3分钟':'2-5分钟'}</span></div><div class="ai-tool-option"><span>结果通知</span><span>站内消息 · 可离开页面</span></div><div class="ai-tool-option"><span>异常处理</span><span>失败 / 超时 / 拒绝自动退回</span></div>${offer?`<div class="ai-tool-option"><span>${offer}</span><span>${cost===0?'本次 0 金币':`${baseCost} → ${cost}`}</span></div>`:''}</div><label class="check ai-tool-consent"><input id="aiPageConsent" type="checkbox">${consentCopy}</label></section><footer class="ai-tool-footer"><div class="ai-tool-cost"><span>预计消耗 <strong>${cost===0?'0 金币（首次免费）':`${cost} AI额度 / ${cost}金币`}</strong></span><span>${cost===0?'本次不扣减任何资产':'优先扣AI额度，不足部分按1:1扣金币'}</span></div><button class="ai-tool-submit" data-action="submit-ai" data-tool="${tool}" data-cost="${cost}" data-base-cost="${baseCost}">${allocation.shortage?'资产不足，前往充值':materialReady?cost===0?'免费生成':`开始生成 · ${allocation.label}`:novel?'请先确认配置':'请先上传素材'}</button></footer></div>`;
     }
 
     const communityFeedPosts=[
@@ -2340,7 +2344,7 @@
       const headActions=state.loggedIn?`<div class="mine-head-actions"><button class="mine-message" data-action="message" aria-label="消息中心">${icons.comment}${unread?`<b>${unread>9?'9+':unread}</b>`:''}</button></div>`:'';
       const memberActive=state.loggedIn&&state.memberships.length;
       const assetBox=state.loggedIn?`<div class="income-box"><h3>我的资产</h3><div class="income-row"><div><strong>${state.coins}</strong><span>金币</span></div><div><strong>${state.aiQuota}</strong><span>AI额度</span></div><div><strong>${state.ledger.length}</strong><span>资产流水</span></div></div></div>`:'';
-      content.innerHTML=`<div class="mine-page" data-od-id="profile-head"><div class="mine-profile"><button class="mine-avatar" data-action="${profileAction}" aria-label="${state.loggedIn?'查看个人主页':'登录或注册'}"></button><button style="border:0;background:none;text-align:left;padding:0;color:inherit;" data-action="${profileAction}"><strong>${state.loggedIn?'积极橘子':'登录 / 注册'} <small>${state.loggedIn?'LV3':'未登录'}</small></strong><small>${state.loggedIn?'ID: 3080419 · 已完成18岁确认':'登录后同步会员、金币与观看记录'}</small></button>${headActions}</div><div class="mine-stats"><button class="profile-stat-button" data-action="mine-connections" data-value="粉丝"><strong>${state.loggedIn?'18':'0'}</strong><span>粉丝</span></button><div><strong>${state.loggedIn?'126':'0'}</strong><span>获赞</span></div><button class="profile-stat-button" data-action="mine-connections" data-value="关注"><strong>${state.loggedIn?'12':'0'}</strong><span>关注</span></button></div><div class="mine-finance-grid"><button class="mine-money-card" data-action="wallet"><span>¥</span><strong>我的钱包</strong><small>${state.loggedIn?`可用 ${totalCoins} 金币`:'登录后查看余额'}</small></button><button class="mine-money-card recharge" data-action="coin-recharge"><span>＋</span><strong>金币充值</strong><small>六档充值 · 订单可查</small></button><button class="mine-member-luxe" data-action="membership"><span class="luxe-kicker">JIKA PRIVATE MEMBERSHIP</span><strong>${memberLabel}</strong><p>${memberActive?'会员权益已生效，点击查看权益与购买记录。':'标准片库、高清线路与跨端续播，一张卡解锁完整体验。'}</p><span class="luxe-status">${memberActive?'ACTIVE':'PREMIUM'}</span></button></div><div class="mine-icon-grid">${[['我的收藏','favorites','♥'],['我的购买','orders','▣'],['我的帖子','my-posts','帖']].map(([name,action,icon])=>`<button class="mine-entry" data-action="${action}"><i>${icon}</i>${name}</button>`).join('')}</div>${assetBox}<div class="menu"><button class="menu-row" data-action="watch-records"><span>我的影片</span><span>›</span></button><button class="menu-row" data-action="support"><span>在线客服</span><span>›</span></button><button class="menu-row" data-action="privacy"><span>设置与帮助</span><span>›</span></button></div></div>`;
+      content.innerHTML=`<div class="mine-page" data-od-id="profile-head"><div class="mine-profile"><button class="mine-avatar" data-action="${profileAction}" aria-label="${state.loggedIn?'查看个人主页':'登录或注册'}"></button><button style="border:0;background:none;text-align:left;padding:0;color:inherit;" data-action="${profileAction}"><strong>${state.loggedIn?'积极橘子':'登录 / 注册'} <small>${state.loggedIn?'LV3':'未登录'}</small></strong><small>${state.loggedIn?'ID: 3080419 · 已完成18岁确认':'登录后同步会员、金币与观看记录'}</small></button>${headActions}</div><div class="mine-stats"><button class="profile-stat-button" data-action="mine-connections" data-value="粉丝"><strong>${state.loggedIn?'18':'0'}</strong><span>粉丝</span></button><div><strong>${state.loggedIn?'126':'0'}</strong><span>获赞</span></div><button class="profile-stat-button" data-action="mine-connections" data-value="关注"><strong>${state.loggedIn?'12':'0'}</strong><span>关注</span></button></div><div class="mine-finance-grid"><button class="mine-money-card" data-action="wallet"><span>¥</span><strong>我的钱包</strong><small>${state.loggedIn?`可用 ${totalCoins} 金币`:'登录后查看余额'}</small></button><div class="mine-money-card recharge"><button class="recharge-order-link" data-action="orders">订单中心 ›</button><button class="mine-money-main" data-action="coin-recharge"><span>＋</span><strong>金币充值</strong><small>六档充值 · 即时到账</small></button></div><button class="mine-member-luxe" data-action="membership"><span class="luxe-kicker">JIKA PRIVATE MEMBERSHIP</span><strong>${memberLabel}</strong><p>${memberActive?'会员权益已生效，点击查看权益与购买记录。':'标准片库、高清线路与跨端续播，一张卡解锁完整体验。'}</p><span class="luxe-status">${memberActive?'ACTIVE':'PREMIUM'}</span></button></div><div class="mine-icon-grid">${[['我的收藏','favorites','♥'],['我的购买','mine-purchases','▣'],['我的帖子','my-posts','帖']].map(([name,action,icon])=>`<button class="mine-entry" data-action="${action}"><i>${icon}</i>${name}</button>`).join('')}</div>${assetBox}<div class="menu"><button class="menu-row" data-action="watch-records"><span>我的影片</span><span>›</span></button><button class="menu-row" data-action="support"><span>在线客服</span><span>›</span></button><button class="menu-row" data-action="privacy"><span>设置与帮助</span><span>›</span></button></div></div>`;
       content.querySelector('.mine-icon-grid')?.insertAdjacentHTML('beforeend','<button class="mine-entry" data-action="my-requests"><i>求</i>我的求片</button>');
     }
 
@@ -2383,7 +2387,7 @@
       const assets=`<div class="summary-grid"><div class="summary-tile"><strong>${state.coins}</strong><span>金币</span></div><div class="summary-tile"><strong>${state.aiQuota}</strong><span>AI额度</span></div><div class="summary-tile"><strong>${state.ledger.length}</strong><span>资产流水</span></div></div>`;
       const ledger=state.ledger.map(entry=>`<div class="page-row"><span class="page-row-icon">账</span><span class="page-row-main"><strong>${entry.reason}</strong><span>${entry.assetType}：${entry.before} → ${entry.after}</span><span class="ticket-code">${entry.bizNo} · ${entry.time} · ${entry.status}</span></span><span class="page-row-side ledger-delta ${entry.delta>=0?'in':'out'}">${entry.delta>=0?'+':''}${entry.delta}<br>${entry.assetType}</span></div>`).join('');
       const pendingIntent=state.resumeIntent?`<div class="notice"><strong>待恢复原操作</strong><br>${state.resumeIntent.action==='collection'?'合集解锁':'内容解锁'} · 需要 ${state.resumeIntent.requiredEntitlement.price} 金币 · 30分钟内有效<br><button class="page-secondary" data-action="cancel-resume-intent" style="margin-top:8px;">取消原操作</button></div>`:'';
-      content.innerHTML=`<div class="subpage" data-od-id="wallet-page">${subpageHead('钱包与资产')}<div class="subpage-body"><nav class="status-tabs">${['资产','流水'].map(tab=>`<button class="${tab===state.walletTab?'active':''}" data-action="wallet-tab" data-value="${tab}">${tab}</button>`).join('')}</nav><section class="subpage-card">${pendingIntent}${state.walletTab==='资产'?`${assets}<p class="page-copy">精品内容优先使用可用权益券，其余使用金币；AI任务按“AI额度 → 金币”冻结与结算。</p><button class="page-primary" data-action="coin-recharge">前往金币充值</button>`:ledger||'<div class="empty-state"><i>账</i><strong>暂无资产流水</strong></div>'}</section></div></div>`;
+      content.innerHTML=`<div class="subpage" data-od-id="wallet-page">${subpageHead('钱包与资产')}<div class="subpage-body"><nav class="status-tabs">${['资产','流水'].map(tab=>`<button class="${tab===state.walletTab?'active':''}" data-action="wallet-tab" data-value="${tab}">${tab}</button>`).join('')}</nav><section class="subpage-card">${pendingIntent}${state.walletTab==='资产'?`${assets}<p class="page-copy">金币精品仅使用金币解锁；AI任务按“AI额度 → 金币”顺序结算。</p><button class="page-primary" data-action="coin-recharge">前往金币充值</button>`:ledger||'<div class="empty-state"><i>账</i><strong>暂无资产流水</strong></div>'}</section></div></div>`;
     }
     function orderVisible(order) { return state.orderFilter==='全部'||order.status===state.orderFilter||state.orderFilter==='退款'&&['退款中','已退款','退款拒绝'].includes(order.status); }
     function renderOrdersPage() {
@@ -2425,6 +2429,11 @@
       if(state.recordTab==='观看记录'){cards=watchItems.map(({item,record})=>recordMediaCard(item,'观看记录',record));emptyCopy='<i>空</i><strong>暂无观看记录</strong><span>开始播放后会记录进度，方便继续观看。</span>';}
       const body=cards.length?`<div class="record-media-grid">${cards.join('')}</div>`:`<div class="empty-state">${emptyCopy}</div>`;
       content.innerHTML=`<div class="subpage" data-od-id="records-page">${subpageHead('我的内容')}<div class="subpage-body"><nav class="status-tabs">${['已购','收藏','观看记录'].map(tab=>`<button class="${tab===state.recordTab?'active':''}" data-action="record-tab" data-value="${tab}">${tab}</button>`).join('')}</nav><section class="subpage-card">${body}</section>${state.recordTab==='已购'||!cards.length?'':`<button class="page-danger" data-action="clear-records">清空${state.recordTab}</button>`}</div></div>`;
+    }
+    function renderPurchasesPage() {
+      const purchased=[...state.purchased].map(recordItemFromKey).filter(item=>item&&item.entitlement==='coin'&&item.kind!=='合集');
+      const cards=purchased.map(item=>recordMediaCard(item,'已购')).join('');
+      content.innerHTML=`<div class="subpage" data-od-id="purchases-page">${subpageHead('我的购买')}<div class="subpage-body"><div class="notice"><strong>金币购买影片</strong><br>已获得的影片按两列展示，点击封面可继续播放。</div><section class="subpage-card">${cards?`<div class="record-media-grid">${cards}</div>`:'<div class="empty-state"><i>购</i><strong>暂无金币购买影片</strong><span>使用金币解锁短视频或长视频后会显示在这里。</span></div>'}</section></div></div>`;
     }
     function renderMessagesPage() {
       const list=state.messages.filter(message=>state.messageFilter==='全部'||message.type===state.messageFilter);
@@ -2481,7 +2490,7 @@
       screen.classList.toggle('short-screen',shortSurface);
       screen.classList.toggle('light-screen',!shortSurface);
       document.querySelector('meta[name="theme-color"]').content=shortSurface?'#05070a':state.screen==='main'&&state.tab==='mine'?'#d8efff':'#ffffff';
-      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='profileConnections')renderProfileConnections();else if(state.screen==='membership')renderMembership();else if(state.screen==='search')renderGlobalSearch();else if(state.screen==='moreCategories')renderMoreCategories();else if(state.screen==='hotRankHub')renderHotRankHub();else if(state.screen==='tagPage')renderTagPage();else if(state.screen==='collection')renderCollection();else if(state.screen==='aiTool')renderAIToolPage();else if(state.screen==='aiTasks')renderAITasks();else if(state.screen==='aiTaskDetail')renderAITaskDetail();else if(state.screen==='aiResult')renderAIResultPage();else if(state.screen==='walletPage')renderWallet();else if(state.screen==='rechargePage')renderRechargePage();else if(state.screen==='ordersPage')renderOrdersPage();else if(state.screen==='orderDetailPage')renderOrderDetailPage();else if(state.screen==='recordsPage')renderRecordsPage();else if(state.screen==='messagesPage')renderMessagesPage();else if(state.screen==='supportPage')renderSupportPage();else if(state.screen==='settingsPage')renderSettingsPage();else if(state.screen==='appIconPage')renderAppIconPage();else if(state.screen==='devicesPage')renderDevicesPage();else if(state.screen==='cancelPage')renderCancelPage();else if(state.screen==='myPostsPage')renderMyPostsPage();else if(state.screen==='myRequestsPage')renderMyRequestsPage();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
+      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='profileConnections')renderProfileConnections();else if(state.screen==='membership')renderMembership();else if(state.screen==='search')renderGlobalSearch();else if(state.screen==='moreCategories')renderMoreCategories();else if(state.screen==='hotRankHub')renderHotRankHub();else if(state.screen==='tagPage')renderTagPage();else if(state.screen==='collection')renderCollection();else if(state.screen==='aiTool')renderAIToolPage();else if(state.screen==='aiTasks')renderAITasks();else if(state.screen==='aiTaskDetail')renderAITaskDetail();else if(state.screen==='aiResult')renderAIResultPage();else if(state.screen==='walletPage')renderWallet();else if(state.screen==='rechargePage')renderRechargePage();else if(state.screen==='ordersPage')renderOrdersPage();else if(state.screen==='orderDetailPage')renderOrderDetailPage();else if(state.screen==='recordsPage')renderRecordsPage();else if(state.screen==='purchasesPage')renderPurchasesPage();else if(state.screen==='messagesPage')renderMessagesPage();else if(state.screen==='supportPage')renderSupportPage();else if(state.screen==='settingsPage')renderSettingsPage();else if(state.screen==='appIconPage')renderAppIconPage();else if(state.screen==='devicesPage')renderDevicesPage();else if(state.screen==='cancelPage')renderCancelPage();else if(state.screen==='myPostsPage')renderMyPostsPage();else if(state.screen==='myRequestsPage')renderMyRequestsPage();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
       content.scrollTop=0;
     }
     function openSheet(html) { closeMembershipCheckout();overlay.classList.remove('membership-popup','media-viewer');sheet.innerHTML=`<div class="sheet-handle"></div>${html}`; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); }
@@ -2555,7 +2564,7 @@
         ['following','favorites','likedPosts','shortLiked','wantedRequests','purchased'].forEach(key=>{state[key]=new Set(state.accountSnapshot[key]||[]);});
         collections.set1.purchased=Boolean(state.accountSnapshot.collectionPurchased);
       }else if(!state.accountHydrated){
-        ['lv1','lv4','set1','post:profile-city'].forEach(id=>state.favorites.add(id));state.purchased.add('lv2');state.likedPosts.add('community-seaside');state.wantedRequests.add('request-city-series');state.accountHydrated=true;
+        ['lv1','lv4','set1','post:profile-city'].forEach(id=>state.favorites.add(id));['short2','short5','lv2','lv4'].forEach(id=>state.purchased.add(id));state.likedPosts.add('community-seaside');state.wantedRequests.add('request-city-series');state.accountHydrated=true;
       }
       closeSheet();render();toast(register?'注册并登录成功，已返回原操作':'登录成功，已返回原操作');if(next)setTimeout(next,220);
     }
@@ -2566,7 +2575,7 @@
       if(item.entitlement==='membership') openMembershipPopup('video');
       else {
         const cost=hasCoinDiscount()?item.discount:item.price, allocation=getContentAllocation(cost);
-        openSheet(`${sheetTitle('解锁精品内容',`${item.title} · 唯一权益：金币`)}<div class="notice" style="margin-top:16px;"><strong>金币精品</strong>不承诺会员免费观看；会员仅享配置折扣。</div><div class="option row-between"><div><strong>本次解锁</strong><div class="meta">已购权益持续保留，依法下架除外</div></div><strong class="num">${cost}金币</strong></div><div class="option row-between"><span>预计扣减</span><strong class="num">${allocation.label}</strong></div><div class="option row-between"><span>可用资产</span><span class="num">金币 ${state.coins}</span></div><p class="meta">权益券如适用则优先抵扣，其余使用金币；重复购买自动拦截。</p>${allocation.coupon?'<div class="notice">本次可使用1张内容权益券；实际面值与适用品类以服务端为准。</div>':''}<button class="btn-primary" data-action="unlock-content" data-id="${item.id}">${allocation.shortage?'资产不足，前往充值':'确认解锁并继续播放'}</button>`);
+        openSheet(`${sheetTitle('解锁精品内容',`${item.title} · 唯一权益：金币`)}<div class="notice" style="margin-top:16px;"><strong>金币精品</strong>不承诺会员免费观看；会员仅享配置折扣。</div><div class="option row-between"><div><strong>本次解锁</strong><div class="meta">已购权益持续保留，依法下架除外</div></div><strong class="num">${cost}金币</strong></div><div class="option row-between"><span>预计扣减</span><strong class="num">${allocation.label}</strong></div><div class="option row-between"><span>可用资产</span><span class="num">金币 ${state.coins}</span></div><p class="meta">本次仅使用金币；重复购买自动拦截。</p><button class="btn-primary" data-action="unlock-content" data-id="${item.id}">${allocation.shortage?'资产不足，前往充值':'确认解锁并继续播放'}</button>`);
       }
     }
 
@@ -2584,14 +2593,14 @@
     }
 
     const plans={
-      video_year:{family:'video',name:'基础VIP年卡',period:'365天',termDays:365,amount:108,ai:0,coinGift:0,coupons:0,video:true,coinDiscount:false,scope:'标准短/长视频 · 高清线路 · 免播放干扰广告 · 进度同步'},
-      ai_year:{family:'ai',name:'AI专区年卡',period:'365天',termDays:365,amount:168,ai:300,aiCycle:true,coinGift:0,coupons:0,video:false,coinDiscount:false,scope:'每30日300 AI额度 · AI任务8折 · 优先生成队列'},
-      all_year:{family:'all',name:'年度全站通卡',period:'365天',termDays:365,amount:198,ai:0,coinGift:500,coupons:1,couponCycle:true,video:true,coinDiscount:false,scope:'标准视频库 · 每30日1张精品券 · AI任务8.5折 · 一次性赠送500金币'}
+      video_year:{family:'video',name:'基础VIP年卡',period:'365天',termDays:365,amount:108,ai:0,coinGift:0,video:true,coinDiscount:false,scope:'标准短/长视频 · 高清线路 · 免播放干扰广告 · 进度同步'},
+      ai_year:{family:'ai',name:'AI专区年卡',period:'365天',termDays:365,amount:168,ai:300,aiCycle:true,coinGift:0,video:false,coinDiscount:false,scope:'每30日300 AI额度 · AI任务8折 · 优先生成队列'},
+      all_year:{family:'all',name:'年度全站通卡',period:'365天',termDays:365,amount:198,ai:0,coinGift:500,video:true,coinDiscount:false,scope:'标准视频库 · AI任务8.5折 · 一次性赠送500金币'}
     };
     const membershipFamilies={
       video:{label:'基础VIP',level:'VIDEO',title:'全年畅看标准片库',copy:'365天视频权益，不含金币精品与AI创作赠币',benefits:[['标准片库','短/长视频畅看'],['高清免广告','多线路切换'],['进度同步','跨端续播']],plans:['video_year']},
       ai:{label:'AI专区年卡',level:'CREATOR',title:'持续创作，按期到账',copy:'AI额度每30日发放，未使用额度到期清零',benefits:[['AI额度','每30日300'],['AI 8折','卡面结算一致'],['优先队列','优先生成']],plans:['ai_year']},
-      all:{label:'全站通卡',level:'PREMIUM',title:'视频与AI核心权益',copy:'标准片库、周期权益券与AI优惠',benefits:[['视频VIP','标准片库畅看'],['内容权益','每30日1张'],['赠送金币','一次性500']],plans:['all_year']}
+      all:{label:'全站通卡',level:'PREMIUM',title:'视频与AI核心权益',copy:'标准片库、AI优惠与赠送金币',benefits:[['视频VIP','标准片库畅看'],['AI优惠','任务8.5折'],['赠送金币','一次性500']],plans:['all_year']}
     };
     function membershipMarkup(modal=false) {
       const family=membershipFamilies[state.membershipFamily]||membershipFamilies.all;
@@ -2638,10 +2647,9 @@
       const existing=state.memberships.find(item=>item.family===plan.family);
       const now=Date.now();
       if(existing){const currentEnd=Date.parse(existing.endAt)||now;existing.remainingDays=(existing.remainingDays||existing.termDays||0)+plan.termDays;existing.name=plan.name;existing.scope=plan.scope;existing.endAt=new Date(Math.max(now,currentEnd)+plan.termDays*86400000).toISOString();existing.sourceOrders=[...(existing.sourceOrders||[]),{id:orderId,days:plan.termDays}];}
-      else state.memberships.push({...plan,orderId,sourceOrders:[{id:orderId,days:plan.termDays}],remainingDays:plan.termDays,startAt:new Date(now).toISOString(),endAt:new Date(now+plan.termDays*86400000).toISOString(),status:'有效',cycleIndex:1,totalCycles:Math.max(1,Math.ceil(plan.termDays/30)),nextGrantAt:(plan.aiCycle||plan.couponCycle)?new Date(now+30*86400000).toISOString():'—'});
+      else state.memberships.push({...plan,orderId,sourceOrders:[{id:orderId,days:plan.termDays}],remainingDays:plan.termDays,startAt:new Date(now).toISOString(),endAt:new Date(now+plan.termDays*86400000).toISOString(),status:'有效',cycleIndex:1,totalCycles:Math.max(1,Math.ceil(plan.termDays/30)),nextGrantAt:plan.aiCycle?new Date(now+30*86400000).toISOString():'—'});
       if(!existing&&plan.coinGift){const before=state.coins;state.coins+=plan.coinGift;pushLedger('付费金币',plan.coinGift,before,'会员一次性赠送金币',orderId);}
       if(!existing&&plan.ai){const before=state.aiQuota;state.aiQuota+=plan.ai;pushLedger('AI额度',plan.ai,before,plan.aiCycle?'会员当前30日周期发放':'会员一次性赠送',orderId);}
-      if(!existing&&plan.coupons){const before=state.coupons;state.coupons+=plan.coupons;pushLedger('精品券',plan.coupons,before,plan.couponCycle?'会员当前30日周期发放':'会员一次性赠送',orderId);}
     }
     function openOrder(pending) {
       const id=pending.id||businessId('ORD');
@@ -2669,19 +2677,17 @@
         }
         if(p.type==='unlock') {
           const a=p.allocation||getContentAllocation(p.cost);
-          const beforeCoupon=state.coupons,beforeCoins=state.coins;
-          state.coupons=Math.max(0,state.coupons-a.coupon);
+          const beforeCoins=state.coins;
           state.coins=Math.max(0,state.coins-a.coins);
           state.purchased.add(p.item.id);
-          if(a.coupon)pushLedger('精品券',-a.coupon,beforeCoupon,'精品内容解锁',p.id);
           if(a.coins)pushLedger('付费金币',-a.coins,beforeCoins,'精品内容解锁',p.id);
         }
         if(p.type==='collection'){
           const a=p.allocation||getContentAllocation(p.cost),set=collections[p.collection.id];
-          const beforeCoupon=state.coupons,beforeCoins=state.coins;
-          state.coupons=Math.max(0,state.coupons-a.coupon);state.coins=Math.max(0,state.coins-a.coins);
+          const beforeCoins=state.coins;
+          state.coins=Math.max(0,state.coins-a.coins);
           state.purchased.add(p.collection.id);set.purchased=true;
-          if(a.coupon)pushLedger('精品券',-a.coupon,beforeCoupon,'合集整套解锁',p.id);if(a.coins)pushLedger('付费金币',-a.coins,beforeCoins,'合集整套解锁',p.id);
+          if(a.coins)pushLedger('付费金币',-a.coins,beforeCoins,'合集整套解锁',p.id);
         }
         order.granted=true;order.status='成功';order.time='刚刚';addMessage('订单',`${p.title}已完成`,'权益已到账，可返回原页面继续。','order',p.id);
       }
@@ -2701,9 +2707,10 @@
       const bizNo=businessId('AI');
       const beforeQuota=state.aiQuota,beforeCoins=state.coins,beforeFrozen=state.frozen;
       state.aiQuota-=allocation.quota;state.coins-=allocation.coins;state.frozen+=cost;
+      if(cost===0&&campaignConfig.aiFirstExperience.enabled)state.aiFirstExperienceUsed=true;
       if(allocation.quota)pushLedger('AI额度',-allocation.quota,beforeQuota,'AI任务预冻结',bizNo,'冻结');
       if(allocation.coins)pushLedger('付费金币',-allocation.coins,beforeCoins,'AI任务预冻结',bizNo,'冻结');
-      pushLedger('冻结资产',cost,beforeFrozen,'AI任务预冻结汇总',bizNo,'冻结');
+      if(cost>0)pushLedger('冻结资产',cost,beforeFrozen,'AI任务预冻结汇总',bizNo,'冻结');
       const parent=state.tasks.find(task=>task.id===parentId),task={id:businessId('TASK'),bizNo,tool,cost,baseCost,source:allocation.label,allocations:allocation,status:'排队中',assetStatus:'冻结中',attempt:(parent?.attempt||0)+1,parentId,createdAt:'刚刚',timeline:[{status:'排队中',time:'刚刚'}]};
       state.tasks.push(task);
       state.orders.unshift({id:bizNo,type:'ai',title:`AI任务：${tool}`,asset:true,cost,amount:0,status:'处理中',time:'刚刚',granted:true,refundEligible:false,taskId:task.id,productSnapshot:{tool,baseCost,finalCost:cost}});
@@ -2730,7 +2737,7 @@
       const steps=failed?['素材已上传','生成异常','资产已退回']:['素材已上传','生成中（含安全校验）','成功通知','查看结果'];
       const current=failed?2:success?3:1,assetText=failed?`已原路退回 ${t.source}`:success?`已扣除 ${t.source}`:`冻结 ${t.source}`;
       const appeal=t.status==='未通过'?`<button class="btn-secondary" data-action="ai-appeal" data-id="${t.id}">申请复核</button>`:'';
-      const actions=failed?`<div class="ai-error-card"><strong>${t.status}</strong><br>${t.failureReason}</div>${appeal}<div class="row"><button class="btn-secondary" data-action="ai-tool" data-tool="${t.tool}" data-cost="${t.cost}">修改素材</button><button class="btn-primary" data-action="retry-ai" data-id="${t.id}">重新生成</button></div>`:success?`<button class="btn-primary" data-action="view-ai-result" data-id="${t.id}">查看生成结果</button>`:`<div class="row"><button class="btn-secondary" data-action="ai-exception" data-id="${t.id}">模拟异常</button><button class="btn-primary" data-action="complete-ai" data-id="${t.id}">模拟生成成功</button></div>`;
+      const actions=failed?`<div class="ai-error-card"><strong>${t.status}</strong><br>${t.failureReason}</div>${appeal}<div class="row"><button class="btn-secondary" data-action="ai-tool" data-tool="${t.tool}" data-cost="${t.baseCost||t.cost}">修改素材</button><button class="btn-primary" data-action="retry-ai" data-id="${t.id}">重新生成</button></div>`:success?`<button class="btn-primary" data-action="view-ai-result" data-id="${t.id}">查看生成结果</button>`:`<div class="row"><button class="btn-secondary" data-action="ai-exception" data-id="${t.id}">模拟异常</button><button class="btn-primary" data-action="complete-ai" data-id="${t.id}">模拟生成成功</button></div>`;
       openSheet(`${sheetTitle(t.tool,`${t.id} · ${t.status}`)}<div class="state-list">${steps.map((s,i)=>`<div class="state-row ${i<current?'done':i===current?'current':'pending'}"><span>${s}</span><span class="meta">${i<=current?'已记录':'等待'}</span></div>`).join('')}</div><div class="option row-between"><span>资产结果</span><span class="num">${assetText}</span></div>${actions}`);
     }
     function openAIResult(id) {
@@ -2740,7 +2747,7 @@
       openSheet(`${sheetTitle('生成结果',`${t.tool} · ${t.id}`)}<div class="ai-result-preview"><span class="ai-result-mark">AI生成 · 已通过安全校验</span></div><div class="option row-between"><span>本次消耗</span><strong class="num">${t.source}</strong></div><p class="meta">结果已进入“我的记录”。如需新版本，将重新创建任务并按当前规则计费。</p><button class="btn-primary" data-action="regenerate-ai" data-id="${t.id}">重新生成</button>`);
     }
 
-    function openSafetyMenu() { openSheet(`${sheetTitle('内容操作','反馈会影响后续推荐')}<button class="menu-row" data-action="not-interested"><span>不感兴趣</span><span class="meta">减少相似推荐</span></button><button class="menu-row" data-action="why-recommended"><span>为什么推荐此内容</span><span class="meta">近期观看与热度</span></button><button class="menu-row" data-action="block"><span>拉黑账号</span><span class="meta">立即停止展示</span></button>`); }
+    function openSafetyMenu() { openSheet(`${sheetTitle('内容操作','反馈会影响后续推荐')}<button class="menu-row" data-action="not-interested"><span>不感兴趣</span><span class="meta">减少相似推荐</span></button><button class="menu-row" data-action="block"><span>拉黑</span><span class="meta">立即停止展示该账号</span></button>`); }
     function openPostMenu() { openSheet(`${sheetTitle('帖子操作','可管理个人内容偏好')}<button class="menu-row" data-action="block"><span>拉黑用户</span><span class="meta">不再展示其内容</span></button><button class="menu-row" data-action="copy-link"><span>复制合规分享链接</span><span class="meta">不暴露受限媒体</span></button>`); }
     function openComments(kind='video') { const list=kind==='community'?state.communityComments:state.videoComments; openSheet(`${sheetTitle(`评论 · ${list.length}`,'评论与回复直接发布；命中敏感词将失败')}<div style="margin-top:12px;">${commentsMarkup(list,kind)}</div>`); }
     function submitComment(kind) {
@@ -2773,13 +2780,12 @@
       if(!approved){o.status='退款拒绝';o.refundReason='演示结果：不满足退款条件，可通过客服提交申诉。';state.activeOrderId=id;state.screen='orderDetailPage';render();return;}
       if(o.type==='member'){
         const grantedCoins=o.plan.coinGift||0,grantedQuota=o.plan.ai||0;
-        if(state.coins<grantedCoins||state.aiQuota<grantedQuota||state.coupons<o.plan.coupons){o.status='退款拒绝';o.refundReason='演示结果：赠送资产已使用，已转人工核算处理。';openPage('orderDetailPage',{activeOrderId:id});return;}
-        const beforeCoins=state.coins,beforeQuota=state.aiQuota,beforeCoupons=state.coupons;
-        state.coins-=grantedCoins;state.aiQuota-=grantedQuota;state.coupons-=o.plan.coupons;
+        if(state.coins<grantedCoins||state.aiQuota<grantedQuota){o.status='退款拒绝';o.refundReason='演示结果：赠送资产已使用，已转人工核算处理。';openPage('orderDetailPage',{activeOrderId:id});return;}
+        const beforeCoins=state.coins,beforeQuota=state.aiQuota;
+        state.coins-=grantedCoins;state.aiQuota-=grantedQuota;
         const entitlement=state.memberships.find(plan=>plan.family===o.plan.family);
         if(grantedCoins)pushLedger('付费金币',-grantedCoins,beforeCoins,'会员赠送金币退款冲正',o.id,'已退款');
         if(grantedQuota)pushLedger('AI额度',-grantedQuota,beforeQuota,'会员退款冲正',o.id,'已退款');
-        if(o.plan.coupons)pushLedger('精品券',-o.plan.coupons,beforeCoupons,'会员退款冲正',o.id,'已退款');
         if(entitlement){const beforeDays=entitlement.remainingDays||0;entitlement.remainingDays=Math.max(0,beforeDays-o.plan.termDays);entitlement.endAt=new Date(Math.max(Date.now(),Date.parse(entitlement.endAt)||Date.now())-o.plan.termDays*86400000).toISOString();entitlement.sourceOrders=(entitlement.sourceOrders||[]).filter(source=>source.id!==o.id);pushLedger('会员有效期',-o.plan.termDays,beforeDays,'会员退款冲正',o.id,'已退款');if(!entitlement.remainingDays)state.memberships=state.memberships.filter(plan=>plan!==entitlement);}
       }
       if(o.type==='coins'){
@@ -2789,17 +2795,15 @@
         pushLedger('付费金币',-o.coins,beforeCoins,'充值退款冲正',o.id,'已退款');
       }
       if(o.type==='unlock'){
-        const beforeCoupon=state.coupons,beforeCoins=state.coins;
+        const beforeCoins=state.coins;
         state.purchased.delete(o.item.id);
-        state.coupons+=o.allocation.coupon||0;state.coins+=o.allocation.coins||0;
-        if(o.allocation.coupon)pushLedger('精品券',o.allocation.coupon,beforeCoupon,'精品内容退款退回',o.id,'已退款');
+        state.coins+=o.allocation.coins||0;
         if(o.allocation.coins)pushLedger('付费金币',o.allocation.coins,beforeCoins,'精品内容退款退回',o.id,'已退款');
       }
       if(o.type==='collection'){
-        const beforeCoupon=state.coupons,beforeCoins=state.coins;
+        const beforeCoins=state.coins;
         state.purchased.delete(o.collection.id);collections[o.collection.id].purchased=false;
-        state.coupons+=o.allocation.coupon||0;state.coins+=o.allocation.coins||0;
-        if(o.allocation.coupon)pushLedger('精品券',o.allocation.coupon,beforeCoupon,'合集退款退回',o.id,'已退款');
+        state.coins+=o.allocation.coins||0;
         if(o.allocation.coins)pushLedger('付费金币',o.allocation.coins,beforeCoins,'合集退款退回',o.id,'已退款');
       }
       o.status='已退款';o.refundReason='演示结果：服务端校验通过，相关未消费权益已冲正；实际到账时间以支付渠道为准。';state.activeOrderId=id;state.screen='orderDetailPage';render();toast('退款结果已同步');
@@ -2965,7 +2969,6 @@
       if(action==='post-menu')openPostMenu();
       if(action==='post-like'){const id=target.dataset.id||state.activePost?.id;if(!id)return toast('帖子状态已变化');ensureLogin(()=>{const active=state.likedPosts.has(id);active?state.likedPosts.delete(id):state.likedPosts.add(id);render();toast(active?'已取消帖子点赞':'帖子点赞成功');});return;}
       if(action==='not-interested'){ensureLogin(()=>{closeSheet();toast('已减少相似内容推荐');});return;}
-      if(action==='why-recommended')openSheet(`${sheetTitle('推荐说明','基于可解释的内容信号')}<div class="notice" style="margin-top:16px;">主要依据：近期观看的城市/旅行标签、当前分区热度与内容新鲜度。可在设置中关闭个性化推荐。</div><button class="btn-primary" data-action="close-sheet">我知道了</button>`);
       if(action==='copy-link'){closeSheet();toast('合规分享链接已复制');}
       if(action==='block'){ensureLogin(()=>{closeSheet();toast('已拉黑该账号，后续不再展示');});return;}
       if(action==='publish')openPublish();
@@ -3000,6 +3003,7 @@
       if(action==='settle-refund')settleRefund(target.dataset.id,target.dataset.result==='approve');
       if(action==='watch-records')openWatchRecords();
       if(action==='favorites')ensureLogin(()=>openPage('recordsPage',{recordTab:'收藏'}));
+      if(action==='mine-purchases')ensureLogin(()=>openPage('purchasesPage'));
       if(action==='wallet-tab'){state.walletTab=target.dataset.value;renderWallet();}
       if(action==='order-filter'){state.orderFilter=target.dataset.value;renderOrdersPage();}
       if(action==='record-tab'){state.recordTab=target.dataset.value;renderRecordsPage();}
@@ -3052,7 +3056,11 @@
     });
     document.addEventListener('input',e=>{if(['loginNickname','loginAccount','loginCode','loginPassword','loginPasswordConfirm'].includes(e.target.id))setLoginFieldError(e.target.id,'');if(e.target.id==='postTitle')state.postDraft.title=e.target.value;if(e.target.id==='postBody')state.postDraft.body=e.target.value;if(e.target.id==='requestBounty')state.postDraft.bounty=Number(e.target.value)||0;if(e.target.id==='searchInput')state.searchQuery=e.target.value;if(e.target.id==='videoCommentInput')state.commentDrafts.video=e.target.value;if(e.target.id==='communityCommentInput')state.commentDrafts.community=e.target.value;if(e.target.id==='profileSearch'){state.profileQuery=e.target.value;const results=document.querySelector('#profileResults');if(results)results.innerHTML=profileResultsMarkup();}});
     document.addEventListener('keydown',e=>{if(e.target.id==='searchInput'&&e.key==='Enter'){e.preventDefault();commitGlobalSearch(e.target.value);}});
-    document.addEventListener('input',e=>{const seek=e.target.closest('[data-action="player-seek"]');if(!seek)return;state.player.current=Number(seek.value);seek.style.setProperty('--progress',`${Number(seek.value)/Number(seek.max)*100}%`);const time=seek.parentElement.querySelector('.player-time');if(time)time.textContent=`${formatTime(state.player.current)} / ${catalog[state.contentId].duration}`;});
+    document.addEventListener('input',e=>{
+      const shortSeek=e.target.closest('[data-action="short-seek"]');
+      if(shortSeek){const item=catalog[shortSeek.dataset.id];if(!item)return;const total=Number(shortSeek.max)||1,limit=hasAccess(item)?total:(item.trial||0),elapsed=Math.min(limit,Number(shortSeek.value));state.shortElapsed[item.id]=elapsed;state.shortProgress[`${state.shortTab}:${state.shortIndex}`]=elapsed/total*100;shortSeek.value=elapsed;shortSeek.style.setProperty('--progress',`${elapsed/total*100}%`);return;}
+      const seek=e.target.closest('[data-action="player-seek"]');if(!seek)return;const item=catalog[state.contentId],limit=hasAccess(item)?Number(seek.max):(item.trial||5);state.player.current=Math.min(limit,Number(seek.value));seek.value=state.player.current;seek.style.setProperty('--progress',`${Number(seek.value)/Number(seek.max)*100}%`);const time=seek.parentElement.querySelector('.player-time');if(time)time.textContent=`${formatTime(state.player.current)} / ${item.duration}`;
+    });
     overlay.addEventListener('click',e=>{if(e.target===overlay)closeSheet();});
     render();
   </script>
