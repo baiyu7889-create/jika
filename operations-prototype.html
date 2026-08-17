@@ -1066,6 +1066,54 @@
     .album-access { display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; padding:18px 17px; background:#fff; }
     .album-access button { min-height:48px; border:0; border-radius:24px; background:linear-gradient(110deg,#fff2cb,#e9c170); color:#8a6116; font-size:12px; }
     .album-access span { font:12px var(--font-mono); }
+    .resource-reader-page { min-height:100%; padding-bottom:78px; background:#f6f1e8; color:#29251f; }
+    .resource-reader-page.anime { background:#0c1118; color:#f4f7fa; }
+    .resource-reader-head { position:sticky; top:0; z-index:20; min-height:56px; display:grid; grid-template-columns:42px minmax(0,1fr) 52px; align-items:center; padding:0 10px; border-bottom:1px solid rgba(78,70,58,.1); background:rgba(246,241,232,.94); backdrop-filter:blur(18px); }
+    .resource-reader-page.anime .resource-reader-head { border-color:rgba(255,255,255,.08); background:rgba(12,17,24,.92); }
+    .resource-reader-head button { min-height:34px; border:0; border-radius:18px; background:rgba(56,49,40,.08); color:inherit; font-size:10px; }
+    .resource-reader-head > button:first-child { width:34px; font-size:21px; }
+    .resource-reader-head strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; font-size:12px; }
+    .resource-reader-head .reader-detail-link { padding:0 10px; color:#776955; }
+    .resource-reader-page.anime .resource-reader-head button { background:rgba(255,255,255,.08); color:#dbe7f1; }
+    .resource-reader-quick { position:sticky; top:56px; z-index:18; display:grid; grid-template-columns:37px minmax(0,1fr) 37px; gap:7px; align-items:center; padding:8px 10px; border-bottom:1px solid rgba(78,70,58,.09); background:rgba(246,241,232,.92); backdrop-filter:blur(16px); }
+    .resource-reader-page.anime .resource-reader-quick { border-color:rgba(255,255,255,.07); background:rgba(12,17,24,.88); }
+    .resource-reader-quick > button { height:34px; border:0; border-radius:10px; background:#e9e0d2; color:#625846; font-size:17px; }
+    .resource-reader-page.anime .resource-reader-quick > button { background:#17202b; color:#cae8f4; }
+    .resource-reader-quick > button:disabled { opacity:.3; }
+    .resource-reader-unit-strip { display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; }
+    .resource-reader-unit-strip::-webkit-scrollbar { display:none; }
+    .resource-reader-unit-strip button { flex:0 0 auto; min-width:46px; height:34px; padding:0 10px; border:1px solid rgba(91,78,61,.13); border-radius:10px; background:rgba(255,255,255,.44); color:#716653; font-size:9px; }
+    .resource-reader-unit-strip button.active { border-color:#24211c; background:#24211c; color:#fff; font-weight:800; }
+    .resource-reader-unit-strip button.locked::after { content:' · VIP'; color:#aa6b78; font-size:6px; }
+    .resource-reader-page.anime .resource-reader-unit-strip button { border-color:rgba(255,255,255,.09); background:#121a24; color:#9cabb8; }
+    .resource-reader-page.anime .resource-reader-unit-strip button.active { border-color:#92d8f1; background:#d8f5ff; color:#10202b; }
+    .resource-reader-status { padding:17px 18px 5px; text-align:center; }
+    .resource-reader-status small { display:block; color:#968a77; font:8px var(--font-mono); letter-spacing:.16em; }
+    .resource-reader-status h1 { margin:7px 0 4px; font:700 20px/1.35 var(--font-display); }
+    .resource-reader-status p { margin:0; color:#928774; font-size:9px; }
+    .resource-reader-page.anime .resource-reader-status small { color:#74bbd6; }
+    .resource-reader-page.anime .resource-reader-status p { color:#8394a4; }
+    .novel-reader-copy { max-width:350px; margin:0 auto; padding:13px 25px 40px; font-family:"Songti SC","STSong",serif; }
+    .novel-reader-copy::before { content:''; display:block; width:32px; height:2px; margin:0 0 24px; background:#aa9475; }
+    .novel-reader-copy p { margin:0 0 21px; font-size:13px; line-height:2.05; letter-spacing:.045em; text-align:justify; text-indent:2em; }
+    .novel-reader-copy p:first-child::first-letter { float:left; margin:7px 7px 0 0; color:#7d6646; font:700 38px/.72 var(--font-display); }
+    .novel-reader-end { margin-top:30px; color:#a2947f; font:8px var(--font-mono); letter-spacing:.18em; text-align:center; }
+    .anime-reader { display:grid; gap:8px; padding:10px 10px 28px; }
+    .anime-reader-frame { --frame-a:#48697c; --frame-b:#172635; position:relative; min-height:320px; overflow:hidden; border-radius:4px; background:radial-gradient(circle at 78% 16%,rgba(142,227,244,.42),transparent 29%),linear-gradient(145deg,var(--frame-a),var(--frame-b)); box-shadow:0 14px 35px rgba(0,0,0,.26); }
+    .anime-reader-frame:nth-child(2) { --frame-a:#835a4f; --frame-b:#241b25; }
+    .anime-reader-frame:nth-child(3) { --frame-a:#466c61; --frame-b:#16242b; }
+    .anime-reader-frame:nth-child(4) { --frame-a:#745a83; --frame-b:#1d1c2d; }
+    .anime-reader-frame::before { content:''; position:absolute; left:24%; bottom:-8%; width:54%; height:88%; border-radius:48% 48% 18% 18%; background:linear-gradient(180deg,rgba(239,248,252,.88),rgba(42,57,74,.46) 68%); transform:rotate(var(--figure-tilt,-4deg)); box-shadow:-86px 76px 0 -32px rgba(231,241,246,.28),96px 48px 0 -38px rgba(231,241,246,.2); }
+    .anime-reader-frame:nth-child(even)::before { --figure-tilt:5deg; left:31%; }
+    .anime-reader-frame::after { content:attr(data-caption); position:absolute; left:12px; right:12px; bottom:12px; padding:9px 11px; border-left:2px solid #80d7ef; background:rgba(6,10,15,.66); color:#eef8fc; font-size:10px; line-height:1.55; backdrop-filter:blur(6px); }
+    .anime-reader-frame i { position:absolute; top:11px; left:12px; color:rgba(255,255,255,.58); font:8px var(--font-mono); font-style:normal; letter-spacing:.12em; }
+    .resource-reader-bottom { position:sticky; z-index:22; bottom:0; min-height:70px; display:grid; grid-template-columns:1fr .82fr 1fr; gap:1px; padding-bottom:var(--safe-bottom); border-top:1px solid rgba(78,70,58,.1); background:rgba(246,241,232,.97); backdrop-filter:blur(18px); }
+    .resource-reader-bottom button { border:0; background:transparent; color:#443d33; font-size:10px; }
+    .resource-reader-bottom button:disabled { color:#bbb1a2; }
+    .resource-reader-bottom .directory { background:#2a2722; color:#fff; font-weight:800; }
+    .resource-reader-page.anime .resource-reader-bottom { border-color:rgba(255,255,255,.08); background:rgba(12,17,24,.96); }
+    .resource-reader-page.anime .resource-reader-bottom button { color:#d6e3eb; }
+    .resource-reader-page.anime .resource-reader-bottom .directory { background:#d8f5ff; color:#10202b; }
     .global-search-page { min-height:100%; background:#fff; color:#111820; }
     .global-search-head { position:sticky; top:0; z-index:12; display:grid; grid-template-columns:38px minmax(0,1fr) 46px; gap:7px; align-items:center; padding:8px 11px; border-bottom:1px solid #dcecf4; background:linear-gradient(115deg,rgba(225,245,255,.98),rgba(229,251,247,.98)); backdrop-filter:blur(16px); }
     .global-search-box { display:grid; grid-template-columns:18px minmax(0,1fr); gap:7px; align-items:center; height:38px; padding:0 12px; border-radius:20px; background:#f1f4f7; color:#7c8793; }
@@ -1777,7 +1825,7 @@
         {id:'ORD-DEMO-CHARGEBACK',type:'coins',title:'拒付订单状态样例',amount:30,status:'拒付',time:'08-06 14:08',refundReason:'支付渠道拒付，未消费赠送资产已回收。',granted:false},
         {id:'ORD-DEMO-REFUND',type:'coins',title:'退款订单状态样例',amount:6,status:'已退款',time:'08-05 16:45',refundReason:'退款处理完成，渠道已受理。',granted:true},
         {id:'ORD-DEMO-REJECT',type:'coins',title:'退款拒绝状态样例',amount:6,status:'退款拒绝',time:'08-04 11:20',refundReason:'资产已消费，已转人工核算。',granted:true}
-      ], pending:null, posts:[], activePost:null, activeResource:null,
+      ], pending:null, posts:[], activePost:null, activeResource:null, activeResourceUnit:1, resourceDirectoryExpanded:false,
       libraryTop:'推荐', libraryCategory:'全部', librarySort:'推荐', libraryLoading:false, sectionRefresh:{}, hotRankType:'play', hotRankPeriod:'day',
       moreDimension:'主题', moreType:'全部', moreSpec:'全部', moreSort:'最新',
       communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', communityCatalogGenre:'推荐', communityRandomSeed:0, wantedRequests:new Set(), likedPosts:new Set(),
@@ -1864,6 +1912,8 @@
         player:{...state.player},
         activePost:state.activePost,
         activeResource:state.activeResource,
+        activeResourceUnit:state.activeResourceUnit,
+        resourceDirectoryExpanded:state.resourceDirectoryExpanded,
         profileTab:state.profileTab,
         profileQuery:state.profileQuery,
         profileUser:state.profileUser,
@@ -2531,9 +2581,10 @@
     }
     function renderReadingDetail(item) {
       const novel=item.topic==='小说',label=novel?'小说详情':'动漫详情',total=novel?item.chapters:item.episodes,unit=novel?'章':'集',verb=novel?'阅读':'观看',items=novel?communityNovelPosts:communityAnimePosts;
-      const chapters=Array.from({length:Math.min(4,total)},(_,index)=>{const free=index<2;return `<button class="resource-chapter" data-action="resource-chapter" data-access="${free?'free':'vip'}" data-number="${index+1}"><span>第${index+1}${unit}</span><b class="resource-access ${free?'free':'vip'}">${free?'免费':'VIP'}</b></button>`;}).join('');
+      const visibleCount=state.resourceDirectoryExpanded?total:Math.min(4,total);
+      const chapters=Array.from({length:visibleCount},(_,index)=>{const free=index<2;return `<button class="resource-chapter" data-action="resource-chapter" data-access="${free?'free':'vip'}" data-number="${index+1}"><span>第${index+1}${unit}</span><b class="resource-access ${free?'free':'vip'}">${free?'免费':'VIP'}</b></button>`;}).join('');
       const favorite=state.favorites.has(`resource:${item.id}`);
-      content.innerHTML=`<div class="resource-detail-page" data-od-id="community-${novel?'novel':'anime'}-detail"><header class="resource-detail-head"><button data-action="back-main" aria-label="返回">←</button><strong>${label}</strong><button data-action="resource-share" aria-label="分享">${icons.share}</button></header><section class="novel-detail-hero"><span class="resource-detail-cover"></span><div class="novel-detail-copy"><h1>${escapeHTML(item.title)}</h1><p>作者：${escapeHTML(item.author)}</p><p>${novel?`共 ${total} 章 · 阅读量 ${escapeHTML(item.views)}`:`全 ${total} 集 · 播放量 ${escapeHTML(item.views)}`}</p><span class="resource-topic-chip">${novel?'BL同人':'18R动漫'}</span></div></section><section class="resource-detail-section"><p><strong>简介：</strong>${escapeHTML(item.summary)}</p></section><section class="resource-detail-section"><h2>目录</h2><div class="resource-chapters">${chapters}</div><button class="resource-all-button" data-action="resource-all-chapters">查看全部${novel?'章节':'剧集'}</button></section><section class="resource-detail-section"><h2>为你推荐</h2>${resourceRecommendations(items,item)}</section><footer class="resource-detail-bottom"><button data-action="resource-favorite" data-id="${item.id}">${favorite?'★':'☆'} ${Math.round(Number(String(item.views).replace(/,/g,''))/740)+(favorite?1:0)}</button><button class="primary" data-action="resource-start" data-topic="${item.topic}">开始${verb}</button></footer></div>`;
+      content.innerHTML=`<div class="resource-detail-page" data-od-id="community-${novel?'novel':'anime'}-detail"><header class="resource-detail-head"><button data-action="back-main" aria-label="返回">←</button><strong>${label}</strong><button data-action="resource-share" aria-label="分享">${icons.share}</button></header><section class="novel-detail-hero"><span class="resource-detail-cover"></span><div class="novel-detail-copy"><h1>${escapeHTML(item.title)}</h1><p>作者：${escapeHTML(item.author)}</p><p>${novel?`共 ${total} 章 · 阅读量 ${escapeHTML(item.views)}`:`全 ${total} 集 · 播放量 ${escapeHTML(item.views)}`}</p><span class="resource-topic-chip">${novel?'BL同人':'18R动漫'}</span></div></section><section class="resource-detail-section"><p><strong>简介：</strong>${escapeHTML(item.summary)}</p></section><section class="resource-detail-section"><h2>目录</h2><div class="resource-chapters">${chapters}</div><button class="resource-all-button" data-action="resource-all-chapters">${state.resourceDirectoryExpanded?'收起目录':`查看全部${novel?'章节':'剧集'}`}</button></section><section class="resource-detail-section"><h2>为你推荐</h2>${resourceRecommendations(items,item)}</section><footer class="resource-detail-bottom"><button data-action="resource-favorite" data-id="${item.id}">${favorite?'★':'☆'} ${Math.round(Number(String(item.views).replace(/,/g,''))/740)+(favorite?1:0)}</button><button class="primary" data-action="resource-start" data-topic="${item.topic}" data-number="1">开始${verb}</button></footer></div>`;
     }
     function renderAlbumDetail(item) {
       content.innerHTML=`<div class="resource-detail-page" data-od-id="community-album-detail"><header class="resource-detail-head"><button data-action="back-main" aria-label="返回">←</button><strong>图集详情</strong><button data-action="resource-share" aria-label="分享">${icons.share}</button></header><div class="album-gallery" aria-label="${escapeHTML(item.title)}图集预览"><span></span><span></span><span></span><span></span></div><div class="album-access"><button data-action="resource-start" data-topic="男色">会员可看全套5张</button><span>☆ ${Math.round(Number(String(item.views).replace(/,/g,''))/2.6/100)/10}K</span></div><section class="resource-detail-section"><h2>${escapeHTML(item.title)}</h2><p>${escapeHTML(item.summary)}</p></section><section class="resource-detail-section"><h2>为你推荐</h2>${resourceRecommendations(communityMenPosts,item)}</section></div>`;
@@ -2542,6 +2593,38 @@
       const item=state.activeResource;
       if(!item){content.innerHTML=`<div class="resource-detail-page">${subpageHead('内容详情')}<div class="empty-state"><i>!</i><strong>内容已下架</strong><button data-action="back-main">返回资源列表</button></div></div>`;return;}
       if(item.topic==='男色')renderAlbumDetail(item);else renderReadingDetail(item);
+    }
+    function resourceTotalUnits(item=state.activeResource) { return item?.topic==='小说'?Number(item.chapters||1):Number(item?.episodes||1); }
+    function resourceUnitLabel(item=state.activeResource) { return item?.topic==='小说'?'章':'集'; }
+    function openResourceUnit(number,{remember=true}={}) {
+      const item=state.activeResource,total=resourceTotalUnits(item),target=Math.max(1,Math.min(total,Number(number)||1));
+      if(!item||item.topic==='男色')return toast('当前内容不支持章节阅读');
+      const enter=()=>{if(target>2&&!hasVideoMembership())return openMembershipPopup('video');if(remember)rememberPage();state.activeResourceUnit=target;state.screen='resourceReader';render();};
+      if(target>2&&!state.loggedIn)return ensureLogin(enter,`登录后可查看第${target}${resourceUnitLabel(item)} VIP 内容`);
+      enter();
+    }
+    function resourceNovelParagraphs(item,number) {
+      const title=escapeHTML(item.title),chapter=Number(number)||1;
+      return [
+        `第${chapter}章的故事从一封没有署名的来信开始。${title}里的人物再次回到熟悉的城市，街灯和旧建筑之间还留着往日的痕迹。`,
+        `他沿着长街慢慢向前，把记忆里的每一个细节重新排列。一个看似普通的约定，却让几个人的生活再次产生了交集。`,
+        `门被推开时，房间里只有窗外的光。桌上放着一张旧照片，背面写着一行模糊的日期，也成为了这一章最重要的线索。`,
+        `他们并没有立即得到答案。相反，每一句话都带出了新的疑问。沉默之中，谁都知道下一次见面会来得比想象中更快。`,
+        `夜深之前，他将那张照片收进口袋。城市的声音重新涌来，而故事才刚刚开始。`
+      ];
+    }
+    function resourceReaderUnitStrip(item,number,total) {
+      const maxVisible=6,start=Math.max(1,Math.min(number-2,total-maxVisible+1)),end=Math.min(total,start+maxVisible-1),unit=resourceUnitLabel(item);
+      return Array.from({length:end-start+1},(_,index)=>{const value=start+index,locked=value>2;return `<button class="${value===number?'active':''} ${locked?'locked':''}" data-action="resource-reader-unit" data-number="${value}" data-access="${locked?'vip':'free'}">第${value}${unit}</button>`;}).join('');
+    }
+    function renderResourceReader() {
+      const item=state.activeResource;
+      if(!item||item.topic==='男色'){state.screen='resourceDetail';renderCommunityResourceDetail();return;}
+      const novel=item.topic==='小说',total=resourceTotalUnits(item),unit=resourceUnitLabel(item),number=Math.max(1,Math.min(total,Number(state.activeResourceUnit)||1));
+      state.activeResourceUnit=number;
+      const quick=`<div class="resource-reader-quick"><button data-action="resource-reader-step" data-step="-1" ${number<=1?'disabled':''} aria-label="上一${unit}">‹</button><div class="resource-reader-unit-strip">${resourceReaderUnitStrip(item,number,total)}</div><button data-action="resource-reader-step" data-step="1" ${number>=total?'disabled':''} aria-label="下一${unit}">›</button></div>`;
+      const body=novel?`<article class="novel-reader-copy">${resourceNovelParagraphs(item,number).map(copy=>`<p>${copy}</p>`).join('')}<div class="novel-reader-end">· 第 ${number} ${unit}完 ·</div></article>`:`<section class="anime-reader" aria-label="第${number}${unit}图片内容">${['城市的灯光在雨幕中逐渐亮起。','线索出现，两人向旧城区进发。','新的相遇让计划发生了偏移。','本集尾声，未解之谜指向下一集。'].map((caption,index)=>`<figure class="anime-reader-frame" data-caption="${caption}"><i>FRAME ${String(index+1).padStart(2,'0')} · EP ${String(number).padStart(2,'0')}</i></figure>`).join('')}</section>`;
+      content.innerHTML=`<div class="resource-reader-page ${novel?'novel':'anime'}" data-od-id="community-${novel?'novel':'anime'}-reader"><header class="resource-reader-head"><button data-action="back-main" aria-label="返回详情">←</button><strong>${escapeHTML(item.title)} · 第${number}${unit}</strong><button class="reader-detail-link" data-action="resource-reader-detail">详情</button></header>${quick}<section class="resource-reader-status"><small>${novel?'TEXT READER':'IMAGE STORY'}</small><h1>第${number}${unit}</h1><p>${number} / ${total} · ${number<=2?'免费内容':'VIP 内容'}</p></section>${body}<footer class="resource-reader-bottom"><button data-action="resource-reader-step" data-step="-1" ${number<=1?'disabled':''}>← 上一${unit}</button><button class="directory" data-action="resource-reader-detail">目录</button><button data-action="resource-reader-step" data-step="1" ${number>=total?'disabled':''}>下一${unit} →</button></footer></div>`;
     }
 
     function renderMine() {
@@ -2696,7 +2779,7 @@
       screen.classList.toggle('short-screen',shortSurface);
       screen.classList.toggle('light-screen',!shortSurface);
       document.querySelector('meta[name="theme-color"]').content=shortSurface?'#05070a':state.screen==='main'&&state.tab==='mine'?'#d8efff':'#ffffff';
-      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='profileConnections')renderProfileConnections();else if(state.screen==='membership')renderMembership();else if(state.screen==='search')renderGlobalSearch();else if(state.screen==='moreCategories')renderMoreCategories();else if(state.screen==='hotRankHub')renderHotRankHub();else if(state.screen==='tagPage')renderTagPage();else if(state.screen==='collection')renderCollection();else if(state.screen==='resourceDetail')renderCommunityResourceDetail();else if(state.screen==='aiTool')renderAIToolPage();else if(state.screen==='aiTasks')renderAITasks();else if(state.screen==='aiTaskDetail')renderAITaskDetail();else if(state.screen==='aiResult')renderAIResultPage();else if(state.screen==='walletPage')renderWallet();else if(state.screen==='rechargePage')renderRechargePage();else if(state.screen==='ordersPage')renderOrdersPage();else if(state.screen==='orderDetailPage')renderOrderDetailPage();else if(state.screen==='recordsPage')renderRecordsPage();else if(state.screen==='purchasesPage')renderPurchasesPage();else if(state.screen==='messagesPage')renderMessagesPage();else if(state.screen==='supportPage')renderSupportPage();else if(state.screen==='settingsPage')renderSettingsPage();else if(state.screen==='appIconPage')renderAppIconPage();else if(state.screen==='devicesPage')renderDevicesPage();else if(state.screen==='cancelPage')renderCancelPage();else if(state.screen==='myPostsPage')renderMyPostsPage();else if(state.screen==='myRequestsPage')renderMyRequestsPage();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
+      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='profileConnections')renderProfileConnections();else if(state.screen==='membership')renderMembership();else if(state.screen==='search')renderGlobalSearch();else if(state.screen==='moreCategories')renderMoreCategories();else if(state.screen==='hotRankHub')renderHotRankHub();else if(state.screen==='tagPage')renderTagPage();else if(state.screen==='collection')renderCollection();else if(state.screen==='resourceDetail')renderCommunityResourceDetail();else if(state.screen==='resourceReader')renderResourceReader();else if(state.screen==='aiTool')renderAIToolPage();else if(state.screen==='aiTasks')renderAITasks();else if(state.screen==='aiTaskDetail')renderAITaskDetail();else if(state.screen==='aiResult')renderAIResultPage();else if(state.screen==='walletPage')renderWallet();else if(state.screen==='rechargePage')renderRechargePage();else if(state.screen==='ordersPage')renderOrdersPage();else if(state.screen==='orderDetailPage')renderOrderDetailPage();else if(state.screen==='recordsPage')renderRecordsPage();else if(state.screen==='purchasesPage')renderPurchasesPage();else if(state.screen==='messagesPage')renderMessagesPage();else if(state.screen==='supportPage')renderSupportPage();else if(state.screen==='settingsPage')renderSettingsPage();else if(state.screen==='appIconPage')renderAppIconPage();else if(state.screen==='devicesPage')renderDevicesPage();else if(state.screen==='cancelPage')renderCancelPage();else if(state.screen==='myPostsPage')renderMyPostsPage();else if(state.screen==='myRequestsPage')renderMyRequestsPage();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
       content.scrollTop=0;
     }
     function openSheet(html) { closeMembershipCheckout();overlay.classList.remove('membership-popup','media-viewer','auth-page');sheet.innerHTML=`<div class="sheet-handle"></div>${html}`; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); }
@@ -3088,12 +3171,15 @@
       if(action==='community-topic'){const nextTopic=target.dataset.value;if(nextTopic==='关注'&&!state.loggedIn){ensureLogin(()=>{state.communityTopic='关注';renderCommunity();content.scrollTop=0;},'登录后可查看已关注用户的社区内容');return;}if(['男色','小说','动漫'].includes(nextTopic)&&state.communityTopic!==nextTopic){state.communityCatalogGenre='推荐';state.communitySort='推荐';}state.communityTopic=nextTopic;renderCommunity();content.scrollTop=0;toast(`已切换栏目：${state.communityTopic}`);return;}
       if(action==='community-catalog-genre'){state.communityCatalogGenre=target.dataset.value||'推荐';renderCommunity();content.scrollTop=0;toast(`已切换${state.communityTopic}分类：${state.communityCatalogGenre}`);return;}
       if(action==='community-sort'){state.communitySort=target.dataset.value;if(state.communitySort==='随机')state.communityRandomSeed+=1;renderCommunity();toast(state.communitySort==='随机'?'已随机换一批':'已按'+state.communitySort+'排序');return;}
-      if(action==='resource-catalog-detail'){const item=[...communityNovelPosts,...communityAnimePosts,...communityMenPosts].find(entry=>entry.id===target.dataset.id);if(!item)return toast('内容已下架');rememberPage();state.activeResource=item;state.screen='resourceDetail';render();return;}
+      if(action==='resource-catalog-detail'){const item=[...communityNovelPosts,...communityAnimePosts,...communityMenPosts].find(entry=>entry.id===target.dataset.id);if(!item)return toast('内容已下架');rememberPage();state.activeResource=item;state.activeResourceUnit=1;state.resourceDirectoryExpanded=false;state.screen='resourceDetail';render();return;}
       if(action==='resource-share'){toast('分享链接已复制');return;}
       if(action==='resource-favorite'){ensureLogin(()=>{const key=`resource:${target.dataset.id||state.activeResource?.id}`;const active=state.favorites.has(key);active?state.favorites.delete(key):state.favorites.add(key);render();toast(active?'已取消收藏':'已收藏');});return;}
-      if(action==='resource-chapter'){if(target.dataset.access==='free'){toast(`开始${state.activeResource?.topic==='小说'?'阅读':'播放'}第${target.dataset.number||1}${state.activeResource?.topic==='小说'?'章':'集'}`);return;}ensureLogin(()=>hasVideoMembership()?toast('VIP内容已开始'):openMembershipPopup('video'));return;}
-      if(action==='resource-all-chapters'){toast(`已展开全部${state.activeResource?.topic==='小说'?'章节':'剧集'}`);return;}
-      if(action==='resource-start'){ensureLogin(()=>hasVideoMembership()?toast(target.dataset.topic==='小说'?'已开始阅读':'会员内容已开始'):openMembershipPopup('video'));return;}
+      if(action==='resource-chapter'){openResourceUnit(target.dataset.number||1);return;}
+      if(action==='resource-all-chapters'){state.resourceDirectoryExpanded=!state.resourceDirectoryExpanded;renderReadingDetail(state.activeResource);toast(state.resourceDirectoryExpanded?`已展开全部${state.activeResource?.topic==='小说'?'章节':'剧集'}`:'已收起目录');return;}
+      if(action==='resource-start'){if(target.dataset.topic==='男色'){ensureLogin(()=>hasVideoMembership()?toast('会员图集已打开'):openMembershipPopup('video'));return;}openResourceUnit(target.dataset.number||1);return;}
+      if(action==='resource-reader-unit'){openResourceUnit(target.dataset.number||1,{remember:false});return;}
+      if(action==='resource-reader-step'){const next=state.activeResourceUnit+Number(target.dataset.step||0);if(next<1||next>resourceTotalUnits())return;openResourceUnit(next,{remember:false});return;}
+      if(action==='resource-reader-detail'){if(!restorePreviousPage()){state.screen='resourceDetail';render();}return;}
       if(action==='want-request'){ensureLogin(()=>{const post=communityPosts().find(item=>item.id===target.dataset.id);if(!post||!post.request)return toast('求片不存在');if(isOwnRequest(post))return toast('自己发布的求片无需标记想看');if(requestEnded(post))return toast(post.resolved?'该求片已结束，可查看已采纳推荐':'该求片已结束，不能继续标记想看');const active=state.wantedRequests.has(post.id);active?state.wantedRequests.delete(post.id):state.wantedRequests.add(post.id);render();toast(active?'已取消想看标记':'已标记想看，采纳后将通过消息通知');});return;}
       if(action==='focus-request-reply'){ensureLogin(()=>{document.querySelector('#requestReplyInput')?.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>document.querySelector('#requestReplyInput')?.focus(),320);},'登录后可参与求片推荐');return;}
       if(action==='request-reply-media-toggle'){const kind=target.dataset.kind;if(!['image','video'].includes(kind))return;ensureLogin(()=>{state.requestReplyMedia[kind]=!state.requestReplyMedia[kind];renderPostDetail();setTimeout(()=>document.querySelector('#requestReplyInput')?.scrollIntoView({block:'center'}),30);},'登录后可在求片回复中上传图片或视频');return;}
