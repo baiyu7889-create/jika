@@ -1425,6 +1425,19 @@
     .hot-rank-value strong,.hot-rank-value span { display:block; }
     .hot-rank-value strong { color:#303842; font:800 11px var(--font-mono); }
     .hot-rank-value span { margin-top:3px; color:#9aa2ab; font-size:7px; }
+    .ranking-page { background:#fff; }
+    .ranking-primary-tabs { position:sticky; top:54px; z-index:18; display:grid; grid-template-columns:repeat(3,1fr); min-height:62px; padding:0 18px; border-bottom:1px solid #f0f2f5; background:rgba(255,255,255,.97); backdrop-filter:blur(14px); }
+    .ranking-primary-tab { position:relative; border:0; background:none; color:#252932; font-size:15px; font-weight:750; }
+    .ranking-primary-tab.active { color:#2a57ef; }
+    .ranking-primary-tab.active::after { content:''; position:absolute; left:50%; bottom:7px; width:22px; height:4px; border-radius:4px; background:#2458f4; transform:translateX(-50%); box-shadow:0 2px 7px rgba(36,88,244,.28); }
+    .ranking-period-tabs { display:grid; grid-template-columns:repeat(4,1fr); gap:13px; padding:15px 16px 14px; background:#fff; }
+    .ranking-period-tab { min-height:38px; border:0; border-radius:21px; background:#f0f2ff; color:#3159c9; font-size:13px; }
+    .ranking-period-tab.active { background:linear-gradient(135deg,#315df7,#2454ee); color:#fff; font-weight:800; box-shadow:0 7px 15px rgba(42,87,241,.2); }
+    .ranking-body { padding:0 12px 28px; }
+    .ranking-summary { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:40px; padding:0 4px; color:#929aa4; font-size:9px; }
+    .ranking-summary strong { color:#2b3139; font-size:12px; }
+    .hot-rank-row.like .hot-rank-thumb { background:linear-gradient(145deg,#ff92af,#e95f84); }
+    .hot-rank-row.coin .hot-rank-thumb { background:linear-gradient(145deg,#ffd765,#e89a21); color:#704b06; }
     .setting-row { display:flex; align-items:center; justify-content:space-between; min-height:50px; border-bottom:1px solid #edf1f4; font-size:11px; }
     .setting-row:last-child { border-bottom:0; }
     .switch { position:relative; width:40px; height:23px; border:0; border-radius:20px; background:#ccd4da; }
@@ -1646,7 +1659,7 @@
         {id:'ORD-DEMO-REFUND',type:'coins',title:'退款订单状态样例',amount:6,status:'已退款',time:'08-05 16:45',refundReason:'退款处理完成，渠道已受理。',granted:true},
         {id:'ORD-DEMO-REJECT',type:'coins',title:'退款拒绝状态样例',amount:6,status:'退款拒绝',time:'08-04 11:20',refundReason:'资产已消费，已转人工核算。',granted:true}
       ], pending:null, posts:[], activePost:null,
-      libraryTop:'推荐', libraryCategory:'全部', librarySort:'推荐', libraryLoading:false, sectionRefresh:{}, hotRankType:'play',
+      libraryTop:'推荐', libraryCategory:'全部', librarySort:'推荐', libraryLoading:false, sectionRefresh:{}, hotRankType:'play', hotRankPeriod:'day',
       moreDimension:'主题', moreType:'全部', moreSpec:'全部', moreSort:'最新',
       communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', wantedRequests:new Set(), likedPosts:new Set(),
       searchQuery:'', searchExecuted:false, searchType:'作品', searchSource:'short', searchHistory:[],
@@ -1739,6 +1752,7 @@
         libraryCategory:state.libraryCategory,
         librarySort:state.librarySort,
         hotRankType:state.hotRankType,
+        hotRankPeriod:state.hotRankPeriod,
         membershipFamily:state.membershipFamily,
         membershipPlan:state.membershipPlan,
         communityMode:state.communityMode,
@@ -1951,26 +1965,26 @@
     const referenceTitles=['城市夜航特别篇','海边假日记录','本周高分长片','运动时光：训练日','校园故事新章','人物访谈：远方','午夜电台精选','旅行中的相遇','编辑部特别推荐','经典系列回顾'];
     const referenceCatalogIds=['lv1','lv2','lv3','lv4','lv5','lv6','lv7'];
     const hotRankDefinitions=[
-      {id:'play',title:'播放热榜',icon:'▶',description:'按全站作品播放量排名',unit:'播放量',peak:'128.6万',rows:[
-        {title:'城市夜航特别篇',meta:'长视频 · 今日上升 3 位',value:'128.6万',id:'lv1'},
-        {title:'海边假日记录',meta:'长视频 · 连续 4 日上榜',value:'116.2万',id:'lv2'},
-        {title:'本周高分长片',meta:'长视频 · 完播率 87%',value:'98.4万',id:'lv3'},
-        {title:'运动时光：训练日',meta:'长视频 · 今日新上榜',value:'82.7万',id:'lv4'},
-        {title:'校园故事新章',meta:'长视频 · 热度持续上升',value:'76.9万',id:'lv5'}
+      {id:'play',title:'播放榜',unit:'播放量',mark:'▶',rows:[
+        {title:'城市夜航特别篇',meta:'长视频 · 完播率 91%',id:'lv1',values:{day:'128.6万',week:'688.2万',month:'2,486万',all:'9,860万'}},
+        {title:'海边假日记录',meta:'长视频 · 连续上榜',id:'lv2',values:{day:'116.2万',week:'642.5万',month:'2,218万',all:'8,742万'}},
+        {title:'本周高分长片',meta:'长视频 · 今日上升 3 位',id:'lv3',values:{day:'98.4万',week:'598.1万',month:'1,986万',all:'7,965万'}},
+        {title:'运动时光：训练日',meta:'长视频 · 新上榜',id:'lv4',values:{day:'82.7万',week:'526.8万',month:'1,782万',all:'6,884万'}},
+        {title:'校园故事新章',meta:'长视频 · 热度上升',id:'lv5',values:{day:'76.9万',week:'480.2万',month:'1,648万',all:'6,216万'}}
       ]},
-      {id:'search',title:'搜索热榜',icon:'⌕',description:'按全站关键词搜索量排名',unit:'搜索量',peak:'96.4万',rows:[
-        {title:'城市故事',meta:'搜索热度环比 +18%',value:'96.4万'},
-        {title:'短剧',meta:'搜索热度环比 +12%',value:'88.1万'},
-        {title:'动漫专区',meta:'新增搜索趋势',value:'72.2万'},
-        {title:'人气合集',meta:'连续 7 日上榜',value:'68.6万'},
-        {title:'旅行纪录',meta:'搜索热度环比 +6%',value:'60.8万'}
+      {id:'like',title:'点赞榜',unit:'点赞量',mark:'♥',rows:[
+        {title:'海边假日记录',meta:'长视频 · 点赞率 18.6%',id:'lv2',values:{day:'18.6万',week:'82.4万',month:'326.8万',all:'1,288万'}},
+        {title:'城市夜航特别篇',meta:'长视频 · 互动持续上升',id:'lv1',values:{day:'17.2万',week:'79.8万',month:'308.4万',all:'1,206万'}},
+        {title:'校园故事新章',meta:'长视频 · 新增互动',id:'lv5',values:{day:'14.9万',week:'70.5万',month:'286.2万',all:'1,096万'}},
+        {title:'本周高分长片',meta:'长视频 · 口碑上榜',id:'lv3',values:{day:'12.8万',week:'66.1万',month:'258.6万',all:'986.4万'}},
+        {title:'运动时光：训练日',meta:'长视频 · 本周上升',id:'lv4',values:{day:'11.6万',week:'60.4万',month:'226.9万',all:'882.7万'}}
       ]},
-      {id:'creator',title:'创作者热榜',icon:'◉',description:'按创作者公开作品总播放量排名',unit:'总播放量',peak:'2,486万',rows:[
-        {title:'干净演变身影',meta:'38 部公开作品 · 片库认证',value:'2,486万'},
-        {title:'蓝屿',meta:'31 部公开作品 · 旅行创作者',value:'2,108万'},
-        {title:'纸飞机',meta:'27 部公开作品 · 动漫专题作者',value:'1,862万'},
-        {title:'城市夜航',meta:'24 部公开作品 · 城市记录',value:'1,596万'},
-        {title:'远山',meta:'19 部公开作品 · 独立作者',value:'1,284万'}
+      {id:'coin',title:'金币榜',unit:'金币',mark:'金',rows:[
+        {title:'本周高分长片',meta:'金币内容 · 付费转化 12.8%',id:'lv3',values:{day:'8.6万',week:'42.8万',month:'186.4万',all:'724.8万'}},
+        {title:'城市夜航特别篇',meta:'金币内容 · 购买持续上升',id:'lv1',values:{day:'7.9万',week:'39.6万',month:'172.8万',all:'682.5万'}},
+        {title:'经典系列完整合集',meta:'金币合集 · 高价值内容',id:'set1',values:{day:'7.2万',week:'36.8万',month:'158.2万',all:'626.4万'}},
+        {title:'海边假日记录',meta:'金币内容 · 首购率上升',id:'lv2',values:{day:'6.4万',week:'32.1万',month:'142.6万',all:'568.2万'}},
+        {title:'校园故事新章',meta:'金币内容 · 新上榜',id:'lv5',values:{day:'5.8万',week:'28.9万',month:'126.4万',all:'496.8万'}}
       ]}
     ];
     function referenceHeader() {
@@ -2052,18 +2066,15 @@
     }
 
     function renderHotRankHub() {
-      const cards=hotRankDefinitions.map(rank=>`<button class="hot-rank-card" data-action="hot-rank-open" data-value="${rank.id}" aria-label="查看${rank.title}"><span class="hot-rank-card-icon" aria-hidden="true">${rank.icon}</span><span class="hot-rank-card-copy"><strong>${rank.title}</strong><span>${rank.description}</span></span><span class="hot-rank-card-metric"><b>${rank.peak}</b>${rank.unit} ›</span></button>`).join('');
-      content.innerHTML=`<div class="subpage" data-od-id="hot-rank-hub">${subpageHead('热榜集合')}<div class="subpage-body"><section class="hot-rank-hero"><small>DAILY RANKING</small><h1>全站热度趋势</h1><p>分别查看作品播放量、关键词搜索量与创作者公开作品总播放量。</p></section><div class="hot-rank-grid">${cards}</div></div></div>`;
-    }
-
-    function renderHotRankList() {
       const rank=hotRankDefinitions.find(item=>item.id===state.hotRankType)||hotRankDefinitions[0];
+      const periodLabels={day:'日榜',week:'周榜',month:'月榜',all:'总榜'};
+      const primaryTabs=hotRankDefinitions.map(item=>`<button class="ranking-primary-tab ${item.id===rank.id?'active':''}" data-action="ranking-type" data-value="${item.id}">${item.title}</button>`).join('');
+      const periodTabs=Object.entries(periodLabels).map(([key,label])=>`<button class="ranking-period-tab ${key===state.hotRankPeriod?'active':''}" data-action="ranking-period" data-value="${key}">${label}</button>`).join('');
       const rows=rank.rows.map((row,index)=>{
-        const action=rank.id==='play'?`data-action="open-detail" data-id="${row.id}"`:rank.id==='search'?`data-action="hot-rank-search" data-value="${escapeHTML(row.title)}"`:`data-action="open-profile" data-source="video" data-name="${escapeHTML(row.title)}"`;
-        const mark=rank.id==='play'?'▶':rank.id==='search'?'⌕':escapeHTML(row.title.slice(0,1));
-        return `<button class="hot-rank-row ${rank.id}" ${action} aria-label="第${index+1}名 ${escapeHTML(row.title)}，${row.value}${rank.unit}"><span class="hot-rank-position">${index+1}</span><span class="hot-rank-thumb" aria-hidden="true">${mark}</span><span class="hot-rank-main"><strong>${escapeHTML(row.title)}</strong><span>${escapeHTML(row.meta)}</span></span><span class="hot-rank-value"><strong>${row.value}</strong><span>${rank.unit}</span></span></button>`;
+        const value=row.values[state.hotRankPeriod]||row.values.day;
+        return `<button class="hot-rank-row ${rank.id}" data-action="open-detail" data-id="${row.id}" aria-label="第${index+1}名 ${escapeHTML(row.title)}，${value}${rank.unit}"><span class="hot-rank-position">${index+1}</span><span class="hot-rank-thumb" aria-hidden="true">${rank.mark}</span><span class="hot-rank-main"><strong>${escapeHTML(row.title)}</strong><span>${escapeHTML(row.meta)}</span></span><span class="hot-rank-value"><strong>${value}</strong><span>${rank.unit}</span></span></button>`;
       }).join('');
-      content.innerHTML=`<div class="subpage" data-od-id="hot-rank-list">${subpageHead(rank.title)}<div class="subpage-body"><section class="hot-rank-list-head"><small>${rank.id.toUpperCase()} RANKING</small><h2>${rank.title}</h2><p>${rank.description} · 点击条目可查看对应内容</p></section><section class="hot-rank-list" aria-label="${rank.title}">${rows}</section></div></div>`;
+      content.innerHTML=`<div class="subpage ranking-page" data-od-id="ranking-page">${subpageHead('排行榜')}<nav class="ranking-primary-tabs" aria-label="榜单类型">${primaryTabs}</nav><nav class="ranking-period-tabs" aria-label="榜单周期">${periodTabs}</nav><div class="ranking-body"><div class="ranking-summary"><strong>${periodLabels[state.hotRankPeriod]} · ${rank.title}</strong><span>按${rank.unit}从高到低排名</span></div><section class="hot-rank-list" aria-label="${periodLabels[state.hotRankPeriod]}${rank.title}">${rows}</section></div></div>`;
     }
 
     function renderTagPage() {
@@ -2171,10 +2182,10 @@
       return posts.length?`<div class="profile-post-list">${posts.map(post=>`<article class="profile-post-card" data-od-id="profile-post-card"><header class="profile-post-author"><span class="profile-post-avatar"></span><span class="profile-post-author-copy"><strong>${escapeHTML(profileName)}</strong><time>${post.time}</time></span><button class="profile-post-follow ${followed?'is-followed':''}" data-action="follow" data-id="${escapeHTML(profileName)}">${followed?'已关注':'+ 关注'}</button></header><button class="profile-post-open" data-action="post-detail" data-source="profile" data-id="${post.id}"><h3>${escapeHTML(post.title)}</h3><p>${escapeHTML(post.body)}</p>${post.media?`<span class="profile-post-media" data-count="${post.media}">${Array.from({length:post.media},(_,index)=>`<span class="profile-post-media-item" aria-label="帖子图片 ${index+1}"></span>`).join('')}</span>`:''}</button><footer class="profile-post-footer"><span class="profile-post-metric"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.5"/></svg>${post.views}</span><span class="profile-post-metric">${icons.heart}${post.likes}</span><span class="profile-post-metric">${icons.comment}${post.comments}</span><button class="profile-post-topic" data-action="post-detail" data-source="profile" data-id="${post.id}">#${escapeHTML(post.topic)}</button></footer></article>`).join('')}</div>`:'<div class="notice">没有找到匹配的帖子，可尝试标题、话题或正文关键词。</div>';
     }
     function renderProfile() {
-      const videos=state.profileTab==='videos',profileName=state.profileUser||'干净演变身影',profileMeta=state.profileUserMeta||'公开用户';
+      const videos=state.profileTab==='videos',profileName=state.profileUser||'干净演变身影';
       const placeholder=videos?'搜索视频标题、标签或权益':'搜索帖子标题、话题或正文';
       const helper=videos?'仅搜索该用户已公开的视频作品':'仅搜索该用户已公开发布的帖子';
-      content.innerHTML=`<div class="profile-page" data-od-id="personal-profile"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>个人主页</strong><button class="back-btn" data-action="post-menu" aria-label="更多">···</button></div><section class="profile-hero"><div class="profile-identity"><span class="profile-avatar-lg"></span><div><h2>${escapeHTML(profileName)}</h2><p>ID ${Math.abs([...profileName].reduce((sum,char)=>sum+char.charCodeAt(0),0)*97)} · ${escapeHTML(profileMeta)}</p></div><button class="follow-btn" data-action="follow" data-id="${escapeHTML(profileName)}">${state.following.has(profileName)?'已关注':'+ 关注'}</button></div><p class="profile-bio">记录城市、旅行与故事。内容持续更新，感谢关注与友善交流。</p></section><div class="profile-stats"><button class="profile-stat-button" data-action="profile-connections" data-value="粉丝"><strong>8.6万</strong><span>粉丝</span></button><div><strong>12.4万</strong><span>获赞</span></div><button class="profile-stat-button" data-action="profile-connections" data-value="关注"><strong>286</strong><span>关注</span></button><div><strong>38</strong><span>作品</span></div></div><div class="profile-content-tabs"><button class="${videos?'active':''}" data-action="profile-tab" data-value="videos">视频 38</button><button class="${videos?'':'active'}" data-action="profile-tab" data-value="posts">帖子 12</button></div><div class="profile-search-box"><label class="profile-search-row">${icons.search}<input id="profileSearch" value="${escapeHTML(state.profileQuery)}" placeholder="${placeholder}" aria-label="${placeholder}"></label><small class="profile-search-help">${helper}</small></div><section class="${videos?'dense-section':'profile-post-section'}">${videos?'<div class="dense-title"><strong>公开视频</strong><span>VIP / 金币</span></div>':''}<div id="profileResults">${profileResultsMarkup()}</div></section></div>`;
+      content.innerHTML=`<div class="profile-page" data-od-id="personal-profile"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>个人主页</strong><button class="back-btn" data-action="post-menu" aria-label="更多">···</button></div><section class="profile-hero"><div class="profile-identity"><span class="profile-avatar-lg"></span><div><h2>${escapeHTML(profileName)}</h2><p>ID ${Math.abs([...profileName].reduce((sum,char)=>sum+char.charCodeAt(0),0)*97)}</p></div><button class="follow-btn" data-action="follow" data-id="${escapeHTML(profileName)}">${state.following.has(profileName)?'已关注':'+ 关注'}</button></div><p class="profile-bio">记录城市、旅行与故事。内容持续更新，感谢关注与友善交流。</p></section><div class="profile-stats"><button class="profile-stat-button" data-action="profile-connections" data-value="粉丝"><strong>8.6万</strong><span>粉丝</span></button><div><strong>12.4万</strong><span>获赞</span></div><button class="profile-stat-button" data-action="profile-connections" data-value="关注"><strong>286</strong><span>关注</span></button><div><strong>38</strong><span>作品</span></div></div><div class="profile-content-tabs"><button class="${videos?'active':''}" data-action="profile-tab" data-value="videos">视频 38</button><button class="${videos?'':'active'}" data-action="profile-tab" data-value="posts">帖子 12</button></div><div class="profile-search-box"><label class="profile-search-row">${icons.search}<input id="profileSearch" value="${escapeHTML(state.profileQuery)}" placeholder="${placeholder}" aria-label="${placeholder}"></label><small class="profile-search-help">${helper}</small></div><section class="${videos?'dense-section':'profile-post-section'}">${videos?'<div class="dense-title"><strong>公开视频</strong><span>VIP / 金币</span></div>':''}<div id="profileResults">${profileResultsMarkup()}</div></section></div>`;
     }
 
     function renderProfileConnections() {
@@ -2470,7 +2481,7 @@
       screen.classList.toggle('short-screen',shortSurface);
       screen.classList.toggle('light-screen',!shortSurface);
       document.querySelector('meta[name="theme-color"]').content=shortSurface?'#05070a':state.screen==='main'&&state.tab==='mine'?'#d8efff':'#ffffff';
-      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='profileConnections')renderProfileConnections();else if(state.screen==='membership')renderMembership();else if(state.screen==='search')renderGlobalSearch();else if(state.screen==='moreCategories')renderMoreCategories();else if(state.screen==='hotRankHub')renderHotRankHub();else if(state.screen==='hotRankList')renderHotRankList();else if(state.screen==='tagPage')renderTagPage();else if(state.screen==='collection')renderCollection();else if(state.screen==='aiTool')renderAIToolPage();else if(state.screen==='aiTasks')renderAITasks();else if(state.screen==='aiTaskDetail')renderAITaskDetail();else if(state.screen==='aiResult')renderAIResultPage();else if(state.screen==='walletPage')renderWallet();else if(state.screen==='rechargePage')renderRechargePage();else if(state.screen==='ordersPage')renderOrdersPage();else if(state.screen==='orderDetailPage')renderOrderDetailPage();else if(state.screen==='recordsPage')renderRecordsPage();else if(state.screen==='messagesPage')renderMessagesPage();else if(state.screen==='supportPage')renderSupportPage();else if(state.screen==='settingsPage')renderSettingsPage();else if(state.screen==='appIconPage')renderAppIconPage();else if(state.screen==='devicesPage')renderDevicesPage();else if(state.screen==='cancelPage')renderCancelPage();else if(state.screen==='myPostsPage')renderMyPostsPage();else if(state.screen==='myRequestsPage')renderMyRequestsPage();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
+      if(state.screen==='detail')renderDetail();else if(state.screen==='shortFeed')renderShort();else if(state.screen==='profile')renderProfile();else if(state.screen==='profileConnections')renderProfileConnections();else if(state.screen==='membership')renderMembership();else if(state.screen==='search')renderGlobalSearch();else if(state.screen==='moreCategories')renderMoreCategories();else if(state.screen==='hotRankHub')renderHotRankHub();else if(state.screen==='tagPage')renderTagPage();else if(state.screen==='collection')renderCollection();else if(state.screen==='aiTool')renderAIToolPage();else if(state.screen==='aiTasks')renderAITasks();else if(state.screen==='aiTaskDetail')renderAITaskDetail();else if(state.screen==='aiResult')renderAIResultPage();else if(state.screen==='walletPage')renderWallet();else if(state.screen==='rechargePage')renderRechargePage();else if(state.screen==='ordersPage')renderOrdersPage();else if(state.screen==='orderDetailPage')renderOrderDetailPage();else if(state.screen==='recordsPage')renderRecordsPage();else if(state.screen==='messagesPage')renderMessagesPage();else if(state.screen==='supportPage')renderSupportPage();else if(state.screen==='settingsPage')renderSettingsPage();else if(state.screen==='appIconPage')renderAppIconPage();else if(state.screen==='devicesPage')renderDevicesPage();else if(state.screen==='cancelPage')renderCancelPage();else if(state.screen==='myPostsPage')renderMyPostsPage();else if(state.screen==='myRequestsPage')renderMyRequestsPage();else if(state.screen==='postDetail')renderPostDetail();else if(state.screen==='postEditor'){renderPostEditor();content.querySelector('.editor-label small').textContent='必选·单选';content.querySelector('#postTitle').value=state.postDraft.title;content.querySelector('#postBody').value=state.postDraft.body;}else if(state.screen==='longCategories')renderLongCategories();else if(state.screen==='longCategoryVideos')renderLongCategoryVideos();else if(state.screen==='ai')renderAI();else ({short:renderShort,long:renderLongHome,ai:renderAI,community:renderCommunity,mine:renderMine}[state.tab])();
       content.scrollTop=0;
     }
     function openSheet(html) { closeMembershipCheckout();overlay.classList.remove('membership-popup','media-viewer');sheet.innerHTML=`<div class="sheet-handle"></div>${html}`; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); }
@@ -2852,9 +2863,9 @@
       if(action==='home-reset'){state.libraryTop='推荐';state.librarySort='推荐';render();}
       if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;render();return;}
       if(action==='home-more-categories'){rememberPage();state.screen='moreCategories';render();return;}
-      if(action==='open-hot-ranks'){openPage('hotRankHub',{hotRankType:'play'});return;}
-      if(action==='hot-rank-open'){openPage('hotRankList',{hotRankType:target.dataset.value||'play'});return;}
-      if(action==='hot-rank-search'){openPage('search',{searchSource:'long',searchQuery:target.dataset.value||'',searchExecuted:true,searchType:'作品'});return;}
+      if(action==='open-hot-ranks'){openPage('hotRankHub',{hotRankType:'play',hotRankPeriod:'day'});return;}
+      if(action==='ranking-type'){state.hotRankType=target.dataset.value||'play';renderHotRankHub();return;}
+      if(action==='ranking-period'){state.hotRankPeriod=target.dataset.value||'day';renderHotRankHub();return;}
       if(action==='more-filter'){const group=target.dataset.group,value=target.dataset.value;if(group==='dimension'){state.moreDimension=value;state.moreType='全部';}else if(group==='type')state.moreType=value;else if(group==='spec')state.moreSpec=value;else if(group==='sort')state.moreSort=value;renderMoreCategories();return;}
       if(action==='apply-more-filter'){rememberPage();state.libraryCategory=`${state.moreDimension}·${state.moreType}`;state.librarySort=state.moreSort;state.screen='longCategoryVideos';render();return;}
       if(action==='home-all-categories'){rememberPage();state.returnScreen='main';state.screen='longCategories';render();}
