@@ -996,6 +996,32 @@
     .community-resource-media span::before { content:''; position:absolute; width:54%; height:83%; left:24%; bottom:-10%; border-radius:48% 48% 20% 20%; background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(69,57,76,.22)); }
     .community-resource-media b { position:absolute; left:8px; bottom:7px; z-index:2; padding:3px 6px; border-radius:6px; background:rgba(12,15,20,.56); color:white; font-size:7px; }
     .community-resource-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; color:#7d8794; font-size:9px; }
+    .community-novel-shell { padding:0 10px 28px; background:#fff; }
+    .community-novel-genres { display:flex; gap:23px; min-height:49px; overflow-x:auto; align-items:center; margin:0 -10px; padding:0 12px; border-bottom:1px solid #f0f2f5; scrollbar-width:none; }
+    .community-novel-genres::-webkit-scrollbar { display:none; }
+    .community-novel-genre { position:relative; flex:0 0 auto; height:49px; padding:0; border:0; background:none; color:#161b23; font-size:12px; white-space:nowrap; }
+    .community-novel-genre.active { color:#2469f5; font-weight:850; }
+    .community-novel-genre.active::after { content:''; position:absolute; left:50%; bottom:3px; width:23px; height:3px; transform:translateX(-50%); border-radius:3px; background:#2469f5; }
+    .community-novel-sortbar { display:flex; gap:7px; min-height:51px; align-items:center; }
+    .community-novel-sort { min-width:49px; height:31px; padding:0 12px; border:0; border-radius:7px; background:#f2f4fa; color:#8a92a3; font-size:10px; }
+    .community-novel-sort.active { background:#2867f4; color:#fff; font-weight:800; box-shadow:0 5px 12px rgba(40,103,244,.2); }
+    .community-novel-summary { display:flex; align-items:center; justify-content:space-between; margin:-1px 1px 10px; color:#8e96a4; font-size:8px; }
+    .community-novel-summary strong { color:#3a414d; font-size:9px; }
+    .community-novel-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px 7px; }
+    .community-novel-card { min-width:0; }
+    .community-novel-button { width:100%; display:block; padding:0; border:0; background:none; color:#121720; text-align:left; }
+    .community-novel-cover { --novel-a:#31425e; --novel-b:#8aaab5; position:relative; display:block; aspect-ratio:.73; overflow:hidden; border-radius:9px; background:linear-gradient(150deg,var(--novel-a),var(--novel-b)); box-shadow:0 5px 13px rgba(25,34,48,.13); isolation:isolate; }
+    .community-novel-cover::before { content:''; position:absolute; z-index:1; left:23%; bottom:-7%; width:57%; height:86%; border-radius:48% 48% 17% 17%; background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(16,23,35,.25) 70%); transform:rotate(-4deg); box-shadow:0 0 0 1px rgba(255,255,255,.12); }
+    .community-novel-cover::after { content:''; position:absolute; z-index:2; inset:0; background:linear-gradient(180deg,transparent 43%,rgba(6,9,14,.76) 100%),radial-gradient(circle at 75% 18%,rgba(255,255,255,.42),transparent 25%); }
+    .community-novel-card:nth-child(6n+2) .community-novel-cover { --novel-a:#755b39; --novel-b:#d4bd82; }
+    .community-novel-card:nth-child(6n+3) .community-novel-cover { --novel-a:#4a2230; --novel-b:#c48182; }
+    .community-novel-card:nth-child(6n+4) .community-novel-cover { --novel-a:#24262b; --novel-b:#8f9299; }
+    .community-novel-card:nth-child(6n+5) .community-novel-cover { --novel-a:#375546; --novel-b:#a6c59a; }
+    .community-novel-card:nth-child(6n) .community-novel-cover { --novel-a:#263b64; --novel-b:#8e87be; }
+    .community-novel-title { position:absolute; z-index:3; left:7px; right:7px; bottom:7px; display:-webkit-box; overflow:hidden; color:#fff; font-size:10px; font-weight:750; line-height:1.35; text-shadow:0 1px 4px rgba(0,0,0,.48); -webkit-box-orient:vertical; -webkit-line-clamp:2; }
+    .community-novel-meta { display:flex; align-items:center; justify-content:space-between; gap:5px; min-height:25px; padding-top:5px; color:#333b47; font-size:8px; }
+    .community-novel-rating { flex:0 0 auto; min-width:35px; padding:3px 7px; border-radius:6px; background:#2867f4; color:#fff; font:750 8px var(--font-mono); text-align:center; }
+    .community-novel-empty { grid-column:1/-1; min-height:210px; display:grid; place-items:center; color:#a2a8b2; font-size:10px; text-align:center; }
     .global-search-page { min-height:100%; background:#fff; color:#111820; }
     .global-search-head { position:sticky; top:0; z-index:12; display:grid; grid-template-columns:38px minmax(0,1fr) 46px; gap:7px; align-items:center; padding:8px 11px; border-bottom:1px solid #dcecf4; background:linear-gradient(115deg,rgba(225,245,255,.98),rgba(229,251,247,.98)); backdrop-filter:blur(16px); }
     .global-search-box { display:grid; grid-template-columns:18px minmax(0,1fr); gap:7px; align-items:center; height:38px; padding:0 12px; border-radius:20px; background:#f1f4f7; color:#7c8793; }
@@ -1700,7 +1726,7 @@
       ], pending:null, posts:[], activePost:null,
       libraryTop:'推荐', libraryCategory:'全部', librarySort:'推荐', libraryLoading:false, sectionRefresh:{}, hotRankType:'play', hotRankPeriod:'day',
       moreDimension:'主题', moreType:'全部', moreSpec:'全部', moreSort:'最新',
-      communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', wantedRequests:new Set(), likedPosts:new Set(),
+      communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', communityNovelGenre:'推荐', communityRandomSeed:0, wantedRequests:new Set(), likedPosts:new Set(),
       searchQuery:'', searchExecuted:false, searchType:'作品', searchSource:'short', searchHistory:[],
       profileTab:'videos', profileQuery:'', profileUser:'干净演变身影', profileUserMeta:'片库认证作者', connectionTab:'粉丝', connectionOwner:'profile',
       postDraft:{topic:'影评',image:false,video:false,title:'',body:'',bounty:20},
@@ -1797,6 +1823,8 @@
         communityMode:state.communityMode,
         communityTopic:state.communityTopic,
         communitySort:state.communitySort,
+        communityNovelGenre:state.communityNovelGenre,
+        communityRandomSeed:state.communityRandomSeed,
         searchQuery:state.searchQuery,
         searchExecuted:state.searchExecuted,
         searchType:state.searchType,
@@ -2335,17 +2363,31 @@
       {id:'resource-men-01',author:'编辑推荐',time:'3小时前',topic:'男色',title:'本周人物影像专题合集',summary:'按内容状态、时长和更新时间整理。',body:'本帖仅聚合站内已发布内容，详情与评论交互保持一致。',media:2,views:'2,350',comments:11},
       {id:'resource-topic-01',author:'专题运营',time:'4小时前',topic:'青楼',title:'经典题材专题与更新日历',summary:'专题内容、更新日历和站内观看入口。',body:'专题不包含外部链接，仅展示当前可访问的站内内容。',media:2,views:'1,980',comments:8}
     ];
+    const communityNovelPosts=[
+      {id:'novel-night-flight',author:'夜读社',time:'12分钟前',topic:'小说',genres:['同人改编','都市激情'],title:'夜航之后',summary:'两位成年人在终班车上重逢，一段城市夜行故事。',body:'夜色把熟悉的街道拉得很长，他们在终班车上重逢，从一句问候开始重新认识彼此。',chapters:18,views:'12,860',comments:168,media:1},
+      {id:'novel-summer-return',author:'藏书阁',time:'24分钟前',topic:'小说',genres:['同人改编','家庭乱伦'],title:'夏日回信',summary:'成年后重回旧宅，那封没有寄出的信再次出现。',body:'老房子里的钟还在走，尘封多年的信把几个成年人的关系重新拉回到夏天。',chapters:32,views:'9,420',comments:126,media:1},
+      {id:'novel-boundary-class',author:'灰蓝文库',time:'38分钟前',topic:'小说',genres:['主奴调教','都市激情'],title:'边界练习',summary:'两位成年人在明确同意与边界后开始的关系试验。',body:'规则被一条条写下，信任则需要从每一次回应里慢慢建立。',chapters:27,views:'11,680',comments:149,media:1},
+      {id:'novel-neon-answer',author:'城市夜航',time:'1小时前',topic:'小说',genres:['都市激情','同人改编'],title:'霓虹下的答案',summary:'台风夜、便利店和一个迟到了五年的答案。',body:'霓虹灯在雨水里被拉成光带，他们隔着便利店的玻璃终于说出那句话。',chapters:46,views:'18,240',comments:236,media:1},
+      {id:'novel-old-house',author:'雾岛编辑部',time:'1小时前',topic:'小说',genres:['家庭乱伦','主奴调教'],title:'旧宅里的秘密',summary:'家族聚会后，几位成年人开始重新审视亲密关系。',body:'被遗忘的旧宅藏着一本名册，也藏着每个人不愿说出口的选择。',chapters:21,views:'8,960',comments:118,media:1},
+      {id:'novel-after-curtain',author:'白塔故事',time:'2小时前',topic:'小说',genres:['同人改编','主奴调教'],title:'落幕前再见',summary:'改编自经典舞台设定，两位成年主演的谢幕之夜。',body:'舞台上的灯一盏盏熄灭，剩下的话只适合在幕布后说完。',chapters:15,views:'7,830',comments:94,media:1},
+      {id:'novel-room-2407',author:'黑胶编辑',time:'今天 09:20',topic:'小说',genres:['都市激情','家庭乱伦'],title:'2407号房',summary:'酒店长廊尽头，几个成年人的往事交叉在同一扇门前。',body:'房卡轻响的那一刻，没有人知道门后等待的是答案还是新的问题。',chapters:58,views:'21,300',comments:284,media:1},
+      {id:'novel-blue-protocol',author:'潮汐文库',time:'今天 08:46',topic:'小说',genres:['主奴调教','同人改编'],title:'蓝色协议',summary:'一份关于信任、边界和退出机制的成年人协议。',body:'协议有十二条，最后一条只写了两个字：尊重。',chapters:36,views:'14,760',comments:177,media:1},
+      {id:'novel-warm-current',author:'星河书屋',time:'昨天',topic:'小说',genres:['家庭乱伦','都市激情'],title:'暖流入海',summary:'一场成年人的家庭重聚，一次无法回避的关系潮汐。',body:'海边的风没有停，所有人都必须在天亮之前对自己的选择负责。',chapters:24,views:'10,420',comments:132,media:1},
+      {id:'novel-double-exposure',author:'纸月工作室',time:'昨天',topic:'小说',genres:['同人改编','都市激情'],title:'双重曝光',summary:'摄影棚的两次曝光，拼出了两位成年人不同的记忆。',body:'底片上的两张脸重叠在一起，事实却远比影像更复杂。',chapters:19,views:'9,870',comments:103,media:1},
+      {id:'novel-silent-command',author:'零度版权',time:'08-15',topic:'小说',genres:['主奴调教','都市激情'],title:'无声指令',summary:'语言之外的默契，也必须建立在成年人的明确同意上。',body:'他们为沉默制定了规则，也为每一次停止保留了退路。',chapters:41,views:'16,980',comments:205,media:1},
+      {id:'novel-family-photo',author:'旧城书店',time:'08-14',topic:'小说',genres:['家庭乱伦','同人改编'],title:'合影之外',summary:'一张旧合影让几位已成年的家族成员重访过往。',body:'镜框背后藏着日期和地址，也藏着一段所有人都试图忘记的往事。',chapters:63,views:'23,410',comments:318,media:1}
+    ];
     const myRequestExamples=[
       {id:'request-mine-demo',author:currentUserName,time:'今天 09:12',topic:'求片',title:'想找城市夜景系列的完整版本',summary:'希望有中文字幕和完整系列，欢迎上传图片或视频帮助确认。',body:'想找城市夜景系列的完整版本，优先中文字幕；可在推荐回复中上传图片或视频供我确认。',media:1,views:'328',comments:2,request:true,bounty:30,wanted:46,resolved:false,closed:false,tags:['城市','夜景','中文字幕']}
     ];
-    function communityPosts() { return [...state.posts,...myRequestExamples,...communityFeedPosts,...communityResourcePosts]; }
+    function communityPosts() { return [...state.posts,...myRequestExamples,...communityFeedPosts,...communityResourcePosts,...communityNovelPosts]; }
     function isOwnRequest(post) { return Boolean(state.loggedIn&&post?.request&&post.author===currentUserName); }
     function canManageRequest(post) { return Boolean(state.loggedIn&&isOwnRequest(post)); }
     function requestEnded(post) { return Boolean(post?.resolved||post?.closed); }
     function communityPostLikes(post) { return Number(post.likes||((post.comments||0)*3+18))+(state.loggedIn&&state.likedPosts.has(post.id)?1:0); }
     function orderedCommunityPosts(list) {
       const posts=[...list];
-      if(state.communitySort==='推荐')return posts.slice(1).concat(posts[0]);
+      if(state.communitySort==='推荐')return posts.length>1?posts.slice(1).concat(posts[0]):posts;
       if(state.communitySort==='最热')return posts.sort((a,b)=>(b.comments||0)-(a.comments||0));
       return posts;
     }
@@ -2358,19 +2400,45 @@
     function communityResourceCard(post) {
       return `<article class="community-resource-card" data-od-id="community-resource-post"><button class="community-resource-button" data-action="post-detail" data-source="community" data-id="${post.id}"><div class="community-resource-title"><strong>${post.title}</strong><span>#${post.topic}</span></div><p class="meta" style="text-align:left;">${post.summary}</p><div class="community-resource-media"><span><b>图文预览</b></span><span><b>站内内容</b></span></div><div class="community-resource-meta"><span>${post.author} · ${post.time}</span><span>浏览 ${post.views} · 评论 ${post.comments}</span></div></button><div class="post-actions"><button class="tiny-filter ${state.likedPosts.has(post.id)?'active':''}" data-action="post-like" data-id="${post.id}">点赞 ${communityPostLikes(post)}</button><button class="tiny-filter" data-action="post-detail" data-source="community" data-id="${post.id}">评论 ${post.comments}</button><button class="tiny-filter" data-action="post-menu">更多</button></div></article>`;
     }
+    function communityNovelOrder(list) {
+      const posts=[...list];
+      if(state.communitySort==='推荐')return posts.sort((a,b)=>(b.comments||0)-(a.comments||0));
+      if(state.communitySort==='最热')return posts.sort((a,b)=>Number(String(b.views).replace(/,/g,''))-Number(String(a.views).replace(/,/g,'')));
+      if(state.communitySort==='随机')return posts.sort((a,b)=>{
+        const score=item=>[...item.id].reduce((total,char)=>((total*31)+char.charCodeAt(0)+state.communityRandomSeed)%10007,17);
+        return score(a)-score(b);
+      });
+      return posts;
+    }
+    function communityNovelCard(post) {
+      return `<article class="community-novel-card" data-od-id="community-novel-card"><button class="community-novel-button" data-action="post-detail" data-source="community" data-id="${post.id}" aria-label="${escapeHTML(post.title)}，共${post.chapters}话，18R"><span class="community-novel-cover"><strong class="community-novel-title">${escapeHTML(post.title)}</strong></span><span class="community-novel-meta"><span>共${post.chapters}话</span><b class="community-novel-rating">18R</b></span></button></article>`;
+    }
+    function communityNovelMarkup() {
+      const genres=['推荐','同人改编','主奴调教','家庭乱伦','都市激情'];
+      if(!genres.includes(state.communityNovelGenre))state.communityNovelGenre='推荐';
+      const source=state.communityNovelGenre==='推荐'?communityNovelPosts:communityNovelPosts.filter(post=>post.genres.includes(state.communityNovelGenre));
+      const visible=communityNovelOrder(source);
+      return `<section class="community-novel-shell" aria-label="小说分类"><nav class="community-novel-genres">${genres.map(genre=>`<button class="community-novel-genre ${genre===state.communityNovelGenre?'active':''}" data-action="community-novel-genre" data-value="${genre}">${genre}</button>`).join('')}</nav><div class="community-novel-sortbar">${['推荐','最新','最热','随机'].map(sort=>`<button class="community-novel-sort ${sort===state.communitySort?'active':''}" data-action="community-sort" data-value="${sort}">${sort}</button>`).join('')}</div><div class="community-novel-summary"><strong>${state.communityNovelGenre}书单</strong><span>${visible.length} 部 · 全部 18R</span></div><div class="community-novel-grid">${visible.length?visible.map(communityNovelCard).join(''):'<div class="community-novel-empty">当前题材暂无作品</div>'}</div><div class="reference-bottom-note">继续下滑查看更多小说</div></section>`;
+    }
     function renderCommunity() {
       const resource=state.communityMode==='resource';
       const topics=resource?['男色','小说','种子','动漫','漫画','黄游','青楼']:['关注','推荐','最新','热门','求片'];
       if(!topics.includes(state.communityTopic))state.communityTopic=resource?'种子':'推荐';
+      const novel=resource&&state.communityTopic==='小说';
+      if(novel&&!['推荐','最新','最热','随机'].includes(state.communitySort))state.communitySort='推荐';
+      if(!novel&&state.communitySort==='随机')state.communitySort='最新';
+      const header=`<header class="community-head"><span class="brand-logo">基<i>咔</i></span><div class="community-segment"><button class="${resource?'':'active'}" data-community-mode="exchange">交流</button><button class="${resource?'active':''}" data-community-mode="resource">资源</button></div><button class="icon-btn" data-action="search" aria-label="搜索" style="width:34px;height:34px;flex-basis:34px;">${icons.search}</button></header><nav class="community-category-tabs" aria-label="社区栏目">${topics.map(topic=>`<button class="community-category-tab ${topic===state.communityTopic?'active':''} ${topic==='青楼'?'hot':''}" data-action="community-topic" data-value="${topic}">${topic}</button>`).join('')}</nav>`;
+      if(novel){content.innerHTML=`<div class="portal-page" data-od-id="community-novel-feed">${header}${communityNovelMarkup()}</div>`;return;}
       const base=resource?communityResourcePosts:[...state.posts,...communityFeedPosts];
       let source=base;
+      if(resource)source=base.filter(post=>post.topic===state.communityTopic);
       if(!resource&&state.communityTopic==='求片')source=base.filter(post=>post.request);
       if(!resource&&state.communityTopic==='关注')source=base.filter(post=>state.following.has(post.author));
       if(!resource&&state.communityTopic==='最新')state.communitySort='最新';
       if(!resource&&state.communityTopic==='热门')state.communitySort='最热';
       const visible=orderedCommunityPosts(source);
       const cards=resource?visible.map(communityResourceCard).join(''):visible.map(communityPostCard).join('');
-      content.innerHTML=`<div class="portal-page" data-od-id="community-feed"><header class="community-head"><span class="brand-logo">基<i>咔</i></span><div class="community-segment"><button class="${resource?'':'active'}" data-community-mode="exchange">交流</button><button class="${resource?'active':''}" data-community-mode="resource">资源</button></div><button class="icon-btn" data-action="search" aria-label="搜索" style="width:34px;height:34px;flex-basis:34px;">${icons.search}</button></header><nav class="community-category-tabs" aria-label="社区栏目">${topics.map(topic=>`<button class="community-category-tab ${topic===state.communityTopic?'active':''} ${topic==='青楼'?'hot':''}" data-action="community-topic" data-value="${topic}">${topic}</button>`).join('')}</nav>${channels()}<section class="dense-section"><div class="community-sortbar">${['推荐','最新','最热'].map(sort=>`<button class="community-sort ${sort===state.communitySort?'active':''}" data-action="community-sort" data-value="${sort}"><span>${sort}</span></button>`).join('')}</div><div class="community-board-note"><span>${resource?'资源主题帖':'交流帖子'} · #${state.communityTopic}</span><span>敏感词即时校验 · 无外链直达</span></div>${cards}<div class="reference-bottom-note">继续下滑查看更多${resource?'资源主题':'社区讨论'}</div></section></div>`;
+      content.innerHTML=`<div class="portal-page" data-od-id="community-feed">${header}${channels()}<section class="dense-section"><div class="community-sortbar">${['推荐','最新','最热'].map(sort=>`<button class="community-sort ${sort===state.communitySort?'active':''}" data-action="community-sort" data-value="${sort}"><span>${sort}</span></button>`).join('')}</div><div class="community-board-note"><span>${resource?'资源主题帖':'交流帖子'} · #${state.communityTopic}</span><span>敏感词即时校验 · 无外链直达</span></div>${cards||'<div class="notice">当前分类暂无内容</div>'}<div class="reference-bottom-note">继续下滑查看更多${resource?'资源主题':'社区讨论'}</div></section></div>`;
       return;
     }
 
@@ -2915,8 +2983,9 @@
       if(action==='home-category'){rememberPage();state.libraryCategory=target.dataset.value;state.returnScreen=state.screen==='main'?'main':'longCategories';state.screen='longCategoryVideos';render();}
       if(action==='home-list-filter'){state.librarySort=target.dataset.value;state.libraryLoading=true;render();clearTimeout(renderLongHome.filterTimer);renderLongHome.filterTimer=setTimeout(()=>{state.libraryLoading=false;render();},520);}
       if(action==='reference-ad'){e.preventDefault();toast(`${target.dataset.value}：广告跳转由后台配置`);return;}
-      if(action==='community-topic'){const nextTopic=target.dataset.value;if(nextTopic==='关注'&&!state.loggedIn){ensureLogin(()=>{state.communityTopic='关注';renderCommunity();content.scrollTop=0;},'登录后可查看已关注用户的社区内容');return;}state.communityTopic=nextTopic;renderCommunity();content.scrollTop=0;toast(`已切换栏目：${state.communityTopic}`);return;}
-      if(action==='community-sort'){state.communitySort=target.dataset.value;renderCommunity();toast(`已按${state.communitySort}排序`);return;}
+      if(action==='community-topic'){const nextTopic=target.dataset.value;if(nextTopic==='关注'&&!state.loggedIn){ensureLogin(()=>{state.communityTopic='关注';renderCommunity();content.scrollTop=0;},'登录后可查看已关注用户的社区内容');return;}if(nextTopic==='小说'&&state.communityTopic!=='小说'){state.communityNovelGenre='推荐';state.communitySort='推荐';}state.communityTopic=nextTopic;renderCommunity();content.scrollTop=0;toast(`已切换栏目：${state.communityTopic}`);return;}
+      if(action==='community-novel-genre'){state.communityNovelGenre=target.dataset.value||'推荐';renderCommunity();content.scrollTop=0;toast(`已切换小说题材：${state.communityNovelGenre}`);return;}
+      if(action==='community-sort'){state.communitySort=target.dataset.value;if(state.communitySort==='随机')state.communityRandomSeed+=1;renderCommunity();toast(state.communitySort==='随机'?'已随机换一批':'已按'+state.communitySort+'排序');return;}
       if(action==='want-request'){ensureLogin(()=>{const post=communityPosts().find(item=>item.id===target.dataset.id);if(!post||!post.request)return toast('求片不存在');if(isOwnRequest(post))return toast('自己发布的求片无需标记想看');if(requestEnded(post))return toast(post.resolved?'该求片已结束，可查看已采纳推荐':'该求片已结束，不能继续标记想看');const active=state.wantedRequests.has(post.id);active?state.wantedRequests.delete(post.id):state.wantedRequests.add(post.id);render();toast(active?'已取消想看标记':'已标记想看，采纳后将通过消息通知');});return;}
       if(action==='focus-request-reply'){ensureLogin(()=>{document.querySelector('#requestReplyInput')?.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>document.querySelector('#requestReplyInput')?.focus(),320);},'登录后可参与求片推荐');return;}
       if(action==='request-reply-media-toggle'){const kind=target.dataset.kind;if(!['image','video'].includes(kind))return;ensureLogin(()=>{state.requestReplyMedia[kind]=!state.requestReplyMedia[kind];renderPostDetail();setTimeout(()=>document.querySelector('#requestReplyInput')?.scrollIntoView({block:'center'}),30);},'登录后可在求片回复中上传图片或视频');return;}
