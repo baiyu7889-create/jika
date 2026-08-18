@@ -5,6 +5,16 @@
       "source": "/",
       "destination": "/operations-prototype",
       "permanent": false
+    },
+    {
+      "source": "/index",
+      "destination": "/operations-prototype",
+      "permanent": false
+    },
+    {
+      "source": "/index.html",
+      "destination": "/operations-prototype",
+      "permanent": false
     }
   ]
 }

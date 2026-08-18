@@ -418,7 +418,7 @@
     .profile-stats span { color:#8d98a5; font-size:8px; }
     .profile-stat-button { min-height:48px; border:0; border-radius:12px; background:transparent; color:inherit; }
     .profile-stat-button:active { background:#f2f6f9; }
-    .profile-content-tabs { display:grid; grid-template-columns:1fr 1fr; background:#fff; border-bottom:1px solid #e7edf3; }
+    .profile-content-tabs { display:grid; grid-template-columns:repeat(3,1fr); background:#fff; border-bottom:1px solid #e7edf3; }
     .profile-content-tabs button { min-height:42px; border:0; background:none; color:#7c8794; font-size:12px; }
     .profile-content-tabs button.active { color:#111820; font-weight:800; box-shadow:inset 0 -2px #111820; }
     .profile-search-box { padding:10px; background:#fff; }
@@ -426,8 +426,22 @@
     .profile-search-row svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; }
     .profile-search-row input { min-width:0; border:0; outline:0; background:transparent; color:#17202b; font-size:11px; }
     .profile-search-help { display:block; margin:6px 5px 0; color:#8d98a5; font-size:9px; }
+    .profile-short-section { padding:9px 8px 18px; background:#fff; }
+    .profile-short-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px 7px; }
+    .profile-short-card { min-width:0; padding:0; border:0; background:none; color:#17202a; text-align:left; }
+    .profile-short-thumb { position:relative; display:block; overflow:hidden; aspect-ratio:.74; border-radius:8px; background:radial-gradient(circle at 72% 18%,rgba(255,255,255,.34),transparent 22%),linear-gradient(145deg,#7ac4df,#5769a6 55%,#2c3040); }
+    .profile-short-card:nth-child(3n+2) .profile-short-thumb { background:radial-gradient(circle at 28% 20%,rgba(255,255,255,.3),transparent 23%),linear-gradient(145deg,#dcaa8d,#946e86 58%,#3d3448); }
+    .profile-short-card:nth-child(3n+3) .profile-short-thumb { background:radial-gradient(circle at 68% 22%,rgba(255,255,255,.32),transparent 24%),linear-gradient(145deg,#9bcab7,#547f83 55%,#283b47); }
+    .profile-short-thumb::after { content:''; position:absolute; width:58%; height:82%; left:21%; bottom:-9%; border-radius:48% 48% 15% 15%; background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,.08)); }
+    .profile-short-badge { position:absolute; z-index:2; top:6px; left:6px; padding:3px 6px; border-radius:7px; background:#53c9ec; color:#fff; font-size:8px; font-weight:800; }
+    .profile-short-badge.coin { background:#ff6862; }
+    .profile-short-meta { position:absolute; z-index:2; right:6px; bottom:6px; left:6px; display:flex; align-items:center; justify-content:space-between; color:#fff; font-size:8px; text-shadow:0 1px 4px rgba(0,0,0,.5); }
+    .profile-short-meta span:first-child::before { content:'▶ '; }
+    .profile-short-title { display:block; overflow:hidden; margin-top:6px; font-size:10px; font-weight:700; line-height:1.35; text-overflow:ellipsis; white-space:nowrap; }
+    .profile-short-title + small { display:block; overflow:hidden; margin-top:2px; color:#8a95a1; font-size:8px; text-overflow:ellipsis; white-space:nowrap; }
     .profile-post-section { padding:10px; background:#f6f8fb; }
-    .profile-post-list { display:grid; gap:12px; padding-bottom:10px; }
+    .profile-post-list { display:block; overflow:hidden; padding-bottom:10px; border-radius:14px; background:#fff; }
+    .profile-post-list .post { padding:15px 12px; }
     .profile-post-card { overflow:hidden; padding:12px; border:1px solid #e7ebf0; border-radius:12px; background:#fff; color:#18202a; box-shadow:0 2px 8px rgba(33,48,69,.04); }
     .profile-post-author { display:flex; align-items:center; gap:9px; }
     .profile-post-avatar { flex:0 0 42px; width:42px; height:42px; border-radius:50%; background:linear-gradient(145deg,#d9f4ff,#f9caaf 52%,#6651a6); box-shadow:inset 0 0 0 3px #fff,0 2px 8px rgba(61,85,119,.14); }
@@ -449,6 +463,17 @@
     .profile-post-metric { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
     .profile-post-metric svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:1.8; }
     .profile-post-topic { margin-left:auto; padding:0; border:0; background:none; color:#4f84ed; font-size:10px; }
+    .my-post-feed { overflow:hidden; border:1px solid var(--border); border-radius:16px; background:#fff; }
+    .my-post-feed .post { padding:15px 13px; }
+    .my-post-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .my-post-owner { display:flex; align-items:center; gap:9px; min-width:0; }
+    .my-post-status { flex:0 0 auto; padding:5px 9px; border:0; border-radius:999px; background:#edf1f5; color:#66717e; font-size:9px; font-weight:800; }
+    .my-post-status.published { background:#e9f7ef; color:#2f7a50; }
+    .my-post-status.reviewing { background:#fff5d9; color:#92690c; }
+    .my-post-status.removed { background:#fff0f1; color:#ad4851; }
+    .my-post-private { color:#8a95a1; font-size:9px; }
+    .my-post-actions { justify-content:flex-start; gap:7px; flex-wrap:wrap; }
+    .my-post-actions > span:first-child { margin-right:auto; }
     .post-detail { min-height:100%; background:white; }
     .post-detail-body { padding:14px 12px; }
     .post-detail-title { margin:13px 0 7px; font-size:18px; line-height:1.45; }
@@ -831,6 +856,7 @@
     .short-feed-nav > button { width:38px; height:38px; display:grid; place-items:center; border:0; background:none; color:white; font-size:28px; }
     .short-feed-nav > button svg, .short-nav-actions button svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; }
     .short-feed-nav .top-tabs { min-width:0; padding:0; gap:18px; }
+    .short-profile-title { overflow:hidden; color:#fff; font-size:12px; text-align:center; text-overflow:ellipsis; white-space:nowrap; }
     .short-nav-actions { display:flex; align-items:center; justify-content:flex-end; gap:2px; padding-right:4px; }
     .short-nav-actions button { width:34px; height:42px; display:grid; place-items:center; align-content:center; gap:1px; padding:0; border:0; background:none; color:white; }
     .short-theme [data-od-id="short-video-feed"] { height:100%; min-height:0; display:flex; flex-direction:column; overflow:hidden; }
@@ -1378,6 +1404,7 @@
     .reference-shortcut-icon::after { content:''; position:absolute; right:-10px; bottom:-14px; width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.38); }
     .reference-shortcut.is-drama .reference-shortcut-icon { background:linear-gradient(155deg,#ffe9f0 0%,#f4e5f7 58%,#e8e4fb 100%); }
     .reference-shortcut.is-anime .reference-shortcut-icon { background:linear-gradient(155deg,#fff1d4 0%,#ffe2ee 100%); }
+    .reference-shortcut.is-novel .reference-shortcut-icon { background:linear-gradient(155deg,#e4f3ff 0%,#eee5ff 100%); }
     .reference-shortcut.is-activity .reference-shortcut-icon { background:linear-gradient(155deg,#e6eaff 0%,#d9f3f1 100%); }
     .reference-shortcut-icon svg { position:relative; z-index:1; width:40px; height:40px; overflow:visible; }
     .reference-shortcut:active .reference-shortcut-icon { transform:scale(.93); box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 7px rgba(80,93,116,.12); }
@@ -1698,8 +1725,8 @@
             </section>
             <section id="launchAds" class="launch-ad-stage hidden">
               <div class="launch-ad-head"><span>启动广告</span><button id="launchCountdown" class="launch-skip" data-action="launch-skip" disabled>5s</button></div>
-              <div id="launchAdRail" class="launch-ad-rail" aria-label="启动广告，可左右滑动">
-                <button class="launch-ad blue" data-action="launch-ad" data-value="今日精选"><small>EDITOR'S PICK</small><strong>今日精选内容<br>一次看个够</strong><span>左右滑动查看更多启动推荐</span></button>
+              <div id="launchAdRail" class="launch-ad-rail" aria-label="启动广告，每3秒自动轮播，也可左右滑动">
+                <button class="launch-ad blue" data-action="launch-ad" data-value="今日精选"><small>EDITOR'S PICK</small><strong>今日精选内容<br>一次看个够</strong><span>每3秒自动轮播，也可左右滑动查看更多</span></button>
                 <button class="launch-ad gold" data-action="launch-ad" data-value="基础VIP年卡"><small>MEMBERSHIP</small><strong>基础VIP年卡<br>¥108</strong><span>标准内容、高清线路与进度同步</span></button>
                 <button class="launch-ad rose" data-action="launch-ad" data-value="AI创作"><small>AI CREATION</small><strong>把灵感<br>变成作品</strong><span>任务后台运行，完成后站内通知</span></button>
               </div>
@@ -1712,10 +1739,9 @@
             <div>
               <p class="eyebrow">ADULT CONTENT · 18+</p>
               <h1>仅限成年人进入</h1>
-              <p>继续即表示你已年满18周岁，并同意遵守平台内容规范与隐私政策。</p>
+              <p>本产品仅向年满18周岁的用户开放。</p>
               <button class="btn-primary" data-action="confirm-age">我已满18岁，继续</button>
               <button class="btn-secondary" style="margin-top: 9px;" data-action="leave">未满18岁，退出</button>
-              <div class="legal">继续即同意 <a href="policy.html#user-agreement">用户协议</a> 与 <a href="policy.html#privacy-policy">隐私政策</a></div>
             </div>
           </div>
           <div id="toast" class="toast" role="status"></div>
@@ -1771,10 +1797,15 @@
     const shortFeeds={
       关注:[],
       推荐:[
-        {id:'short1',author:'东禾苹果',title:'本周人气精选',tags:'#城市 #记录 #夜色',likes:'1.5k',comments:186},
-        {id:'short2',author:'蓝屿',title:'海边假日记录',tags:'#海边 #旅行 #故事',likes:'986',comments:72},
-        {id:'short3',author:'夜航员',title:'镜头里的城市光影',tags:'#影评 #镜头 #夜景',likes:'2.1k',comments:204}
+        {id:'short1',author:'东禾苹果',title:'本周人气精选',tags:'#城市 #记录 #夜色',comments:186},
+        {id:'short2',author:'蓝屿',title:'海边假日记录',tags:'#海边 #旅行 #故事',comments:72},
+        {id:'short3',author:'夜航员',title:'镜头里的城市光影',tags:'#影评 #镜头 #夜景',comments:204}
       ]
+    };
+    const shortWorkStats={
+      short1:{plays:186000,likes:1500,playAdjustment:0,likeAdjustment:0},
+      short2:{plays:128000,likes:986,playAdjustment:0,likeAdjustment:0},
+      short3:{plays:96000,likes:2100,playAdjustment:0,likeAdjustment:0}
     };
     const collections={
       set1:{id:'set1',title:'经典系列完整合集',total:12,updated:8,lastUpdate:'今天 10:30',entitlement:'coin',price:300,purchased:false,currentEpisode:3,episodes:[
@@ -1792,37 +1823,42 @@
       aiFirstExperience:{enabled:true,free:true,limit:1}
     };
     const rechargePacks=[
-      {coins:660,amount:66},{coins:1280,amount:128},{coins:1980,amount:198},
-      {coins:3280,amount:328},{coins:5880,amount:588},{coins:8880,amount:888}
+      {coins:660,amount:66,giftCoins:60},{coins:1280,amount:128,giftCoins:120},{coins:1980,amount:198,giftCoins:180},
+      {coins:3280,amount:328,giftCoins:300},{coins:5880,amount:588,giftCoins:500},{coins:8880,amount:888,giftCoins:800}
     ];
     const promotionConfig={landing:'landing.html'};
+    const recommendShortcutFallbackItems=[
+      {id:'hot-ranks',label:'热榜',icon:'rank',type:'ranking',route:'/ranking',enabled:true,order:10},
+      {id:'short-drama',label:'短剧',icon:'drama',type:'tag',value:'短剧',route:'/long-video/tag/short-drama',enabled:true,order:20},
+      {id:'anime',label:'动漫',icon:'anime',type:'resource',value:'动漫',route:'/community/resource/anime',enabled:true,order:30},
+      {id:'novel',label:'小说',icon:'novel',type:'resource',value:'小说',route:'/community/resource/novel',enabled:true,order:40}
+    ];
     const recommendShortcutConfig={
+      available:true,
+      version:'shortcut-2026-08-18-v4-page-address',
       maxVisible:5,
       items:[
-        {id:'hot-ranks',label:'热榜',icon:'rank',type:'ranking',enabled:true,order:10},
-        {id:'short-drama',label:'短剧',icon:'drama',type:'tag',value:'短剧',enabled:true,order:20},
-        {id:'anime',label:'动漫',icon:'anime',type:'tag',value:'动漫',enabled:true,order:30},
-        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',enabled:true,order:40},
-        {id:'campaign-reserve',label:'限时活动',icon:'activity',type:'activity',landing:'landing.html',enabled:false,order:50}
+        ...recommendShortcutFallbackItems,
+        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',route:'/activity/current',enabled:true,status:'published',startAt:'2026-08-01T00:00:00+08:00',endAt:'2026-12-31T23:59:59+08:00',order:50}
       ]
     };
     const appIconOptions=[
-      {id:'default',name:'默认图标',copy:'品牌渐变 · 清晰识别',className:'',glyph:'JK'},
-      {id:'weather',name:'晴雨助手',copy:'天气风格 · 日常低调',className:'weather',glyph:''},
-      {id:'notes',name:'每日记事',copy:'便签风格 · 简洁中性',className:'notes',glyph:''},
-      {id:'calendar',name:'日期提醒',copy:'日历风格 · 通用自然',className:'calendar',glyph:''},
-      {id:'toolbox',name:'轻量工具',copy:'工具风格 · 深色克制',className:'toolbox',glyph:''}
+      {id:'default',name:'默认图标',copy:'品牌蓝色 · 仅更换图片',className:'',glyph:'JK'},
+      {id:'weather',name:'晴空蓝',copy:'晴空图案 · 仅更换图片',className:'weather',glyph:''},
+      {id:'notes',name:'便签米白',copy:'便签图案 · 仅更换图片',className:'notes',glyph:''},
+      {id:'calendar',name:'日历红白',copy:'日历图案 · 仅更换图片',className:'calendar',glyph:''},
+      {id:'toolbox',name:'深色工具',copy:'工具图案 · 仅更换图片',className:'toolbox',glyph:''}
     ];
     const currentUserName='积极橘子';
 
     const state = {
       tab:'short', screen:'main', returnScreen:'main', profileReturnScreen:'main', navigationStack:[], contentId:'lv1', loggedIn:false, authMode:'login', loginMethod:'手机号', memberships:[],
       membershipFamily:'all', membershipPlan:'all_year', membershipCheckout:null,
-      coins:60, aiQuota:0, frozen:0, aiFirstExperienceUsed:false,
+      coins:60, aiQuota:0, frozen:0, aiFirstExperienceUsed:false, firstRechargeUsed:false,
       purchased:new Set(), tasks:[], aiNotifications:[], aiDraft:{tool:'',cost:0,materialReady:false}, accountHydrated:false, accountSnapshot:null, orders:[
         {id:'ORD-DEMO-FAILED',type:'coins',title:'充值订单状态样例',amount:6,status:'失败',time:'昨天 20:10',refundReason:'支付渠道返回失败，未扣款、未发放。',granted:false},
         {id:'ORD-DEMO-CLOSED',type:'member',title:'会员订单状态样例',amount:39,status:'关闭',time:'昨天 19:32',refundReason:'超过支付时限，订单已关闭。',granted:false},
-        {id:'ORD-DEMO-CHARGEBACK',type:'coins',title:'拒付订单状态样例',amount:30,status:'拒付',time:'08-06 14:08',refundReason:'支付渠道拒付，未消费赠送资产已回收。',granted:false},
+        {id:'ORD-DEMO-CHARGEBACK',type:'coins',title:'拒付订单状态样例',amount:30,status:'拒付',time:'08-06 14:08',refundReason:'支付渠道拒付，尚未消费的赠送金币或AI额度已回收。',granted:false},
         {id:'ORD-DEMO-REFUND',type:'coins',title:'退款订单状态样例',amount:6,status:'已退款',time:'08-05 16:45',refundReason:'退款处理完成，渠道已受理。',granted:true},
         {id:'ORD-DEMO-REJECT',type:'coins',title:'退款拒绝状态样例',amount:6,status:'退款拒绝',time:'08-04 11:20',refundReason:'资产已消费，已转人工核算。',granted:true}
       ], pending:null, posts:[], activePost:null, activeResource:null, activeResourceUnit:1, resourceDirectoryExpanded:false,
@@ -1830,8 +1866,8 @@
       moreDimension:'主题', moreType:'全部', moreSpec:'全部', moreSort:'最新',
       communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', communityCatalogGenre:'推荐', communityRandomSeed:0, wantedRequests:new Set(), likedPosts:new Set(),
       searchQuery:'', searchExecuted:false, searchType:'作品', searchSource:'short', searchHistory:[],
-      profileTab:'videos', profileQuery:'', profileUser:'干净演变身影', profileUserMeta:'片库认证作者', connectionTab:'粉丝', connectionOwner:'profile',
-      postDraft:{topic:'影评',image:false,video:false,title:'',body:'',bounty:20},
+      profileTab:'videos', profileQuery:'', profileUser:'干净演变身影', profileUserMeta:'视频创作者', connectionTab:'粉丝', connectionOwner:'profile',
+      postDraft:{topic:'影评',image:false,video:false,title:'',body:'',bounty:20}, editingPostId:'', deletedMyPosts:new Set(), myPostOverrides:{},
       requestReplyMedia:{image:false,video:false},
       requestSubmissions:{
         'request-city-series':[
@@ -1849,7 +1885,7 @@
       videoComments:[{id:'comment-video-1',name:'海风',text:'画质不错，线路二加载更快。',time:'12分钟前',likes:12,replies:[{name:'夜航员',text:'同意，线路二更稳定。',time:'8分钟前'}]},{id:'comment-video-2',name:'夜航员',text:'希望尽快更新同系列内容。',time:'36分钟前',likes:8,replies:[]}],
       communityComments:[{id:'comment-post-1',name:'蓝屿',text:'镜头分析很细，期待继续更新。',time:'8分钟前',likes:16,replies:[{name:'纸飞机',text:'第二段的色彩分析尤其有帮助。',time:'5分钟前'}]},{id:'comment-post-2',name:'阿泽',text:'视频片段和正文的观点一致。',time:'22分钟前',likes:7,replies:[]}],
       player:{status:'trialEnded',quality:'高清',line:1,speed:1,current:30,muted:false,fullscreen:false,error:''},
-      shortTab:'推荐',shortIndex:0,shortProgress:{},shortElapsed:{},shortPaused:false,shortTrialEnded:new Set(),shortLeaveReason:'',shortCleanScreen:false,shortLiked:new Set(),listState:'default',tagName:'城市',tagSort:'推荐',postMedia:{index:0,playing:false},
+      shortTab:'推荐',shortIndex:0,shortSource:'main',shortProfileAuthor:'',shortProgress:{},shortElapsed:{},shortPaused:false,shortTrialEnded:new Set(),shortLeaveReason:'',shortCleanScreen:false,shortLiked:new Set(),shortPlayCounted:new Set(),shortPlayBoost:{},blockedAuthors:new Set(),listState:'default',tagName:'城市',tagSort:'推荐',postMedia:{index:0,playing:false},
       aiTaskFilter:'全部',activeTaskId:'',walletTab:'资产',orderFilter:'全部',activeOrderId:'',recordTab:'观看记录',messageFilter:'全部',myPostFilter:'全部',myRequestTab:'requests',
       resumeIntent:null,
       following:new Set(),favorites:new Set(),
@@ -1858,9 +1894,9 @@
         {id:'set1',progress:58,current:'第3集',lastViewed:'昨天'},
         {id:'lv5',progress:24,current:'11:46',lastViewed:'08-12'}
       ],
-      ledger:[{id:'LEDGER-0001',bizNo:'INIT-ACCOUNT',assetType:'付费金币',delta:60,before:0,after:60,status:'成功',reason:'演示账户初始余额',time:'今天 09:00'}],
+      ledger:[{id:'LEDGER-0001',bizNo:'INIT-ACCOUNT',assetType:'金币',delta:60,before:0,after:60,status:'成功',reason:'演示账户初始余额',time:'今天 09:00'}],
       messages:[
-        {id:'MSG-001',type:'系统',title:'欢迎使用基咔',copy:'请先阅读用户协议、隐私政策与内容规范。',read:false,target:'settings'}
+        {id:'MSG-001',type:'系统',title:'欢迎使用基咔',copy:'成年人确认已完成，开始探索感兴趣的内容。',read:false,target:'settings'}
       ],
       tickets:[],supportDraft:{type:'订单查单',bizNo:'',content:''},devices:[{id:'device-current',name:'iPhone · 当前设备',area:'上海',lastActive:'刚刚',current:true},{id:'device-web',name:'Safari H5',area:'杭州',lastActive:'昨天 21:16',current:false}],
       settings:{personalized:true,notifications:true,orderNotice:true,communityNotice:true,aiNotice:true},appIcon:'default',selectedAppIcon:'default',cancelStarted:false,
@@ -1900,7 +1936,7 @@
       ]
     };
     const platformAnnouncement={enabled:true,title:'平台服务公告',copy:'为提升访问稳定性，平台近期完成线路与内容服务升级。如遇播放或支付异常，可在“我的—在线客服”提交业务单号查询。'};
-    const launchController={ready:false,countdown:5,loadingTimer:null,countdownTimer:null,campaignIndex:0,sectionCampaignShown:false};
+    const launchController={ready:false,countdown:5,loadingTimer:null,countdownTimer:null,slideTimer:null,campaignIndex:0,sectionCampaignShown:false};
 
     function navigationSnapshot() {
       return {
@@ -1937,6 +1973,8 @@
         aiDraft:{...state.aiDraft},
         shortTab:state.shortTab,
         shortIndex:state.shortIndex,
+        shortSource:state.shortSource,
+        shortProfileAuthor:state.shortProfileAuthor,
         shortProgress:{...state.shortProgress},
         shortElapsed:{...state.shortElapsed},
         shortPaused:state.shortPaused,
@@ -2056,6 +2094,22 @@
     function hasAccess(item) { return state.loggedIn&&(item.entitlement==='membership' ? hasVideoMembership() : state.purchased.has(item.id)); }
     function durationSeconds(value) { const parts=String(value).split(':').map(Number); return parts.length===2&&parts.every(Number.isFinite)?parts[0]*60+parts[1]:0; }
     function formatTime(seconds) { const safe=Math.max(0,Math.floor(seconds||0)),m=Math.floor(safe/60),s=safe%60; return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+    function formatCompactCount(value) {
+      const count=Math.max(0,Math.floor(Number(value)||0));
+      if(count<1000)return String(count);
+      const unit=count<10000?1000:10000,suffix=count<10000?'k':'w',scaled=Math.floor(count/unit*10)/10;
+      return `${Number.isInteger(scaled)?scaled.toFixed(0):scaled.toFixed(1)}${suffix}`;
+    }
+    function shortWorkCount(id,type) {
+      const stats=shortWorkStats[id]||{plays:0,likes:0,playAdjustment:0,likeAdjustment:0};
+      const base=Number(stats[type]||0),adjustment=Number(stats[type==='plays'?'playAdjustment':'likeAdjustment']||0);
+      const local=type==='plays'?Number(state.shortPlayBoost[id]||0):(state.loggedIn&&state.shortLiked.has(id)?1:0);
+      return Math.max(0,base+adjustment+local);
+    }
+    function currentShortFeeds() {
+      if(state.shortSource==='profile')return profileShortFeed(state.shortProfileAuthor||state.profileUser);
+      return state.shortTab==='关注'?shortFeeds.推荐.filter(feed=>state.following.has(feed.author)):(shortFeeds[state.shortTab]||shortFeeds.推荐);
+    }
     function preparePlayer(item) {
       stopPlaybackClock();
       const total=durationSeconds(item.duration),owned=hasAccess(item);
@@ -2175,16 +2229,19 @@
       rank:'<svg viewBox="0 0 48 48"><path d="M16 8h16v8c0 7-3.6 12-8 12s-8-5-8-12V8Z" fill="#ffb51f"/><path d="M17 12H9c0 7 3.2 11 10 11M31 12h8c0 7-3.2 11-10 11" fill="none" stroke="#ffd45d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 27v7m-7 5h14" stroke="#f39b0b" stroke-width="5" stroke-linecap="round"/><path d="m24 11 1.5 3 3.5.5-2.5 2.4.6 3.4-3.1-1.6-3.1 1.6.6-3.4-2.5-2.4 3.5-.5Z" fill="#fff3b4"/></svg>',
       drama:'<svg viewBox="0 0 48 48"><path d="M10 17h30v22H10z" rx="5" fill="#ff6e9d"/><path d="M10 17h30v7H10z" fill="#fff1f6"/><path d="m14 17 5 7m5-7 5 7m5-7 5 7" stroke="#7e63dc" stroke-width="3"/><path d="m21 28 9 5-9 5Z" fill="#fff"/><path d="M8 10h31l2 7H10Z" fill="#ffc44f"/><path d="m12 10 5 7m6-7 5 7m6-7 5 7" stroke="#fff7d8" stroke-width="3"/></svg>',
       anime:'<svg viewBox="0 0 48 48"><path d="m12 17 4-9 7 7m13 2-4-9-7 7" fill="#7fcff5" stroke="#5799db" stroke-width="2" stroke-linejoin="round"/><path d="M10 25c0-10 6-15 14-15s14 5 14 15-5 15-14 15-14-5-14-15Z" fill="#72c7ef"/><path d="M14 24c3-6 16-8 20 0v7c-2 6-18 6-20 0Z" fill="#fff6ea"/><path d="M18 27h1m10 0h1" stroke="#334b74" stroke-width="4" stroke-linecap="round"/><path d="M21 32c2 2 4 2 6 0" fill="none" stroke="#ef7f9d" stroke-width="2" stroke-linecap="round"/><path d="m14 20 8-8 12 9" fill="#ff82ad" opacity=".72"/></svg>',
+      novel:'<svg viewBox="0 0 48 48"><path d="M9 10c8-3 13-1 15 2v28c-3-3-8-4-15-2Z" fill="#71b8ef"/><path d="M39 10c-8-3-13-1-15 2v28c3-3 8-4 15-2Z" fill="#9e7ee8"/><path d="M24 12v28" stroke="#fff" stroke-width="2" opacity=".8"/><path d="M13 17h7m-7 6h7m8-6h7m-7 6h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".85"/></svg>',
       activity:'<svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg>'
     };
     function activeRecommendShortcuts() {
       const limit=Math.max(0,Math.min(5,Number(recommendShortcutConfig.maxVisible)||5));
-      return recommendShortcutConfig.items.filter(item=>item.enabled).sort((a,b)=>(a.order||0)-(b.order||0)).slice(0,limit);
+      const now=Date.now(),source=recommendShortcutConfig.available?recommendShortcutConfig.items:recommendShortcutFallbackItems;
+      const valid=source.filter(item=>item.enabled!==false&&item.status!=='disabled'&&(!item.startAt||Date.parse(item.startAt)<=now)&&(!item.endAt||Date.parse(item.endAt)>now));
+      return [...new Map(valid.sort((a,b)=>(a.order||0)-(b.order||0)).map(item=>[item.id,item])).values()].slice(0,limit);
     }
     function referenceShortcut(item) {
-      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
-      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:`打开${item.label}落地页`;
-      return `<button class="reference-shortcut is-${escapeHTML(item.icon||'activity')}" ${action} data-shortcut-id="${escapeHTML(item.id)}" aria-label="${escapeHTML(aria)}"><span class="reference-shortcut-icon" aria-hidden="true">${referenceShortcutIcons[item.icon]||referenceShortcutIcons.activity}</span><span>${escapeHTML(item.label)}</span></button>`;
+      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='resource'?`data-action="community-resource-shortcut" data-value="${escapeHTML(item.value||item.label)}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
+      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:item.type==='resource'?`进入${item.label}资源列表`:`打开${item.label}落地页`;
+      return `<button class="reference-shortcut is-${escapeHTML(item.icon||'activity')}" ${action} data-shortcut-id="${escapeHTML(item.id)}" data-target-address="${escapeHTML(item.route||item.landing||'')}" aria-label="${escapeHTML(aria)}"><span class="reference-shortcut-icon" aria-hidden="true">${referenceShortcutIcons[item.icon]||referenceShortcutIcons.activity}</span><span>${escapeHTML(item.label)}</span></button>`;
     }
     function referenceShortcuts() {
       const items=activeRecommendShortcuts();
@@ -2274,7 +2331,7 @@
 
     function shortSlide(feed,index) {
       const item=catalog[feed.id],total=Math.max(1,durationSeconds(item.duration)),elapsed=state.shortElapsed[item.id]||0,progress=Math.min(100,elapsed/total*100),owned=hasAccess(item);
-      const liked=state.loggedIn&&state.shortLiked.has(item.id);
+      const liked=state.loggedIn&&state.shortLiked.has(item.id),playCount=shortWorkCount(item.id,'plays'),likeCount=shortWorkCount(item.id,'likes');
       const active=index===state.shortIndex,trialEnded=!owned&&state.shortTrialEnded.has(item.id),paused=active&&state.shortPaused;
       const remaining=Math.max(0,(item.trial||0)-elapsed),trialText=owned?`${entitlement(item)}完整播放`:`${entitlement(item)}试看 · 剩余 ${formatTime(remaining)}`,trialBadge=trialEnded?'':`<span class="trial badge num">${trialText}</span>`;
       const center=paused&&!trialEnded?`<button class="short-center-play" data-action="short-toggle" data-id="${item.id}" aria-label="继续播放">${icons.play}</button>`:'';
@@ -2282,7 +2339,7 @@
       const trialCopy=item.entitlement==='membership'?'开通视频VIP后从当前进度继续观看完整版。':'充值金币后返回当前视频完成解锁。';
       const trialCta=item.entitlement==='membership'?'开通VIP看完整版':'充值金币解锁';
       const trialMask=trialEnded?`<div class="short-trial-mask" data-od-id="short-trial-mask"><div class="short-trial-mask-card"><span class="short-trial-mask-lock">${icons.lock}</span><h2>试看已结束</h2><p>${trialCopy}</p><button class="short-trial-mask-cta" data-action="${trialAction}" data-id="${item.id}">${trialCta}</button><span class="short-trial-swipe">上滑继续看下一条</span></div></div>`:'';
-      return `<article class="short-video-slide ${trialEnded?'is-trial-ended':''}" data-short-index="${index}" data-content-id="${feed.id}"><div class="video-stage" role="button" tabindex="0" aria-label="暂停或继续短视频" data-action="short-toggle" data-id="${item.id}">${placeholder(`竖版短视频主视觉 ${index+1}`)}<div class="video-shade"></div><span class="short-index">${state.shortTab} · ${index+1}/${(state.shortTab==='关注'?shortFeeds.推荐.filter(x=>state.following.has(x.author)):shortFeeds[state.shortTab]).length}</span><input class="progress-line" type="range" min="0" max="${total}" value="${elapsed}" style="--progress:${progress}%" data-action="short-seek" data-id="${item.id}" aria-label="短视频播放进度">${trialBadge}${center}<div class="video-copy"><button class="short-author-link" data-action="open-profile" data-source="video" aria-label="查看${feed.author}个人页"><h2 class="h3">@${feed.author}</h2></button><p>${feed.tags}</p><p class="meta">${feed.title} · 高清线路</p></div><div class="action-rail" aria-label="短视频操作"><button class="action" data-action="open-profile" data-source="video" aria-label="查看${feed.author}个人页"><span class="action-avatar"></span><span>头像</span></button><button class="action" data-action="short-toggle" data-id="${item.id}" aria-label="播放或暂停短视频，播放量${item.views||0}">${icons.play}<span>${item.views||0}</span></button><button class="action ${liked?'is-liked':''}" data-action="short-like" data-id="${item.id}" aria-label="${liked?'取消点赞':'点赞'}，点赞量${feed.likes||0}">${icons.heart}<span>${feed.likes||0}</span></button><button class="action" data-action="promo-jump" data-source="short-video-share" data-id="${item.id}" aria-label="分享并打开推广落地页">${icons.share}<span>分享</span></button><button class="action" data-action="short-clean">${icons.clean}<span>清屏</span></button></div>${trialMask}<button class="short-clean-restore" data-action="short-clean" aria-label="点击恢复短视频界面">点击恢复界面</button></div></article>`;
+      return `<article class="short-video-slide ${trialEnded?'is-trial-ended':''}" data-short-index="${index}" data-content-id="${feed.id}"><div class="video-stage" role="button" tabindex="0" aria-label="暂停或继续短视频" data-action="short-toggle" data-id="${item.id}">${placeholder(`竖版短视频主视觉 ${index+1}`)}<div class="video-shade"></div><span class="short-index">${state.shortSource==='profile'?'作者主页':state.shortTab} · ${index+1}/${currentShortFeeds().length}</span><input class="progress-line" type="range" min="0" max="${total}" value="${elapsed}" style="--progress:${progress}%" data-action="short-seek" data-id="${item.id}" aria-label="短视频播放进度">${trialBadge}${center}<div class="video-copy"><button class="short-author-link" data-action="open-profile" data-source="short-video" data-name="${escapeHTML(feed.author)}" aria-label="查看${feed.author}个人页"><h2 class="h3">@${feed.author}</h2></button><p>${feed.tags}</p><p class="meta">${feed.title} · 高清线路</p></div><div class="action-rail" aria-label="短视频操作"><button class="action" data-action="open-profile" data-source="short-video" data-name="${escapeHTML(feed.author)}" aria-label="查看${feed.author}个人页"><span class="action-avatar"></span><span>头像</span></button><button class="action" data-action="short-toggle" data-id="${item.id}" aria-label="播放或暂停短视频，作品播放量${formatCompactCount(playCount)}">${icons.play}<span data-short-play-count="${item.id}">${formatCompactCount(playCount)}</span></button><button class="action ${liked?'is-liked':''}" data-action="short-like" data-id="${item.id}" aria-label="${liked?'取消点赞':'点赞'}，作品点赞量${formatCompactCount(likeCount)}">${icons.heart}<span>${formatCompactCount(likeCount)}</span></button><button class="action" data-action="promo-jump" data-source="short-video-share" data-id="${item.id}" aria-label="分享并打开推广落地页">${icons.share}<span>分享</span></button><button class="action" data-action="short-clean">${icons.clean}<span>清屏</span></button></div>${trialMask}<button class="short-clean-restore" data-action="short-clean" aria-label="点击恢复短视频界面">点击恢复界面</button></div></article>`;
     }
     function startShortPlayback(stack,feeds) {
       clearInterval(shortPlaybackTimer);
@@ -2299,6 +2356,10 @@
         state.shortElapsed[activeItem.id]=elapsed;
         state.shortProgress[`${state.shortTab}:${state.shortIndex}`]=Math.min(100,elapsed/total*100);
         const slide=stack.querySelector(`[data-short-index="${state.shortIndex}"]`),bar=slide?.querySelector('.progress-line'),badge=slide?.querySelector('.trial');
+        if(elapsed>=3&&!state.shortPlayCounted.has(activeItem.id)){
+          state.shortPlayCounted.add(activeItem.id);state.shortPlayBoost[activeItem.id]=(state.shortPlayBoost[activeItem.id]||0)+1;
+          const countNode=slide?.querySelector(`[data-short-play-count="${activeItem.id}"]`);if(countNode)countNode.textContent=formatCompactCount(shortWorkCount(activeItem.id,'plays'));
+        }
         if(bar){bar.value=elapsed;bar.style.setProperty('--progress',`${state.shortProgress[`${state.shortTab}:${state.shortIndex}`]}%`);}
         if(badge&&!owned)badge.textContent=`${entitlement(activeItem)}试看 · 剩余 ${formatTime(Math.max(0,limit-elapsed))}`;
         if(!owned&&elapsed>=limit){
@@ -2308,10 +2369,12 @@
     }
     function renderShort() {
       clearInterval(shortPlaybackTimer);
-      const feeds=state.shortTab==='关注'?shortFeeds.推荐.filter(feed=>state.following.has(feed.author)):(shortFeeds[state.shortTab]||shortFeeds.推荐);
+      const feeds=currentShortFeeds(),profileContext=state.shortSource==='profile';
       const leading=state.screen==='shortFeed'?'<button data-action="back-main" aria-label="返回">‹</button>':'<span></span>';
-      const body=feeds.length?`<div id="shortFeedStack" class="short-feed-stack">${feeds.map(shortSlide).join('')}</div>`:`<div class="short-empty"><div><strong>还没有关注内容</strong><p>关注喜欢的作者后，新作品会出现在这里。</p><button data-action="short-tab" data-value="推荐">去推荐看看</button></div></div>`;
-      content.innerHTML=`<section style="height:100%;" data-od-id="short-video-feed"><div class="short-feed-nav">${leading}<div class="top-tabs tabs">${['关注','推荐'].map(tab=>`<button class="top-tab ${tab===state.shortTab?'active':''}" data-action="short-tab" data-value="${tab}">${tab}</button>`).join('')}</div><div class="short-nav-actions"><button data-action="search" aria-label="搜索">${icons.search}</button></div></div>${body}</section>`;
+      const body=feeds.length?`<div id="shortFeedStack" class="short-feed-stack">${feeds.map(shortSlide).join('')}</div>`:`<div class="short-empty"><div><strong>${profileContext?'该作者暂无公开短视频':'还没有关注内容'}</strong><p>${profileContext?'返回个人主页查看其他公开内容。':'关注喜欢的作者后，新作品会出现在这里。'}</p>${profileContext?'':`<button data-action="short-tab" data-value="推荐">去推荐看看</button>`}</div></div>`;
+      const centerNav=profileContext?`<strong class="short-profile-title">@${escapeHTML(state.shortProfileAuthor)} · 短视频</strong>`:`<div class="top-tabs tabs">${['关注','推荐'].map(tab=>`<button class="top-tab ${tab===state.shortTab?'active':''}" data-action="short-tab" data-value="${tab}">${tab}</button>`).join('')}</div>`;
+      const rightNav=profileContext?'<span></span>':`<div class="short-nav-actions"><button data-action="search" aria-label="搜索">${icons.search}</button></div>`;
+      content.innerHTML=`<section style="height:100%;" data-od-id="short-video-feed"><div class="short-feed-nav">${leading}${centerNav}${rightNav}</div>${body}</section>`;
       const stack=document.querySelector('#shortFeedStack');
       if(stack){requestAnimationFrame(()=>{stack.scrollTop=Math.min(state.shortIndex,feeds.length-1)*stack.clientHeight;startShortPlayback(stack,feeds);});let timer;stack.addEventListener('scroll',()=>{clearTimeout(timer);timer=setTimeout(()=>{const next=Math.max(0,Math.min(feeds.length-1,Math.round(stack.scrollTop/(stack.clientHeight||1))));if(next!==state.shortIndex){clearInterval(shortPlaybackTimer);shortPlaybackTimer=null;state.shortLeaveReason='竖滑进入下一条';state.shortIndex=next;const nextItem=catalog[feeds[next].id];state.shortPaused=!hasAccess(nextItem)&&state.shortTrialEnded.has(nextItem.id);renderShort();}},90);});}
     }
@@ -2343,26 +2406,48 @@
       {id:'profile-seaside',author:'干净演变身影',time:'2026-08-09 09:35',title:'海边假日取景路线',topic:'旅行',body:'分享拍摄位置、时间与器材选择。',media:3,views:'2,105',likes:118,comments:21},
       {id:'profile-story',author:'干净演变身影',time:'2026-08-03 18:20',title:'如何看待慢叙事作品',topic:'讨论',body:'欢迎聊聊你更偏好的故事节奏。',media:0,views:'743',likes:39,comments:16}
     ];
+    const profileShortWorks=[
+      {id:'profile-short-01',contentId:'short1',title:'夜色里的城市片段',tags:'#城市 #夜色',plays:186000,comments:186},
+      {id:'profile-short-02',contentId:'short2',title:'海边假日片段',tags:'#海边 #旅行',plays:128000,comments:72},
+      {id:'profile-short-03',contentId:'short3',title:'镜头里的光影',tags:'#镜头 #夜景',plays:96000,comments:204},
+      {id:'profile-short-04',contentId:'short4',title:'今日特别放送',tags:'#纪录 #日常',plays:83000,comments:68},
+      {id:'profile-short-05',contentId:'short5',title:'校园故事新章',tags:'#校园 #故事',plays:79000,comments:91},
+      {id:'profile-short-06',contentId:'short3',title:'移动镜头练习',tags:'#创作 #镜头',plays:62000,comments:43},
+      {id:'profile-short-07',contentId:'short2',title:'傍晚海风记录',tags:'#旅行 #傍晚',plays:54000,comments:37},
+      {id:'profile-short-08',contentId:'short1',title:'城市路口的一分钟',tags:'#城市 #记录',plays:48000,comments:29},
+      {id:'profile-short-09',contentId:'short4',title:'本周精选花絮',tags:'#精选 #花絮',plays:32000,comments:18}
+    ];
+    profileShortWorks.forEach((work,index)=>{const base=catalog[work.contentId];catalog[work.id]={...base,id:work.id,title:work.title,views:formatCompactCount(work.plays)};shortWorkStats[work.id]={plays:work.plays,likes:Math.max(120,Math.floor(work.plays/(72+index*4))),playAdjustment:0,likeAdjustment:0};});
+    function profileShortFeed(author) {
+      const safeAuthor=author||'干净演变身影';
+      return profileShortWorks.map(work=>({id:work.id,author:safeAuthor,title:work.title,tags:work.tags,comments:work.comments}));
+    }
+    function profileShortCards(profileName,q='') {
+      const keyword=q.trim().toLowerCase(),works=profileShortWorks.filter(work=>!keyword||`${work.title} ${work.tags} ${entitlement(catalog[work.contentId])}`.toLowerCase().includes(keyword));
+      if(!works.length)return '<div class="notice">没有找到匹配的短视频，可尝试作品名、标签或“VIP/金币”。</div>';
+      return `<div class="profile-short-grid" data-od-id="profile-short-video-grid">${works.map(work=>{const item=catalog[work.id],index=profileShortWorks.indexOf(work),label=entitlement(item);return `<button class="profile-short-card" data-action="open-profile-short" data-id="${item.id}" data-index="${index}" aria-label="播放${escapeHTML(profileName)}的短视频${escapeHTML(work.title)}"><span class="profile-short-thumb"><span class="profile-short-badge ${label==='金币'?'coin':''}">${label}</span><span class="profile-short-meta"><span>${formatCompactCount(work.plays)}</span><span>${item.duration}</span></span></span><span class="profile-short-title">${escapeHTML(work.title)}</span><small>${escapeHTML(work.tags)}</small></button>`;}).join('')}</div>`;
+    }
     function profileResultsMarkup() {
       const q=state.profileQuery.trim().toLowerCase(),profileName=state.profileUser||'干净演变身影';
       if(state.profileTab==='videos'){
         const works=[catalog.lv1,catalog.lv2,catalog.lv3,catalog.lv4,catalog.lv5,catalog.lv6].filter(item=>!q||`${item.title} ${entitlement(item)} ${item.kind}`.toLowerCase().includes(q));
         return works.length?mediaCards(works,false):'<div class="notice">没有找到匹配的视频，可尝试标题、标签或“VIP/金币”。</div>';
       }
+      if(state.profileTab==='shortVideos')return profileShortCards(profileName,q);
       const posts=profilePosts.filter(post=>!q||`${post.title} ${post.topic} ${post.body}`.toLowerCase().includes(q));
-      const followed=state.following.has(profileName);
-      return posts.length?`<div class="profile-post-list">${posts.map(post=>`<article class="profile-post-card" data-od-id="profile-post-card"><header class="profile-post-author"><span class="profile-post-avatar"></span><span class="profile-post-author-copy"><strong>${escapeHTML(profileName)}</strong><time>${post.time}</time></span><button class="profile-post-follow ${followed?'is-followed':''}" data-action="follow" data-id="${escapeHTML(profileName)}">${followed?'已关注':'+ 关注'}</button></header><button class="profile-post-open" data-action="post-detail" data-source="profile" data-id="${post.id}"><h3>${escapeHTML(post.title)}</h3><p>${escapeHTML(post.body)}</p>${post.media?`<span class="profile-post-media" data-count="${post.media}">${Array.from({length:post.media},(_,index)=>`<span class="profile-post-media-item" aria-label="帖子图片 ${index+1}"></span>`).join('')}</span>`:''}</button><footer class="profile-post-footer"><span class="profile-post-metric"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"/><circle cx="12" cy="12" r="2.5"/></svg>${post.views}</span><span class="profile-post-metric">${icons.heart}${post.likes}</span><span class="profile-post-metric">${icons.comment}${post.comments}</span><button class="profile-post-topic" data-action="post-detail" data-source="profile" data-id="${post.id}">#${escapeHTML(post.topic)}</button></footer></article>`).join('')}</div>`:'<div class="notice">没有找到匹配的帖子，可尝试标题、话题或正文关键词。</div>';
+      return posts.length?`<div class="profile-post-list" data-od-id="profile-post-list-exchange-style">${posts.map((post,index)=>communityPostCard({...post,author:profileName,summary:post.body},index,{source:'profile'})).join('')}</div>`:'<div class="notice">没有找到匹配的帖子，可尝试标题、话题或正文关键词。</div>';
     }
     function renderProfile() {
-      const videos=state.profileTab==='videos',profileName=state.profileUser||'干净演变身影';
-      const placeholder=videos?'搜索视频标题、标签或权益':'搜索帖子标题、话题或正文';
-      const helper=videos?'仅搜索该用户已公开的视频作品':'仅搜索该用户已公开发布的帖子';
-      content.innerHTML=`<div class="profile-page" data-od-id="personal-profile"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>个人主页</strong><button class="back-btn" data-action="post-menu" aria-label="更多">···</button></div><section class="profile-hero"><div class="profile-identity"><span class="profile-avatar-lg"></span><div><h2>${escapeHTML(profileName)}</h2><p>ID ${Math.abs([...profileName].reduce((sum,char)=>sum+char.charCodeAt(0),0)*97)}</p></div><button class="follow-btn" data-action="follow" data-id="${escapeHTML(profileName)}">${state.following.has(profileName)?'已关注':'+ 关注'}</button></div><p class="profile-bio">记录城市、旅行与故事。内容持续更新，感谢关注与友善交流。</p></section><div class="profile-stats"><button class="profile-stat-button" data-action="profile-connections" data-value="粉丝"><strong>8.6万</strong><span>粉丝</span></button><div><strong>12.4万</strong><span>获赞</span></div><button class="profile-stat-button" data-action="profile-connections" data-value="关注"><strong>286</strong><span>关注</span></button><div><strong>38</strong><span>作品</span></div></div><div class="profile-content-tabs"><button class="${videos?'active':''}" data-action="profile-tab" data-value="videos">视频 38</button><button class="${videos?'':'active'}" data-action="profile-tab" data-value="posts">帖子 12</button></div><div class="profile-search-box"><label class="profile-search-row">${icons.search}<input id="profileSearch" value="${escapeHTML(state.profileQuery)}" placeholder="${placeholder}" aria-label="${placeholder}"></label><small class="profile-search-help">${helper}</small></div><section class="${videos?'dense-section':'profile-post-section'}">${videos?'<div class="dense-title"><strong>公开视频</strong><span>VIP / 金币</span></div>':''}<div id="profileResults">${profileResultsMarkup()}</div></section></div>`;
+      const videos=state.profileTab==='videos',shortVideos=state.profileTab==='shortVideos',posts=state.profileTab==='posts',profileName=state.profileUser||'干净演变身影';
+      const placeholder=videos?'搜索视频标题、标签或权益':shortVideos?'搜索短视频作品名或标签':'搜索帖子标题、话题或正文';
+      const helper=videos?'仅搜索该用户已公开的长视频作品':shortVideos?'仅搜索该用户已发布且对当前访问者可见的短视频':'仅搜索该用户已公开发布的帖子';
+      const sectionClass=videos?'dense-section':shortVideos?'profile-short-section':'profile-post-section';
+      content.innerHTML=`<div class="profile-page" data-od-id="personal-profile"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>个人主页</strong><button class="back-btn" data-action="post-menu" aria-label="更多">···</button></div><section class="profile-hero"><div class="profile-identity"><span class="profile-avatar-lg"></span><div><h2>${escapeHTML(profileName)}</h2><p>ID ${Math.abs([...profileName].reduce((sum,char)=>sum+char.charCodeAt(0),0)*97)}</p></div><button class="follow-btn" data-action="follow" data-id="${escapeHTML(profileName)}">${state.following.has(profileName)?'已关注':'+ 关注'}</button></div><p class="profile-bio">记录城市、旅行与故事。内容持续更新，感谢关注与友善交流。</p></section><div class="profile-stats"><button class="profile-stat-button" data-action="profile-connections" data-value="粉丝"><strong>8.6万</strong><span>粉丝</span></button><div><strong>12.4万</strong><span>获赞</span></div><button class="profile-stat-button" data-action="profile-connections" data-value="关注"><strong>286</strong><span>关注</span></button><div><strong>38</strong><span>作品</span></div></div><div class="profile-content-tabs"><button class="${videos?'active':''}" data-action="profile-tab" data-value="videos">视频 18</button><button class="${shortVideos?'active':''}" data-action="profile-tab" data-value="shortVideos">短视频 20</button><button class="${posts?'active':''}" data-action="profile-tab" data-value="posts">帖子 12</button></div><div class="profile-search-box"><label class="profile-search-row">${icons.search}<input id="profileSearch" value="${escapeHTML(state.profileQuery)}" placeholder="${placeholder}" aria-label="${placeholder}"></label><small class="profile-search-help">${helper}</small></div><section class="${sectionClass}">${videos?'<div class="dense-title"><strong>公开长视频</strong><span>VIP / 金币</span></div>':''}<div id="profileResults">${profileResultsMarkup()}</div></section></div>`;
     }
 
     function renderProfileConnections() {
       const fans=[['海风','城市记录 · 互相关注'],['纸飞机','影评与动画'],['蓝屿','海边旅行日记'],['夜航员','本周活跃粉丝'],['远山','关注了你的作品'],['像素岛','互动作品爱好者']];
-      const following=[['城市夜航','已关注 186 天'],['干净演变身影','片库认证作者'],['纸飞机','动画专题作者'],['蓝屿','旅行内容作者'],['专题运营','官方内容账号']];
+      const following=[['城市夜航','已关注 186 天'],['干净演变身影','视频创作者'],['纸飞机','动画专题作者'],['蓝屿','旅行内容作者'],['专题运营','官方内容账号']];
       const list=state.connectionTab==='粉丝'?fans:following,isMine=state.connectionOwner==='mine';
       content.innerHTML=`<div class="connection-page" data-od-id="profile-connections-page">${subpageHead(isMine?'我的粉丝与关注':'粉丝与关注')}<nav class="connection-tabs">${['粉丝','关注'].map(tab=>`<button class="${tab===state.connectionTab?'active':''}" data-action="connection-tab" data-value="${tab}">${tab}${isMine?(tab==='粉丝'?' 18':' 12'):(tab==='粉丝'?' 8.6万':' 286')}</button>`).join('')}</nav><div class="connection-list">${list.map(([name,copy],index)=>`<div class="connection-row"><button class="connection-person" data-action="connection-profile" data-name="${escapeHTML(name)}" data-meta="${escapeHTML(copy)}" aria-label="查看${escapeHTML(name)}个人主页"><span class="connection-avatar" style="filter:hue-rotate(${index*24}deg)"></span><span><strong>${escapeHTML(name)}</strong><small>${escapeHTML(copy)}</small></span></button><button class="connection-follow" data-action="follow" data-id="${escapeHTML(name)}">${state.following.has(name)?'已关注':state.connectionTab==='粉丝'?'+ 回关':'已关注'}</button></div>`).join('')}</div></div>`;
     }
@@ -2377,7 +2462,7 @@
       }
       if(!q||q.includes('不存在'))return `<div class="notice">未找到“${safe}”。已记录无结果词，可切换类型、尝试热门内容，或发布求片。<br><button class="page-secondary" data-action="open-request-publish" style="margin-top:10px;">发布求片</button></div>`;
       const grouped={
-        用户:[['用户','干净演变身影','片库认证作者 · 38个作品','open-profile','']],
+        用户:[['用户','干净演变身影','视频创作者 · 38个作品','open-profile','']],
         作品:[['视频','深夜精选 · 第3集','VIP · 44:30 · 2.4万次播放','open-detail','lv1'],['视频','经典系列完整合集','12集 · 金币内容','open-detail','set1'],['帖子','海边假日特别篇：我最喜欢的三个段落','#观后感 · 评论 16','post-detail','community-seaside']],
         标签:[['标签',`#${safe}`,'视频 36 · 帖子 18','search-tag','']]
       },visible=grouped[state.searchType]||grouped.作品;
@@ -2389,9 +2474,9 @@
     }
 
     function renderPostEditor() {
-      const topics=['影评','推荐','剧情讨论','观后感','创作分享','闲聊','求片'],request=state.postDraft.topic==='求片';
+      const topics=['影评','推荐','剧情讨论','观后感','创作分享','闲聊','求片'],request=state.postDraft.topic==='求片',editing=Boolean(state.editingPostId);
       const bountyField=request?`<section class="editor-card"><div class="editor-label"><span>求片赏金</span><small>必填 · 发布后公开展示</small></div><label class="request-bounty"><span>赏金金额</span><strong><input id="requestBounty" class="editor-input" type="number" min="1" max="999" value="${Number(state.postDraft.bounty)||20}" aria-label="求片赏金金额"> 金币</strong></label><p class="meta">赏金与采纳状态独立记录；本原型只演示展示、采纳与通知，不执行用户间资产结算。</p></section>`:'';
-      content.innerHTML=`<div class="post-editor" data-od-id="post-editor-page"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${request?'发布求片':'发布帖子'}</strong><span></span></div><div class="editor-form"><section class="editor-card"><div class="editor-label"><span>选择话题</span><small>必选·单选</small></div><div class="topic-grid">${topics.map(topic=>`<button class="topic-option ${state.postDraft.topic===topic?'active':''}" data-action="select-topic" data-value="${topic}">#${topic}</button>`).join('')}</div></section><section class="editor-card"><input id="postTitle" class="editor-input" maxlength="60" placeholder="${request?'请输入想找的内容标题':'请输入标题（5-60字）'}"><textarea id="postBody" class="editor-textarea" maxlength="2000" placeholder="${request?'补充版本、字幕、系列或其他需求标签…':'分享你的观点和内容…'}"></textarea></section>${bountyField}<section class="editor-card"><div class="editor-label"><span>${request?'补充预览':'添加媒体'}</span><small>图片与视频可同时添加</small></div><div class="media-add-grid"><button class="media-add ${state.postDraft.image?'active':''}" data-action="add-post-media" data-kind="image">${state.postDraft.image?'✓ 已添加图片':'＋ 添加图片'}</button><button class="media-add ${state.postDraft.video?'active':''}" data-action="add-post-media" data-kind="video">${state.postDraft.video?'✓ 已添加视频':'▶ 添加视频'}</button></div></section>${request?'<div class="notice">求片发布后可累计“想看”；推荐回复支持图片和视频，发布者可采纳其中一条，采纳结果会通知推荐者与已标记想看的用户。</div>':''}<label class="check"><input id="postConsent" type="checkbox" checked>我同意社区规范并确认不发布风险外链。</label><button class="editor-submit" data-action="submit-post">${request?'发布求片':'发布帖子'}</button></div></div>`;
+      content.innerHTML=`<div class="post-editor" data-od-id="post-editor-page"><div class="backbar"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>${editing?'编辑帖子':request?'发布求片':'发布帖子'}</strong><span></span></div><div class="editor-form">${editing?'<div class="notice" style="margin-bottom:10px;">修改提交后以服务端返回状态为准；审核期间只有自己可见。</div>':''}<section class="editor-card"><div class="editor-label"><span>选择话题</span><small>必选·单选</small></div><div class="topic-grid">${topics.map(topic=>`<button class="topic-option ${state.postDraft.topic===topic?'active':''}" data-action="select-topic" data-value="${topic}">#${topic}</button>`).join('')}</div></section><section class="editor-card"><input id="postTitle" class="editor-input" maxlength="60" value="${escapeHTML(state.postDraft.title||'')}" placeholder="${request?'请输入想找的内容标题':'请输入标题（5-60字）'}"><textarea id="postBody" class="editor-textarea" maxlength="2000" placeholder="${request?'补充版本、字幕、系列或其他需求标签…':'分享你的观点和内容…'}">${escapeHTML(state.postDraft.body||'')}</textarea></section>${bountyField}<section class="editor-card"><div class="editor-label"><span>${request?'补充预览':'添加媒体'}</span><small>图片与视频可同时添加</small></div><div class="media-add-grid"><button class="media-add ${state.postDraft.image?'active':''}" data-action="add-post-media" data-kind="image">${state.postDraft.image?'✓ 已添加图片':'＋ 添加图片'}</button><button class="media-add ${state.postDraft.video?'active':''}" data-action="add-post-media" data-kind="video">${state.postDraft.video?'✓ 已添加视频':'▶ 添加视频'}</button></div></section>${request?'<div class="notice">求片发布后可累计“想看”；推荐回复支持图片和视频，发布者可采纳其中一条，采纳结果会通知推荐者与已标记想看的用户。</div>':''}<label class="check"><input id="postConsent" type="checkbox" checked>我同意社区规范并确认不发布风险外链。</label><button class="editor-submit" data-action="submit-post">${editing?'保存并提交':request?'发布求片':'发布帖子'}</button></div></div>`;
     }
     function requestSubmissionsMarkup(post) {
       const list=[...(state.requestSubmissions[post.id]||[])].sort((a,b)=>Number(b.adopted)-Number(a.adopted)),ended=requestEnded(post),owner=canManageRequest(post);
@@ -2503,10 +2588,24 @@
       {id:'men-boxing-diary',author:'九号拳馆',time:'昨天',topic:'男色',genres:['健身','剧情'],title:'拳馆日记',summary:'成年拳击教练的备赛日常与人物访谈。',body:'赛前七天的训练强度逐步下调，但心理压力开始升高。',duration:'16:22',views:'24,170',comments:296,media:1},
       {id:'men-mountain-trip',author:'旅行日志',time:'08-15',topic:'男色',genres:['户外','健身'],title:'山间旅程',summary:'成年旅行者的徒步路线与户外影像。',body:'从山脚到山脊的十二公里路线，记录了天气、体能与沿途风景。',duration:'13:48',views:'15,920',comments:164,media:1}
     ];
+    const myPostExamples=[
+      {id:'my-post-city',author:currentUserName,time:'今天 09:42',title:'城市夜航拍摄手记',topic:'创作分享',summary:'这次尝试用环境光完成整段拍摄，整理了三个实用经验。',body:'这次尝试用环境光完成整段拍摄，整理了三个实用经验。',media:1,image:true,video:false,status:'已发布',views:'1,268',likes:73,comments:8},
+      {id:'my-post-review',author:currentUserName,time:'昨天 20:16',title:'本周高分长片讨论',topic:'影评',summary:'节奏克制但人物关系完整，值得二刷。',body:'节奏克制但人物关系完整，值得二刷。',media:2,image:true,video:true,status:'已发布',views:'986',likes:46,comments:12},
+      {id:'my-post-draft',author:currentUserName,time:'刚刚保存',title:'待完成的海边观后感',topic:'观后感',summary:'正在整理片中的几个重要镜头。',body:'正在整理片中的几个重要镜头。',media:0,image:false,video:false,status:'草稿',views:'0',likes:0,comments:0},
+      {id:'my-post-reviewing',author:currentUserName,time:'今天 08:20',title:'旅行路线补充说明',topic:'创作分享',summary:'补充路线、拍摄时间与器材信息。',body:'补充路线、拍摄时间与器材信息。',media:1,image:true,video:false,status:'审核中',reason:'已提交，审核期间仅自己可见。',views:'0',likes:0,comments:0},
+      {id:'my-post-removed',author:currentUserName,time:'08-12 18:05',title:'旅行片段补充说明',topic:'旅行记录',summary:'用于补充之前发布的旅行片段。',body:'用于补充之前发布的旅行片段。',media:1,image:true,video:false,status:'已下架',reason:'版权授权期限已到，帖子不再对外展示。',appealable:true,views:'2,105',likes:118,comments:21}
+    ];
     const myRequestExamples=[
       {id:'request-mine-demo',author:currentUserName,time:'今天 09:12',topic:'求片',title:'想找城市夜景系列的完整版本',summary:'希望有中文字幕和完整系列，欢迎上传图片或视频帮助确认。',body:'想找城市夜景系列的完整版本，优先中文字幕；可在推荐回复中上传图片或视频供我确认。',media:1,views:'328',comments:2,request:true,bounty:30,wanted:46,resolved:false,closed:false,tags:['城市','夜景','中文字幕']}
     ];
-    function communityPosts() { return [...state.posts,...myRequestExamples,...communityFeedPosts,...communityResourcePosts,...communityNovelPosts,...communityAnimePosts,...communityMenPosts]; }
+    function communityPosts() {
+      const publicOwnPosts=state.posts.flatMap(post=>post.status==='已发布'?[post]:post.status==='审核中'&&post.previousApproved?[post.previousApproved]:[]);
+      return [...publicOwnPosts,...myRequestExamples,...communityFeedPosts,...communityResourcePosts,...communityNovelPosts,...communityAnimePosts,...communityMenPosts];
+    }
+    function myPostsForManagement() {
+      const examples=myPostExamples.filter(post=>!state.deletedMyPosts.has(post.id)).map(post=>state.myPostOverrides[post.id]||post);
+      return [...state.posts.filter(post=>!post.request),...examples];
+    }
     function isOwnRequest(post) { return Boolean(state.loggedIn&&post?.request&&post.author===currentUserName); }
     function canManageRequest(post) { return Boolean(state.loggedIn&&isOwnRequest(post)); }
     function requestEnded(post) { return Boolean(post?.resolved||post?.closed); }
@@ -2517,11 +2616,24 @@
       if(state.communitySort==='最热')return posts.sort((a,b)=>(b.comments||0)-(a.comments||0));
       return posts;
     }
-    function communityPostCard(post,index) {
+    function communityPostCard(post,index,options={}) {
+      const source=options.source||'community';
       const media=post.media?`<div class="community-preview ${post.media===1?'single':''}">${Array.from({length:post.media},()=>'<span></span>').join('')}</div>`:'';
       const ended=requestEnded(post),requestMeta=post.request?`<div class="notice" style="margin-top:8px;"><strong>${post.resolved?'已采纳':post.closed?'求片已结束':'求片中'}</strong> · 赏金 ${Number(post.bounty)||0} 金币 · ${post.wanted+(state.wantedRequests.has(post.id)?1:0)} 人想看${post.resolved?' · 求片已结束':''}</div>`:'';
       const requestAction=!post.request?'':post.resolved&&post.linkedContentId?`<button class="tiny-filter" data-action="open-detail" data-id="${post.linkedContentId}">查看已上架内容</button>`:post.closed?`<button class="tiny-filter" data-action="post-detail" data-source="community" data-id="${post.id}">查看已结束求片</button>`:isOwnRequest(post)?`<button class="tiny-filter" data-action="post-detail" data-source="community" data-id="${post.id}">管理求片</button>`:`<button class="tiny-filter" data-action="want-request" data-id="${post.id}">${state.wantedRequests.has(post.id)?'已想看':'我想看'}</button>`;
-      return `<article class="post" data-od-id="community-post-card"><div class="row"><button class="row" style="border:0;background:none;padding:0;text-align:left;" data-action="open-profile" data-source="community"><span class="avatar"></span><span><strong>${post.author}</strong><span class="meta" style="display:block;">${post.time} · ${post.topic}</span></span></button></div><button class="community-card-button" data-action="post-detail" data-source="community" data-id="${post.id}"><p><strong>${post.title}</strong><br><span class="meta">${post.summary}</span></p>${media}${requestMeta}</button><div class="post-actions"><span>浏览 ${post.views}</span>${requestAction}<button class="tiny-filter ${state.likedPosts.has(post.id)?'active':''}" data-action="post-like" data-id="${post.id}">点赞 ${communityPostLikes(post)}</button><button class="tiny-filter" data-action="post-detail" data-source="community" data-id="${post.id}">评论 ${post.comments}</button><button class="tiny-filter" data-action="post-menu">更多</button></div></article>`;
+      return `<article class="post" data-od-id="community-post-card"><div class="row"><button class="row" style="border:0;background:none;padding:0;text-align:left;" data-action="open-profile" data-source="community" data-name="${escapeHTML(post.author||'')}"><span class="avatar"></span><span><strong>${escapeHTML(post.author||'')}</strong><span class="meta" style="display:block;">${escapeHTML(post.time||'')} · ${escapeHTML(post.topic||'')}</span></span></button></div><button class="community-card-button" data-action="post-detail" data-source="${source}" data-id="${post.id}"><p><strong>${escapeHTML(post.title||'')}</strong><br><span class="meta">${escapeHTML(post.summary||post.body||'')}</span></p>${media}${requestMeta}</button><div class="post-actions"><span>浏览 ${post.views||0}</span>${requestAction}<button class="tiny-filter ${state.likedPosts.has(post.id)?'active':''}" data-action="post-like" data-id="${post.id}">点赞 ${communityPostLikes(post)}</button><button class="tiny-filter" data-action="post-detail" data-source="${source}" data-id="${post.id}">评论 ${post.comments||0}</button><button class="tiny-filter" data-action="post-menu">更多</button></div></article>`;
+    }
+    function myPostCard(post,index) {
+      const media=post.media?`<div class="community-preview ${post.media===1?'single':''}">${Array.from({length:post.media},()=>'<span></span>').join('')}</div>`:'';
+      const statusClass=post.status==='已发布'?'published':post.status==='审核中'?'reviewing':post.status==='已下架'?'removed':'';
+      const statusAttrs=`data-action="post-status-detail" data-id="${post.id}" data-title="${escapeHTML(post.title)}" data-status="${post.status}" data-reason="${escapeHTML(post.reason||'暂无补充说明')}"`;
+      const bodyAction=post.status==='已发布'?`data-action="post-detail" data-source="my-post" data-id="${post.id}"`:post.status==='草稿'?`data-action="edit-my-post" data-id="${post.id}"`:statusAttrs;
+      let actions='';
+      if(post.status==='已发布')actions=`<button class="tiny-filter" data-action="post-detail" data-source="my-post" data-id="${post.id}">评论 ${post.comments||0}</button><button class="tiny-filter" data-action="my-post-manage" data-id="${post.id}">管理</button>`;
+      if(post.status==='草稿')actions=`<button class="tiny-filter" data-action="edit-my-post" data-id="${post.id}">继续编辑</button><button class="tiny-filter" data-action="delete-my-post" data-id="${post.id}">删除草稿</button>`;
+      if(post.status==='审核中')actions=`<button class="tiny-filter" ${statusAttrs}>查看进度</button><button class="tiny-filter" data-action="withdraw-my-post" data-id="${post.id}">撤回审核</button>`;
+      if(post.status==='已下架')actions=`<button class="tiny-filter" ${statusAttrs}>查看原因</button>${post.appealable?`<button class="tiny-filter" data-action="post-appeal" data-id="${post.id}">申诉</button>`:''}`;
+      return `<article class="post" data-od-id="my-post-exchange-card"><div class="my-post-head"><div class="my-post-owner"><span class="avatar"></span><span><strong>${currentUserName}</strong><span class="meta" style="display:block;">${escapeHTML(post.time||'')} · ${escapeHTML(post.topic||'')}</span></span></div><button class="my-post-status ${statusClass}" ${statusAttrs}>${post.status}</button></div><button class="community-card-button" ${bodyAction}><p><strong>${escapeHTML(post.title||'')}</strong><br><span class="meta">${escapeHTML(post.summary||post.body||'')}</span></p>${media}</button><div class="post-actions my-post-actions"><span>${post.status==='已发布'?`浏览 ${post.views||0} · 点赞 ${communityPostLikes(post)}`:'仅自己可见'}</span>${actions}</div></article>`;
     }
     function communityResourceCard(post) {
       return `<article class="community-resource-card" data-od-id="community-resource-post"><button class="community-resource-button" data-action="post-detail" data-source="community" data-id="${post.id}"><div class="community-resource-title"><strong>${post.title}</strong><span>#${post.topic}</span></div><p class="meta" style="text-align:left;">${post.summary}</p><div class="community-resource-media"><span><b>图文预览</b></span><span><b>站内内容</b></span></div><div class="community-resource-meta"><span>${post.author} · ${post.time}</span><span>浏览 ${post.views} · 评论 ${post.comments}</span></div></button><div class="post-actions"><button class="tiny-filter ${state.likedPosts.has(post.id)?'active':''}" data-action="post-like" data-id="${post.id}">点赞 ${communityPostLikes(post)}</button><button class="tiny-filter" data-action="post-detail" data-source="community" data-id="${post.id}">评论 ${post.comments}</button><button class="tiny-filter" data-action="post-menu">更多</button></div></article>`;
@@ -2661,12 +2773,12 @@
       state.aiNotifications.filter(n=>n.taskId===t.id).forEach(n=>n.read=true);
       content.innerHTML=`<div class="subpage" data-od-id="ai-result-page">${subpageHead('生成结果')}<div class="subpage-body"><section class="subpage-card"><div class="ai-result-preview"><span class="ai-result-mark">AI生成 · 已通过安全校验</span></div><span class="page-kicker" style="display:block;margin-top:12px;">RESULT READY</span><h2>${t.tool}</h2><p class="page-copy ticket-code">任务 ${t.id} · 本次消耗 ${t.source}</p></section><section class="subpage-card"><div class="setting-row"><span>结果状态</span><strong>校验通过</strong></div><div class="setting-row"><span>AI标识</span><strong>已添加</strong></div><div class="setting-row"><span>原任务保留</span><strong>是</strong></div></section><button class="page-primary" data-action="regenerate-ai" data-id="${t.id}">使用原配置重新生成</button></div></div>`;
     }
-    function coinPackBenefit() { return '充值后到账同等金币'; }
+    function coinPackBenefit(pack) { return state.firstRechargeUsed?'充值后到账同等金币':`首充加赠 ${pack.giftCoins} 金币`; }
     function coinPackGrid() {
-      return `<div class="coin-pack-grid">${rechargePacks.map(pack=>`<button class="coin-pack-card" data-action="buy-pack" data-coins="${pack.coins}" data-amount="${pack.amount}" aria-label="充值${pack.coins}金币，${pack.amount}元"><i class="coin-art">G</i><strong>${pack.coins}金币</strong><small>${coinPackBenefit(pack)}</small><b>¥${pack.amount}</b></button>`).join('')}</div>`;
+      return `<div class="coin-pack-grid">${rechargePacks.map(pack=>`<button class="coin-pack-card" data-action="buy-pack" data-coins="${pack.coins}" data-gift-coins="${pack.giftCoins}" data-amount="${pack.amount}" aria-label="充值${pack.coins}金币，${pack.amount}元${state.firstRechargeUsed?'':`，首充赠送${pack.giftCoins}金币`}"><i class="coin-art">G</i><strong>${pack.coins}金币</strong><small>${coinPackBenefit(pack)}</small><b>¥${pack.amount}</b></button>`).join('')}</div>`;
     }
     function renderRechargePage() {
-      content.innerHTML=`<div class="recharge-page" data-od-id="coin-recharge-page">${subpageHead('金币充值')}<div class="subpage-body"><section class="recharge-balance"><span>AVAILABLE BALANCE</span><strong>${state.coins}</strong><small>当前金币余额 ${state.coins}</small></section><section class="recharge-section"><div class="recharge-section-head"><h2>选择充值档位</h2><span>一行三档 · 一次性购买</span></div>${coinPackGrid()}<p class="recharge-rules">金币由充值或会员权益发放获得；所有变动均记录业务单号，不可提现或转让。</p></section></div></div>`;
+      content.innerHTML=`<div class="recharge-page" data-od-id="coin-recharge-page">${subpageHead('金币充值')}<div class="subpage-body"><section class="recharge-balance"><span>AVAILABLE BALANCE</span><strong>${state.coins}</strong><small>当前唯一金币余额 ${state.coins}</small></section><section class="recharge-section"><div class="recharge-section-head"><h2>选择充值档位</h2><span>一行三档 · 一次性购买</span></div>${coinPackGrid()}<p class="recharge-rules">充值与赠送均进入同一金币余额；流水保留来源业务单号，不设活动币或券，不可提现或转让。</p></section></div></div>`;
     }
     function openQuickRechargeSheet() {
       const reason=state.resumeIntent?'充值成功后将自动返回原内容并重新校验价格。':'选择档位后进入付款确认。';
@@ -2734,13 +2846,13 @@
     }
     function renderSettingsPage() {
       const currentIcon=appIconOptions.find(option=>option.id===state.appIcon)||appIconOptions[0];
-      content.innerHTML=`<div class="subpage" data-od-id="settings-page">${subpageHead('设置与隐私')}<div class="subpage-body"><section class="subpage-card"><h3>偏好设置</h3>${[['personalized','个性化推荐'],['notifications','消息通知'],['orderNotice','订单与资产通知'],['communityNotice','社区互动通知'],['aiNotice','AI任务通知']].map(([key,label])=>`<div class="setting-row"><span>${label}</span><button class="switch ${state.settings[key]?'on':''}" data-action="toggle-setting" data-key="${key}" aria-label="切换${label}"></button></div>`).join('')}</section><section class="subpage-card"><button class="page-row" data-action="app-icon"><span class="app-icon-art app-icon-mini ${currentIcon.className}">${currentIcon.glyph}</span><span class="page-row-main"><strong>更换 APP 图标</strong><span>当前：${currentIcon.name} · App 安装版可用</span></span><span class="page-row-side">›</span></button><button class="page-row" data-action="devices"><span class="page-row-icon">设</span><span class="page-row-main"><strong>设备管理</strong><span>${state.devices.length} 台设备 · 当前设备受保护</span></span><span class="page-row-side">›</span></button><button class="page-row" data-action="policy" data-value="用户协议"><span class="page-row-icon">规</span><span class="page-row-main"><strong>用户协议与隐私政策</strong><span>包含未成年人保护和内容规范</span></span><span class="page-row-side">›</span></button><button class="page-row" data-action="policy" data-value="版本信息"><span class="page-row-icon">版</span><span class="page-row-main"><strong>版本信息</strong><span>MVP 1.0 · rc30</span></span><span class="page-row-side">›</span></button></section><button class="page-danger" data-action="account-cancel">账号注销</button></div></div>`;
+      content.innerHTML=`<div class="subpage" data-od-id="settings-page">${subpageHead('设置与帮助')}<div class="subpage-body"><section class="subpage-card"><h3>偏好设置</h3>${[['personalized','个性化推荐'],['notifications','消息通知'],['orderNotice','订单与资产通知'],['communityNotice','社区互动通知'],['aiNotice','AI任务通知']].map(([key,label])=>`<div class="setting-row"><span>${label}</span><button class="switch ${state.settings[key]?'on':''}" data-action="toggle-setting" data-key="${key}" aria-label="切换${label}"></button></div>`).join('')}</section><section class="subpage-card"><button class="page-row" data-action="app-icon"><span class="app-icon-art app-icon-mini ${currentIcon.className}">${currentIcon.glyph}</span><span class="page-row-main"><strong>更换 APP 图标</strong><span>当前：${currentIcon.name} · 名称保持“基咔”</span></span><span class="page-row-side">›</span></button><button class="page-row" data-action="devices"><span class="page-row-icon">设</span><span class="page-row-main"><strong>设备管理</strong><span>${state.devices.length} 台设备 · 当前设备受保护</span></span><span class="page-row-side">›</span></button><button class="page-row" data-action="app-version"><span class="page-row-icon">版</span><span class="page-row-main"><strong>版本信息</strong><span>MVP 1.0 · rc30</span></span><span class="page-row-side">›</span></button></section><button class="page-danger" data-action="account-cancel">账号注销</button></div></div>`;
       if(state.loggedIn)content.querySelector('[data-action="account-cancel"]')?.insertAdjacentHTML('beforebegin','<button class="page-secondary" data-action="logout">退出登录</button>');
     }
     function appIconArtwork(option,size='') { return `<span class="app-icon-art ${option.className} ${size}">${option.glyph}</span>`; }
     function renderAppIconPage() {
       const current=appIconOptions.find(option=>option.id===state.appIcon)||appIconOptions[0],selected=appIconOptions.find(option=>option.id===state.selectedAppIcon)||current;
-      content.innerHTML=`<div class="subpage" data-od-id="app-icon-page">${subpageHead('更换 APP 图标')}<div class="subpage-body"><section class="subpage-card"><div class="app-icon-hero">${appIconArtwork(current,'large')}<div><span class="page-kicker">CURRENT ICON</span><h2>${current.name}</h2><p class="page-copy">仅更换手机桌面图标样式，APP名称始终为“基咔”。</p></div></div></section><section class="subpage-card"><div class="row-between"><h3>选择桌面图标样式</h3><span class="meta">共 ${appIconOptions.length} 款</span></div><div class="app-icon-grid">${appIconOptions.map(option=>`<button class="app-icon-choice ${option.id===selected.id?'active':''}" data-action="app-icon-select" data-value="${option.id}" aria-label="选择${option.name}图标样式">${appIconArtwork(option)}<span><strong>${option.name}</strong><small>${option.copy}</small></span></button>`).join('')}</div></section><div class="notice"><strong>仅变更图标</strong><br>App安装版只调用系统图标切换能力，不修改APP名称“基咔”。H5网页仅演示选择流程；设备不支持或切换失败时保留原图标。</div><button class="page-primary" data-action="app-icon-apply" ${selected.id===current.id?'disabled':''}>${selected.id===current.id?'当前正在使用':`应用“${selected.name}”图标`}</button></div></div>`;
+      content.innerHTML=`<div class="subpage" data-od-id="app-icon-page">${subpageHead('更换 APP 图标')}<div class="subpage-body"><section class="subpage-card"><div class="app-icon-hero">${appIconArtwork(current,'large')}<div><span class="page-kicker">CURRENT ICON</span><h2>${current.name}</h2><p class="page-copy">只更换手机桌面图标图片，系统桌面显示的应用名称始终为“基咔”。</p></div></div></section><section class="subpage-card"><div class="row-between"><h3>选择桌面图标图片</h3><span class="meta">共 ${appIconOptions.length} 款</span></div><div class="app-icon-grid">${appIconOptions.map(option=>`<button class="app-icon-choice ${option.id===selected.id?'active':''}" data-action="app-icon-select" data-value="${option.id}" aria-label="选择${option.name}图标图片">${appIconArtwork(option)}<span><strong>${option.name}</strong><small>${option.copy}</small></span></button>`).join('')}</div></section><div class="notice"><strong>只更换图片，不更改名称</strong><br>App安装版只调用系统图标切换能力；不修改应用名称、桌面标签或安装包名称，对外始终显示“基咔”。H5网页仅演示选择流程；设备不支持或切换失败时保留原图标。</div><button class="page-primary" data-action="app-icon-apply" ${selected.id===current.id?'disabled':''}>${selected.id===current.id?'当前正在使用':'应用所选图标图片'}</button></div></div>`;
     }
     function renderDevicesPage() {
       content.innerHTML=`<div class="subpage" data-od-id="device-management-page">${subpageHead('设备管理')}<div class="subpage-body"><section class="subpage-card"><p class="page-copy">当前演示上限为2台；正式限制仍由风控配置。退出其他设备需要再次验证。</p>${state.devices.map(device=>`<div class="page-row"><span class="page-row-icon">机</span><span class="page-row-main"><strong>${device.name}</strong><span>${device.area} · ${device.lastActive}</span></span>${device.current?'<span class="status-pill">当前</span>':`<button class="page-row-side" style="border:0;background:none;color:#c54b51;" data-action="logout-device" data-id="${device.id}">退出</button>`}</div>`).join('')}</section></div></div>`;
@@ -2749,9 +2861,8 @@
       content.innerHTML=`<div class="subpage" data-od-id="account-cancel-page">${subpageHead('账号注销')}<div class="subpage-body"><section class="subpage-card"><span class="page-kicker">IRREVERSIBLE ACTION</span><h2>${state.cancelStarted?'注销申请已提交':'注销前请确认'}</h2><p class="page-copy">注销会停止登录和新交易；未完成订单、退款处理与工单需先处理。正式环境进入冷静期并再次验证身份。</p><div class="setting-row"><span>未完成订单</span><strong>${state.orders.some(o=>['待支付','处理中','退款中'].includes(o.status))?'需处理':'无'}</strong></div><div class="setting-row"><span>冻结资产</span><strong>${state.frozen}</strong></div><div class="setting-row"><span>未结工单</span><strong>${state.tickets.filter(t=>t.status!=='已完成').length}</strong></div></section>${state.cancelStarted?'<button class="page-secondary" data-action="withdraw-cancel">撤销注销申请</button>':'<button class="page-danger" data-action="confirm-cancel">验证身份并申请注销</button>'}</div></div>`;
     }
     function renderMyPostsPage() {
-      const samples=[{title:'城市夜航拍摄手记',topic:'创作分享',status:'已发布'},{title:'本周高分长片讨论',topic:'影评',status:'已发布'},{title:'旅行片段补充说明',topic:'旅行记录',status:'已下架',reason:'版权期限已到'}];
-      const all=[...state.posts,...samples].filter(post=>state.myPostFilter==='全部'||post.status===state.myPostFilter);
-      content.innerHTML=`<div class="subpage" data-od-id="my-posts-page">${subpageHead('我的帖子')}<div class="subpage-body"><nav class="status-tabs">${['全部','草稿','已发布','已下架'].map(status=>`<button class="${status===state.myPostFilter?'active':''}" data-action="my-post-filter" data-value="${status}">${status}</button>`).join('')}</nav><section class="subpage-card">${all.length?all.map(post=>`<div class="page-row"><span class="page-row-icon">${post.request?'求':'帖'}</span><span class="page-row-main"><strong>${escapeHTML(post.title)}</strong><span>#${escapeHTML(post.topic)} · ${post.reason||'已通过敏感词校验'}</span></span><span class="page-row-side"><b>${post.status}</b><br><button data-action="post-status-detail" data-title="${escapeHTML(post.title)}" data-status="${post.status}" data-reason="${escapeHTML(post.reason||'暂无补充说明')}">详情</button>${post.status==='草稿'?` · <button data-action="edit-my-post" data-title="${escapeHTML(post.title)}" data-topic="${escapeHTML(post.topic)}">修改</button>`:''}${post.status==='已下架'?' · <button data-action="post-appeal">申诉</button>':''}</span></div>`).join(''):'<div class="empty-state"><i>帖</i><strong>当前状态暂无帖子</strong></div>'}</section></div></div>`;
+      const all=myPostsForManagement().filter(post=>state.myPostFilter==='全部'||post.status===state.myPostFilter);
+      content.innerHTML=`<div class="subpage" data-od-id="my-posts-page">${subpageHead('我的帖子')}<div class="subpage-body"><nav class="status-tabs">${['全部','草稿','审核中','已发布','已下架'].map(status=>`<button class="${status===state.myPostFilter?'active':''}" data-action="my-post-filter" data-value="${status}">${status}</button>`).join('')}</nav>${all.length?`<section class="my-post-feed">${all.map(myPostCard).join('')}</section>`:'<div class="empty-state"><i>帖</i><strong>当前状态暂无帖子</strong><span>切换其他状态或返回交流页发布新内容。</span></div>'}</div></div>`;
     }
     function renderMyRequestsPage() {
       const own=communityPosts().filter(isOwnRequest);
@@ -2786,15 +2897,19 @@
     function closeSheet() { closeMembershipCheckout();overlay.classList.remove('open','membership-popup','media-viewer','auth-page'); overlay.setAttribute('aria-hidden','true'); }
     function sheetTitle(title,sub='') { return `<div class="row-between"><div><h2>${title}</h2>${sub?`<p style="margin:5px 0 0;">${sub}</p>`:''}</div><button class="close-sheet" data-action="close-sheet" aria-label="关闭">×</button></div>`; }
     function toast(msg) { const el=document.querySelector('#toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),1900); }
-    function clearLaunchTimers(){clearTimeout(launchController.loadingTimer);clearInterval(launchController.countdownTimer);launchController.loadingTimer=null;launchController.countdownTimer=null;}
+    function clearLaunchTimers(){clearTimeout(launchController.loadingTimer);clearInterval(launchController.countdownTimer);clearInterval(launchController.slideTimer);launchController.loadingTimer=null;launchController.countdownTimer=null;launchController.slideTimer=null;}
+    function startLaunchAutoSlide(){
+      clearInterval(launchController.slideTimer);const total=launchAdRail.querySelectorAll('.launch-ad').length;if(total<=1)return;
+      launchController.slideTimer=setInterval(()=>{if(launchAds.classList.contains('hidden'))return;const width=launchAdRail.clientWidth||1,current=Math.max(0,Math.min(total-1,Math.round(launchAdRail.scrollLeft/width))),next=(current+1)%total;launchAdRail.scrollTo({left:next*width,behavior:'smooth'});},3000);
+    }
     function startColdLaunch(){
       clearLaunchTimers();launchController.ready=false;launchController.countdown=5;launchController.campaignIndex=0;launchController.sectionCampaignShown=false;
       campaignLayer.classList.add('hidden');campaignLayer.setAttribute('aria-hidden','true');
       launchFlow.classList.remove('hidden');launchFlow.setAttribute('aria-hidden','false');launchLoading.classList.remove('hidden');launchAds.classList.add('hidden');
       launchCountdown.disabled=true;launchCountdown.classList.remove('ready');launchCountdown.textContent='5s';launchCountdown.setAttribute('aria-label','启动广告倒计时5秒');launchAdRail.scrollLeft=0;updateLaunchAdDots();
-      launchController.loadingTimer=setTimeout(()=>{launchLoading.classList.add('hidden');launchAds.classList.remove('hidden');launchController.countdownTimer=setInterval(()=>{launchController.countdown-=1;if(launchController.countdown<=0){clearInterval(launchController.countdownTimer);launchController.countdownTimer=null;launchController.ready=true;launchCountdown.disabled=false;launchCountdown.classList.add('ready');launchCountdown.textContent='跳过';launchCountdown.setAttribute('aria-label','跳过启动广告并进入首页');}else{launchCountdown.textContent=`${launchController.countdown}s`;launchCountdown.setAttribute('aria-label',`启动广告倒计时${launchController.countdown}秒`);}},1000);},900);
+      launchController.loadingTimer=setTimeout(()=>{launchLoading.classList.add('hidden');launchAds.classList.remove('hidden');startLaunchAutoSlide();launchController.countdownTimer=setInterval(()=>{launchController.countdown-=1;if(launchController.countdown<=0){clearInterval(launchController.countdownTimer);launchController.countdownTimer=null;launchController.ready=true;launchCountdown.disabled=false;launchCountdown.classList.add('ready');launchCountdown.textContent='跳过';launchCountdown.setAttribute('aria-label','跳过启动广告并进入首页');}else{launchCountdown.textContent=`${launchController.countdown}s`;launchCountdown.setAttribute('aria-label',`启动广告倒计时${launchController.countdown}秒`);}},1000);},900);
     }
-    function updateLaunchAdDots(){const width=launchAdRail.clientWidth||1,index=Math.max(0,Math.min(2,Math.round(launchAdRail.scrollLeft/width)));launchAdDots.querySelectorAll('i').forEach((dot,i)=>dot.classList.toggle('active',i===index));}
+    function updateLaunchAdDots(){const dots=launchAdDots.querySelectorAll('i'),width=launchAdRail.clientWidth||1,index=Math.max(0,Math.min(dots.length-1,Math.round(launchAdRail.scrollLeft/width)));dots.forEach((dot,i)=>dot.classList.toggle('active',i===index));}
     function finishColdLaunch(){if(!launchController.ready)return;clearLaunchTimers();launchFlow.classList.add('hidden');launchFlow.setAttribute('aria-hidden','true');showPlatformAnnouncement();}
     function showLongCampaign(index){
       launchController.campaignIndex=index;
@@ -2813,6 +2928,9 @@
       campaignLayer.classList.remove('hidden');campaignLayer.setAttribute('aria-hidden','false');campaignCard.innerHTML=`<section class="platform-notice" data-od-id="platform-announcement"><div class="platform-notice-head"><small>PLATFORM NOTICE</small><h2>${platformAnnouncement.title}</h2></div><div class="platform-notice-body"><p>${platformAnnouncement.copy}</p><button data-action="platform-notice-close">我知道了</button></div></section>`;
     }
     launchAdRail.addEventListener('scroll',()=>requestAnimationFrame(updateLaunchAdDots));
+    launchAdRail.addEventListener('pointerdown',()=>{clearInterval(launchController.slideTimer);launchController.slideTimer=null;});
+    launchAdRail.addEventListener('pointerup',startLaunchAutoSlide);
+    launchAdRail.addEventListener('pointercancel',startLaunchAutoSlide);
     let loginContinuation=null;
     let loginReason='购买、互动与AI任务需要账号';
     function ensureLogin(next,reason) { if(state.loggedIn) return next(); openLogin(next,reason); }
@@ -2836,7 +2954,7 @@
       const confirmField=register?`<div class="auth-field"><input id="loginPasswordConfirm" class="auth-input" type="password" value="demo123" minlength="6" maxlength="20" autocomplete="new-password" aria-label="确认密码" placeholder="请再次输入密码">${passwordEye('loginPasswordConfirm')}<p id="loginPasswordConfirmError" class="field-error" role="alert"></p></div>`:'';
       const registerAction=register?'<button class="auth-action" id="doLogin" type="submit">注册</button>':'<button class="auth-action" type="button" data-action="auth-mode" data-value="register">注册</button>';
       const loginAction=register?'<button class="auth-action is-secondary" type="button" data-action="auth-mode" data-value="login">登录</button>':'<button class="auth-action" id="doLogin" type="submit">登录</button>';
-      openSheet(`<section class="auth-shell" data-od-id="login-register-page"><header class="auth-hero"><button class="auth-back" type="button" data-action="close-sheet" aria-label="返回">‹</button><div class="auth-brand"><span class="auth-brand-mark"><strong>基咔</strong></span><span class="auth-brand-word">JIKA</span></div></header><main class="auth-main"><div class="auth-title"><h2>${register?'创建基咔账号':'欢迎来到基咔视频'}</h2><p>${register?'注册成功后自动登录':'账号登录后可继续购买、互动与创作'}</p></div><form id="loginForm" novalidate><div class="auth-fields"><div class="auth-field"><input id="loginAccount" class="auth-input" value="112233" inputmode="text" autocomplete="username" aria-label="账号或手机号" placeholder="请输入账号或手机号"><p id="loginAccountError" class="field-error" role="alert"></p></div><div class="auth-field"><input id="loginPassword" class="auth-input" type="password" value="demo123" minlength="6" maxlength="20" autocomplete="${register?'new-password':'current-password'}" aria-label="密码" placeholder="请输入密码">${passwordEye('loginPassword')}<p id="loginPasswordError" class="field-error" role="alert"></p></div>${confirmField}</div><label class="auth-consent"><input id="loginConsent" type="checkbox" checked><span>我已阅读并同意用户协议、隐私政策和未成年人保护规则。</span></label><div class="auth-actions" aria-label="登录或注册">${registerAction}${loginAction}</div></form><section class="auth-tips"><strong>提示</strong><p>1. 请务必记住自己的账号密码</p><p>2. 暂不提供密码修改功能</p><p>3. 暂不提供密码找回功能</p></section></main></section>`);
+      openSheet(`<section class="auth-shell" data-od-id="login-register-page"><header class="auth-hero"><button class="auth-back" type="button" data-action="close-sheet" aria-label="返回">‹</button><div class="auth-brand"><span class="auth-brand-mark"><strong>基咔</strong></span><span class="auth-brand-word">JIKA</span></div></header><main class="auth-main"><div class="auth-title"><h2>${register?'创建基咔账号':'欢迎来到基咔视频'}</h2><p>${register?'注册成功后自动登录':'账号登录后可继续购买、互动与创作'}</p></div><form id="loginForm" novalidate><div class="auth-fields"><div class="auth-field"><input id="loginAccount" class="auth-input" value="112233" inputmode="text" autocomplete="username" aria-label="账号或手机号" placeholder="请输入账号或手机号"><p id="loginAccountError" class="field-error" role="alert"></p></div><div class="auth-field"><input id="loginPassword" class="auth-input" type="password" value="demo123" minlength="6" maxlength="20" autocomplete="${register?'new-password':'current-password'}" aria-label="密码" placeholder="请输入密码">${passwordEye('loginPassword')}<p id="loginPasswordError" class="field-error" role="alert"></p></div>${confirmField}</div><div class="auth-actions" aria-label="登录或注册">${registerAction}${loginAction}</div></form><section class="auth-tips"><strong>提示</strong><p>1. 请务必记住自己的账号密码</p><p>2. 暂不提供密码修改功能</p><p>3. 暂不提供密码找回功能</p></section></main></section>`);
       overlay.classList.add('auth-page');
       document.querySelector('#loginForm').onsubmit=event=>{event.preventDefault();submitLogin();};
     }
@@ -2847,7 +2965,6 @@
       const passwordValid=/^.{6,20}$/.test(password),confirmValid=!register||passwordConfirm===password;
       setLoginFieldError('loginPassword',passwordValid?'':'密码需为6-20位');
       if(register)setLoginFieldError('loginPasswordConfirm',confirmValid?'':'两次输入的密码不一致');
-      if(!document.querySelector('#loginConsent')?.checked)return toast('请先同意协议');
       if(!accountValid||!passwordValid||!confirmValid)return toast('请检查红框内容');
       if(register&&account==='112233')return toast('当前账号已注册，登录试试');
       const next=loginContinuation;loginContinuation=null;state.loggedIn=true;
@@ -2889,7 +3006,7 @@
       all_year:{family:'all',name:'年度全站通卡',period:'365天',termDays:365,amount:198,ai:0,coinGift:500,video:true,coinDiscount:false,scope:'标准视频库 · AI任务8.5折 · 一次性赠送500金币'}
     };
     const membershipFamilies={
-      video:{label:'基础VIP',level:'VIDEO',title:'全年畅看标准片库',copy:'365天视频权益，不含金币精品与AI创作赠币',benefits:[['标准片库','短/长视频畅看'],['高清免广告','多线路切换'],['进度同步','跨端续播']],plans:['video_year']},
+      video:{label:'基础VIP',level:'VIDEO',title:'全年畅看标准片库',copy:'365天视频权益，不含金币付费内容与AI创作额度',benefits:[['标准片库','短/长视频畅看'],['高清免广告','多线路切换'],['进度同步','跨端续播']],plans:['video_year']},
       ai:{label:'AI专区年卡',level:'CREATOR',title:'持续创作，按期到账',copy:'AI额度每30日发放，未使用额度到期清零',benefits:[['AI额度','每30日300'],['AI 8折','卡面结算一致'],['优先队列','优先生成']],plans:['ai_year']},
       all:{label:'全站通卡',level:'PREMIUM',title:'视频与AI核心权益',copy:'标准片库、AI优惠与赠送金币',benefits:[['视频VIP','标准片库畅看'],['AI优惠','任务8.5折'],['赠送金币','一次性500']],plans:['all_year']}
     };
@@ -2901,7 +3018,7 @@
       const owned=state.memberships.filter(item=>item.family===state.membershipFamily);
       const cards=Object.entries(membershipFamilies).map(([key,item])=>`<button class="membership-card ${key} ${key===state.membershipFamily?'active':''}" data-action="membership-family" data-value="${key}" aria-label="选择${item.label}"><div class="membership-card-top"><span class="membership-mark"><i>JK</i> 基咔</span><span class="membership-level">${item.level}</span></div><h1>${item.title}</h1><p>${item.copy}</p><div class="membership-benefits">${item.benefits.map(([title,copy])=>`<span class="membership-benefit"><b>${title}</b><span>${copy}</span></span>`).join('')}</div></button>`).join('');
       const header=modal?`<header class="membership-head"><span></span><strong>会员中心</strong><button class="membership-popup-close" data-action="close-sheet" aria-label="关闭会员中心">×</button></header>`:`<header class="membership-head"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>会员中心</strong><span></span></header>`;
-      return `<div class="membership-page" data-od-id="${modal?'membership-popup':'membership-page'}">${header}<section class="membership-intro"><div class="membership-kicker">MVP 1.0 · Choose your membership</div><div class="membership-tier-tabs">${Object.entries(membershipFamilies).map(([key,item])=>`<button class="membership-tier-tab ${key===state.membershipFamily?'active':''}" data-action="membership-family" data-value="${key}">${item.label}</button>`).join('')}</div><div id="membershipRail" class="membership-card-rail" aria-label="会员卡种，可左右滑动">${cards}</div><div class="membership-current"><i>${owned.length?'✓':'i'}</i><span>${owned.length?`当前已拥有 ${owned.map(item=>item.name).join('、')}；同卡种再次购买将顺延到期时间。`:'当前未开通该卡种。不同卡种可并存，权益按并集生效。'}</span></div></section><section class="membership-pay"><div class="membership-pay-title"><h2>确认付款方案</h2><span>一次性购买 · 不自动续费</span></div><div class="membership-plans"><div class="membership-plan active"><strong>${selected.name} · ${selected.period}</strong><b><span>¥</span>${selected.amount}</b><small>${selected.scope}</small></div></div><div class="membership-summary"><span>${selected.period} · 权益与赠送以订单快照为准</span><strong>¥${selected.amount}</strong></div><button class="membership-cta" data-action="membership-pay" data-plan="${state.membershipPlan}">立即开通 ${family.label}</button><p class="membership-terms">支付即表示已确认价格、适用范围、周期发放、排除项与退款规则。会员不绕过内容规则或风控；金币精品仅按明示券和资产规则解锁。</p><div class="membership-links"><button data-action="orders">购买记录</button><button data-action="support">支付帮助</button></div></section></div>`;
+      return `<div class="membership-page" data-od-id="${modal?'membership-popup':'membership-page'}">${header}<section class="membership-intro"><div class="membership-kicker">MVP 1.0 · Choose your membership</div><div class="membership-tier-tabs">${Object.entries(membershipFamilies).map(([key,item])=>`<button class="membership-tier-tab ${key===state.membershipFamily?'active':''}" data-action="membership-family" data-value="${key}">${item.label}</button>`).join('')}</div><div id="membershipRail" class="membership-card-rail" aria-label="会员卡种，可左右滑动">${cards}</div><div class="membership-current"><i>${owned.length?'✓':'i'}</i><span>${owned.length?`当前已拥有 ${owned.map(item=>item.name).join('、')}；同卡种再次购买将顺延到期时间。`:'当前未开通该卡种。不同卡种可并存，权益按并集生效。'}</span></div></section><section class="membership-pay"><div class="membership-pay-title"><h2>确认付款方案</h2><span>一次性购买 · 不自动续费</span></div><div class="membership-plans"><div class="membership-plan active"><strong>${selected.name} · ${selected.period}</strong><b><span>¥</span>${selected.amount}</b><small>${selected.scope}</small></div></div><div class="membership-summary"><span>${selected.period} · 权益与赠送以订单快照为准</span><strong>¥${selected.amount}</strong></div><button class="membership-cta" data-action="membership-pay" data-plan="${state.membershipPlan}">立即开通 ${family.label}</button><p class="membership-terms">支付即表示已确认价格、适用范围、周期发放、排除项与退款规则。会员不绕过内容规则或风控；金币付费内容仍按独立金币订单解锁。</p><div class="membership-links"><button data-action="orders">购买记录</button><button data-action="support">支付帮助</button></div></section></div>`;
     }
     function bindMembershipRail(root,modal=false) {
       const rail=root.querySelector('#membershipRail'),activeCard=rail?.querySelector('.membership-card.active');
@@ -2914,7 +3031,7 @@
     function membershipCheckoutMarkup(planKey) {
       const plan=plans[planKey],family=membershipFamilies[plan?.family];
       if(!plan||!family)return '';
-      return `<button class="membership-checkout-backdrop" data-action="membership-checkout-close" aria-label="关闭付款确认"></button><section class="membership-checkout-drawer" role="dialog" aria-modal="true" aria-label="确认开通${family.label}" data-od-id="membership-checkout-drawer"><div class="membership-checkout-handle"></div><header class="membership-checkout-head"><span></span><strong>确认开通</strong><button data-action="membership-checkout-close" aria-label="关闭">×</button></header><div class="membership-checkout-product"><i>VIP</i><span><strong>${plan.name} · ${plan.period}</strong><small>${plan.scope}</small></span><b>¥${plan.amount}</b></div><div class="membership-checkout-row"><span>会员权益</span><strong>${family.label} · ${plan.period}</strong></div><div class="membership-checkout-row"><span>自动续费</span><strong>否</strong></div><div class="membership-checkout-row"><span>支付方式</span><strong>下一步在收银台选择 ›</strong></div><label class="membership-checkout-consent"><input id="membershipCheckoutConsent" type="checkbox" checked>我已确认商品价格、适用范围、不自动续费及退款规则，并同意会员服务协议。</label><button class="membership-checkout-submit" data-action="membership-checkout-confirm" data-plan="${planKey}">确认 ¥${plan.amount} 并继续</button><p class="membership-checkout-note">确认后创建唯一业务单号；支付结果以服务端查单为准，不会重复发放权益。</p></section>`;
+      return `<button class="membership-checkout-backdrop" data-action="membership-checkout-close" aria-label="关闭付款确认"></button><section class="membership-checkout-drawer" role="dialog" aria-modal="true" aria-label="确认开通${family.label}" data-od-id="membership-checkout-drawer"><div class="membership-checkout-handle"></div><header class="membership-checkout-head"><span></span><strong>确认开通</strong><button data-action="membership-checkout-close" aria-label="关闭">×</button></header><div class="membership-checkout-product"><i>VIP</i><span><strong>${plan.name} · ${plan.period}</strong><small>${plan.scope}</small></span><b>¥${plan.amount}</b></div><div class="membership-checkout-row"><span>会员权益</span><strong>${family.label} · ${plan.period}</strong></div><div class="membership-checkout-row"><span>自动续费</span><strong>否</strong></div><div class="membership-checkout-row"><span>支付方式</span><strong>下一步在收银台选择 ›</strong></div><label class="membership-checkout-consent"><input id="membershipCheckoutConsent" type="checkbox" checked>我已确认商品价格、适用范围、不自动续费及退款规则。</label><button class="membership-checkout-submit" data-action="membership-checkout-confirm" data-plan="${planKey}">确认 ¥${plan.amount} 并继续</button><p class="membership-checkout-note">确认后创建唯一业务单号；支付结果以服务端查单为准，不会重复发放权益。</p></section>`;
     }
     function openMembershipCheckout(planKey) {
       if(!plans[planKey])return toast('会员商品配置异常，请刷新');
@@ -2939,7 +3056,7 @@
       const now=Date.now();
       if(existing){const currentEnd=Date.parse(existing.endAt)||now;existing.remainingDays=(existing.remainingDays||existing.termDays||0)+plan.termDays;existing.name=plan.name;existing.scope=plan.scope;existing.endAt=new Date(Math.max(now,currentEnd)+plan.termDays*86400000).toISOString();existing.sourceOrders=[...(existing.sourceOrders||[]),{id:orderId,days:plan.termDays}];}
       else state.memberships.push({...plan,orderId,sourceOrders:[{id:orderId,days:plan.termDays}],remainingDays:plan.termDays,startAt:new Date(now).toISOString(),endAt:new Date(now+plan.termDays*86400000).toISOString(),status:'有效',cycleIndex:1,totalCycles:Math.max(1,Math.ceil(plan.termDays/30)),nextGrantAt:plan.aiCycle?new Date(now+30*86400000).toISOString():'—'});
-      if(!existing&&plan.coinGift){const before=state.coins;state.coins+=plan.coinGift;pushLedger('付费金币',plan.coinGift,before,'会员一次性赠送金币',orderId);}
+      if(!existing&&plan.coinGift){const before=state.coins;state.coins+=plan.coinGift;pushLedger('金币',plan.coinGift,before,'会员一次性赠送金币',orderId);}
       if(!existing&&plan.ai){const before=state.aiQuota;state.aiQuota+=plan.ai;pushLedger('AI额度',plan.ai,before,plan.aiCycle?'会员当前30日周期发放':'会员一次性赠送',orderId);}
     }
     function openOrder(pending) {
@@ -2947,7 +3064,7 @@
       state.pending={...pending,id};pending=state.pending;
       if(!state.orders.some(order=>order.id===id))state.orders.unshift({...state.pending,status:'待支付',time:'刚刚',refundReason:'',granted:false,productSnapshot:{title:pending.title,amount:pending.amount,scope:pending.scope}});
       if(pending.type==='coins'){
-        openSheet(`${sheetTitle('确认充值','一次性购买 · 不自动续费')}<div class="coin-checkout-card" data-od-id="coin-recharge-checkout"><div class="coin-checkout-product"><i class="coin-art">G</i><span><strong>${pending.coins}金币</strong><small>本档仅到账所购金币</small></span><b>¥${pending.amount}</b></div><div class="coin-checkout-balance"><span>充值前：${state.coins} 金币</span><span class="num">${id}</span></div></div><div class="option row-between"><span>到账内容</span><strong>${pending.coins} 金币</strong></div><div class="option row-between"><span>支付方式</span><span class="meta">下一步在收银台选择</span></div><label class="check"><input id="orderConsent" type="checkbox" checked>我已确认充值档位、价格、到账金币及退款规则。</label><div class="sheet-foot"><button class="btn-primary" data-action="confirm-order">确认支付 ¥${pending.amount}</button></div>`);
+        openSheet(`${sheetTitle('确认充值','一次性购买 · 不自动续费')}<div class="coin-checkout-card" data-od-id="coin-recharge-checkout"><div class="coin-checkout-product"><i class="coin-art">G</i><span><strong>${pending.baseCoins||pending.coins}金币</strong><small>${pending.giftCoins?`首充赠送 ${pending.giftCoins} 金币`:'本档到账所购金币'}</small></span><b>¥${pending.amount}</b></div><div class="coin-checkout-balance"><span>充值前：${state.coins} 金币</span><span class="num">${id}</span></div></div><div class="option row-between"><span>到账内容</span><strong>${pending.coins} 金币</strong></div><div class="option row-between"><span>余额归属</span><span class="meta">充值与赠送均进入同一金币余额</span></div><div class="option row-between"><span>支付方式</span><span class="meta">下一步在收银台选择</span></div><label class="check"><input id="orderConsent" type="checkbox" checked>我已确认充值档位、赠送金币、到账总额及退款规则。</label><div class="sheet-foot"><button class="btn-primary" data-action="confirm-order">确认支付 ¥${pending.amount}</button></div>`);
         return;
       }
       openSheet(`${sheetTitle('确认订单','价格、范围与规则已确认')}<div class="card card-pad" style="margin-top:18px;"><div class="row-between"><strong>${pending.title}</strong><strong class="num">${pending.asset?'资产扣减':`¥${pending.amount}`}</strong></div><div class="meta num" style="margin-top:8px;">业务单号 ${id}</div></div><div class="option row-between"><span>适用范围</span><span class="meta">${pending.scope}</span></div><div class="option row-between"><span>自动续费</span><strong>否</strong></div><div class="option row-between"><span>退款规则</span><span class="meta">按支付与使用状态处理</span></div><label class="check"><input id="orderConsent" type="checkbox" checked>我已确认价格、适用范围、排除项与退款规则。</label><div class="sheet-foot"><button class="btn-primary" data-action="confirm-order">创建订单并支付</button></div>`);
@@ -2964,21 +3081,23 @@
       if(!order.granted) {
         if(p.type==='member')grantMembership(p.plan,p.id);
         if(p.type==='coins'){
-          const before=state.coins;state.coins+=p.coins;pushLedger('付费金币',p.coins,before,'金币充值到账',p.id);
+          const baseCoins=p.baseCoins||p.coins,giftCoins=p.giftCoins||0;
+          const before=state.coins;state.coins+=baseCoins;pushLedger('金币',baseCoins,before,'金币充值到账',p.id);
+          if(giftCoins){const giftBefore=state.coins;state.coins+=giftCoins;pushLedger('金币',giftCoins,giftBefore,'首充赠送金币',p.id);state.firstRechargeUsed=true;}
         }
         if(p.type==='unlock') {
           const a=p.allocation||getContentAllocation(p.cost);
           const beforeCoins=state.coins;
           state.coins=Math.max(0,state.coins-a.coins);
           state.purchased.add(p.item.id);
-          if(a.coins)pushLedger('付费金币',-a.coins,beforeCoins,'精品内容解锁',p.id);
+          if(a.coins)pushLedger('金币',-a.coins,beforeCoins,'精品内容解锁',p.id);
         }
         if(p.type==='collection'){
           const a=p.allocation||getContentAllocation(p.cost),set=collections[p.collection.id];
           const beforeCoins=state.coins;
           state.coins=Math.max(0,state.coins-a.coins);
           state.purchased.add(p.collection.id);set.purchased=true;
-          if(a.coins)pushLedger('付费金币',-a.coins,beforeCoins,'合集整套解锁',p.id);
+          if(a.coins)pushLedger('金币',-a.coins,beforeCoins,'合集整套解锁',p.id);
         }
         order.granted=true;order.status='成功';order.time='刚刚';addMessage('订单',`${p.title}已完成`,'权益已到账，可返回原页面继续。','order',p.id);
       }
@@ -3000,7 +3119,7 @@
       state.aiQuota-=allocation.quota;state.coins-=allocation.coins;state.frozen+=cost;
       if(cost===0&&campaignConfig.aiFirstExperience.enabled)state.aiFirstExperienceUsed=true;
       if(allocation.quota)pushLedger('AI额度',-allocation.quota,beforeQuota,'AI任务预冻结',bizNo,'冻结');
-      if(allocation.coins)pushLedger('付费金币',-allocation.coins,beforeCoins,'AI任务预冻结',bizNo,'冻结');
+      if(allocation.coins)pushLedger('金币',-allocation.coins,beforeCoins,'AI任务预冻结',bizNo,'冻结');
       if(cost>0)pushLedger('冻结资产',cost,beforeFrozen,'AI任务预冻结汇总',bizNo,'冻结');
       const parent=state.tasks.find(task=>task.id===parentId),task={id:businessId('TASK'),bizNo,tool,cost,baseCost,source:allocation.label,allocations:allocation,status:'排队中',assetStatus:'冻结中',attempt:(parent?.attempt||0)+1,parentId,createdAt:'刚刚',timeline:[{status:'排队中',time:'刚刚'}]};
       state.tasks.push(task);
@@ -3013,7 +3132,7 @@
       state.frozen=Math.max(0,state.frozen-t.cost);state.aiQuota+=t.allocations.quota||0;state.coins+=t.allocations.coins||0;
       pushLedger('冻结资产',-t.cost,beforeFrozen,'AI任务异常释放冻结',t.bizNo,'已退回');
       if(t.allocations.quota)pushLedger('AI额度',t.allocations.quota,beforeQuota,'AI任务失败原路退回',t.bizNo,'已退回');
-      if(t.allocations.coins)pushLedger('付费金币',t.allocations.coins,beforeCoins,'AI任务失败原路退回',t.bizNo,'已退回');
+      if(t.allocations.coins)pushLedger('金币',t.allocations.coins,beforeCoins,'AI任务失败原路退回',t.bizNo,'已退回');
       t.status=status;t.assetStatus='已退回';t.failureReason=reason;t.assetReturned=true;t.timeline?.push({status,time:'刚刚'});t.timeline?.push({status:'资产已退回',time:'刚刚'});
       const order=state.orders.find(item=>item.id===t.bizNo);if(order){order.status='失败';order.refundReason=`${reason} 冻结资产已原路退回。`;}
       addMessage('AI',`${t.tool}${status}`,reason,'aiTask',t.id);
@@ -3038,7 +3157,7 @@
       openSheet(`${sheetTitle('生成结果',`${t.tool} · ${t.id}`)}<div class="ai-result-preview"><span class="ai-result-mark">AI生成 · 已通过安全校验</span></div><div class="option row-between"><span>本次消耗</span><strong class="num">${t.source}</strong></div><p class="meta">结果已进入“我的记录”。如需新版本，将重新创建任务并按当前规则计费。</p><button class="btn-primary" data-action="regenerate-ai" data-id="${t.id}">重新生成</button>`);
     }
 
-    function openSafetyMenu() { openSheet(`${sheetTitle('内容操作','反馈会影响后续推荐')}<button class="menu-row" data-action="not-interested"><span>不感兴趣</span><span class="meta">减少相似推荐</span></button><button class="menu-row" data-action="block"><span>拉黑</span><span class="meta">立即停止展示该账号</span></button>`); }
+    function openSafetyMenu() { openSheet(`<section data-od-id="long-video-more-menu">${sheetTitle('长视频更多','当前仅提供作者拉黑能力')}<button class="menu-row" data-action="block-video-author"><span>拉黑作者</span><span class="meta">后续推荐、搜索、评论不再展示该作者</span></button><button class="menu-row" data-action="close-sheet"><span>取消</span><span class="meta">关闭后继续停留当前视频</span></button></section>`); }
     function openPostMenu() { openSheet(`${sheetTitle('帖子操作','可管理个人内容偏好')}<button class="menu-row" data-action="block"><span>拉黑用户</span><span class="meta">不再展示其内容</span></button><button class="menu-row" data-action="copy-link"><span>复制合规分享链接</span><span class="meta">不暴露受限媒体</span></button>`); }
     function openComments(kind='video') { const list=kind==='community'?state.communityComments:state.videoComments; openSheet(`${sheetTitle(`评论 · ${list.length}`,'评论与回复直接发布；命中敏感词将失败')}<div style="margin-top:12px;">${commentsMarkup(list,kind)}</div>`); }
     function submitComment(kind) {
@@ -3051,7 +3170,7 @@
       if(sensitive){const inSheet=overlay.classList.contains('open');state.commentDrafts[kind]=text;state.commentFailures[kind]=`内容包含敏感词“${sensitive}”，发布失败，请修改后重试`;render();if(inSheet)openComments(kind);else setTimeout(()=>document.querySelector(kind==='video'?'#videoComments':'#postComments')?.scrollIntoView({behavior:'smooth'}),30);return toast('命中敏感词，发布失败');}
       ensureLogin(()=>{const list=kind==='community'?state.communityComments:state.videoComments,isReply=state.replyTarget?.kind===kind,parent=isReply?list[state.replyTarget.index]:null,entry={id:businessId('COMMENT'),name:'积极橘子',text:text.slice(0,120),time:'刚刚',likes:0,replies:[]};if(parent){parent.replies=parent.replies||[];parent.replies.push(entry);}else list.unshift(entry);state.commentDrafts[kind]='';state.commentFailures[kind]='';state.replyTarget=null;closeSheet();render();if(state.screen==='detail')setTimeout(()=>document.querySelector('#videoComments')?.scrollIntoView({behavior:'smooth'}),50);toast(parent?'回复已发布到当前楼层':'评论发布成功');});
     }
-    function openPublish() { ensureLogin(()=>{closeSheet();rememberPage();state.returnScreen='main';state.screen='postEditor';render();}); }
+    function openPublish() { ensureLogin(()=>{closeSheet();rememberPage();state.editingPostId='';state.postDraft={topic:'影评',image:false,video:false,title:'',body:'',bounty:20};state.returnScreen='main';state.screen='postEditor';render();}); }
     function openSearch() { closeSheet();if(state.screen!=='search')rememberPage();state.searchSource=state.tab;state.searchQuery='';state.searchExecuted=false;state.searchType='作品';state.screen='search';render(); }
     function commitGlobalSearch(term) { const query=String(term||'').trim();if(!query)return toast('请输入搜索内容');state.searchQuery=query;state.searchHistory=[query,...state.searchHistory.filter(item=>item!==query)].slice(0,8);state.searchExecuted=true;state.searchType='作品';renderGlobalSearch(); }
     function openMessages() { ensureLogin(()=>openPage('messagesPage',{messageFilter:'全部'})); }
@@ -3075,7 +3194,7 @@
         const beforeCoins=state.coins,beforeQuota=state.aiQuota;
         state.coins-=grantedCoins;state.aiQuota-=grantedQuota;
         const entitlement=state.memberships.find(plan=>plan.family===o.plan.family);
-        if(grantedCoins)pushLedger('付费金币',-grantedCoins,beforeCoins,'会员赠送金币退款冲正',o.id,'已退款');
+        if(grantedCoins)pushLedger('金币',-grantedCoins,beforeCoins,'会员赠送金币退款冲正',o.id,'已退款');
         if(grantedQuota)pushLedger('AI额度',-grantedQuota,beforeQuota,'会员退款冲正',o.id,'已退款');
         if(entitlement){const beforeDays=entitlement.remainingDays||0;entitlement.remainingDays=Math.max(0,beforeDays-o.plan.termDays);entitlement.endAt=new Date(Math.max(Date.now(),Date.parse(entitlement.endAt)||Date.now())-o.plan.termDays*86400000).toISOString();entitlement.sourceOrders=(entitlement.sourceOrders||[]).filter(source=>source.id!==o.id);pushLedger('会员有效期',-o.plan.termDays,beforeDays,'会员退款冲正',o.id,'已退款');if(!entitlement.remainingDays)state.memberships=state.memberships.filter(plan=>plan!==entitlement);}
       }
@@ -3083,19 +3202,19 @@
         if(state.coins<o.coins){o.status='退款拒绝';o.refundReason='演示结果：充值金币已使用，已转人工核算处理。';state.activeOrderId=id;state.screen='orderDetailPage';render();return;}
         const beforeCoins=state.coins;
         state.coins-=o.coins;
-        pushLedger('付费金币',-o.coins,beforeCoins,'充值退款冲正',o.id,'已退款');
+        pushLedger('金币',-o.coins,beforeCoins,'充值退款冲正',o.id,'已退款');
       }
       if(o.type==='unlock'){
         const beforeCoins=state.coins;
         state.purchased.delete(o.item.id);
         state.coins+=o.allocation.coins||0;
-        if(o.allocation.coins)pushLedger('付费金币',o.allocation.coins,beforeCoins,'精品内容退款退回',o.id,'已退款');
+        if(o.allocation.coins)pushLedger('金币',o.allocation.coins,beforeCoins,'精品内容退款退回',o.id,'已退款');
       }
       if(o.type==='collection'){
         const beforeCoins=state.coins;
         state.purchased.delete(o.collection.id);collections[o.collection.id].purchased=false;
         state.coins+=o.allocation.coins||0;
-        if(o.allocation.coins)pushLedger('付费金币',o.allocation.coins,beforeCoins,'合集退款退回',o.id,'已退款');
+        if(o.allocation.coins)pushLedger('金币',o.allocation.coins,beforeCoins,'合集退款退回',o.id,'已退款');
       }
       o.status='已退款';o.refundReason='演示结果：服务端校验通过，相关未消费权益已冲正；实际到账时间以支付渠道为准。';state.activeOrderId=id;state.screen='orderDetailPage';render();toast('退款结果已同步');
     }
@@ -3103,7 +3222,7 @@
     function openPrivacy() { ensureLogin(()=>openPage('settingsPage')); }
 
     document.addEventListener('click',e=>{
-      const tab=e.target.closest('[data-tab]'); if(tab){const nextTab=tab.dataset.tab;state.navigationStack=[];state.tab=nextTab;state.screen='main';render();if(['long','ai','community','mine'].includes(nextTab)&&!launchController.sectionCampaignShown){launchController.sectionCampaignShown=true;setTimeout(()=>showLongCampaign(0),120);}return;}
+      const tab=e.target.closest('[data-tab]'); if(tab){const nextTab=tab.dataset.tab;state.navigationStack=[];state.tab=nextTab;state.screen='main';if(nextTab==='short'){state.shortSource='main';state.shortProfileAuthor='';}render();if(['long','ai','community','mine'].includes(nextTab)&&!launchController.sectionCampaignShown){launchController.sectionCampaignShown=true;setTimeout(()=>showLongCampaign(0),120);}return;}
       const localTab=e.target.closest('.portal-tab,.top-tab,.tiny-filter');
       if(localTab&&!localTab.dataset.action){const label=localTab.textContent.trim();if(label==='我的记录'&&!state.loggedIn){ensureLogin(()=>{renderAI();setTimeout(()=>{const record=document.querySelector('#aiRecords');if(record)content.scrollTo({top:record.offsetTop-54,behavior:'smooth'});},30);},'登录后可查看AI任务记录');return;}localTab.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));localTab.classList.add('active');if(label==='我的记录'){const record=document.querySelector('#aiRecords');if(record)content.scrollTo({top:record.offsetTop-54,behavior:'smooth'});}toast(`已切换：${label}`);return;}
       const segment=e.target.closest('.community-segment button');
@@ -3130,7 +3249,7 @@
       if(action==='back-categories'){if(!restorePreviousPage()){state.returnScreen='main';state.screen='longCategories';render();}}
       if(action==='open-detail'){const item=catalog[target.dataset.id];if(item?.kind==='合集'){openPage('collection');return;}if(!item)return toast('内容不存在或已下架');closeSheet();rememberPage();state.returnScreen=state.screen==='main'?'main':state.screen;state.contentId=target.dataset.id;preparePlayer(item);state.screen='detail';render();}
       if(action==='open-collection')openPage('collection');
-      if(action==='short-tab'){const nextShortTab=target.dataset.value;if(nextShortTab==='关注'&&!state.loggedIn){ensureLogin(()=>{state.shortTab='关注';state.shortIndex=0;renderShort();},'登录后可查看已关注作者的短视频');return;}state.shortLeaveReason=`离开${state.shortTab}流`;state.shortTab=nextShortTab;state.shortIndex=0;const feeds=state.shortTab==='关注'?shortFeeds.推荐.filter(feed=>state.following.has(feed.author)):shortFeeds[state.shortTab];const item=feeds?.[0]&&catalog[feeds[0].id];state.shortPaused=!!(item&&!hasAccess(item)&&state.shortTrialEnded.has(item.id));renderShort();return;}
+      if(action==='short-tab'){const nextShortTab=target.dataset.value;if(nextShortTab==='关注'&&!state.loggedIn){ensureLogin(()=>{state.shortSource='main';state.shortProfileAuthor='';state.shortTab='关注';state.shortIndex=0;renderShort();},'登录后可查看已关注作者的短视频');return;}state.shortLeaveReason=`离开${state.shortTab}流`;state.shortSource='main';state.shortProfileAuthor='';state.shortTab=nextShortTab;state.shortIndex=0;const feeds=currentShortFeeds(),item=feeds?.[0]&&catalog[feeds[0].id];state.shortPaused=!!(item&&!hasAccess(item)&&state.shortTrialEnded.has(item.id));renderShort();return;}
       if(action==='short-trial-membership'){ensureLogin(()=>openMembershipPopup('video'));return;}
       if(action==='open-membership-popup'){ensureLogin(()=>openMembershipPopup(target.dataset.family||'video'));return;}
       if(action==='short-trial-recharge'){const item=catalog[target.dataset.id];if(!item)return toast('内容不存在或已下架');createResumeIntent('unlock',item.id,item.price);ensureLogin(openQuickRechargeSheet);return;}
@@ -3149,17 +3268,19 @@
       if(action==='tag-sort'){state.tagSort=target.dataset.value;renderTagPage();}
       if(action==='play-episode'){const set=collections.set1,number=Number(target.dataset.number),episode=set.episodes.find(item=>item.number===number);if(!episode)return toast('该集尚未更新');const item=catalog[episode.contentId],wholeOwned=set.purchased||state.purchased.has(set.id);if(!wholeOwned&&item.entitlement==='coin'&&!state.purchased.has(item.id))return beginContentUnlock(item);set.currentEpisode=number;rememberPage();state.contentId=episode.contentId;preparePlayer(item);state.player.current=Math.round(durationSeconds(episode.duration)*episode.progress/100);state.screen='detail';render();}
       if(action==='unlock-collection')beginCollectionUnlock(collections[target.dataset.id]||collections.set1);
-      if(action==='open-profile'){stopPlaybackClock();closeSheet();rememberPage();const source=target.dataset.source||((state.tab==='community'||state.screen==='postDetail')?'community':'video');state.profileUser=target.dataset.name||(source==='community'&&state.activePost?.author)||'干净演变身影';state.profileUserMeta=source==='community'?'社区公开用户':'片库认证作者';state.profileTab=source==='community'?'posts':'videos';state.profileQuery='';state.profileReturnScreen=state.screen;state.screen='profile';render();}
+      if(action==='open-profile-short'){const index=Math.max(0,Math.min(profileShortWorks.length-1,Number(target.dataset.index)||0));rememberPage();state.shortSource='profile';state.shortProfileAuthor=state.profileUser||'公开用户';state.shortIndex=index;const item=catalog[profileShortWorks[index].id];state.shortPaused=!!(item&&!hasAccess(item)&&state.shortTrialEnded.has(item.id));state.screen='shortFeed';render();return;}
+      if(action==='open-profile'){stopPlaybackClock();closeSheet();rememberPage();const source=target.dataset.source||((state.tab==='community'||state.screen==='postDetail')?'community':'video');state.profileUser=target.dataset.name||(source==='community'&&state.activePost?.author)||'干净演变身影';state.profileUserMeta=source==='community'?'社区公开用户':source==='short-video'?'短视频创作者':'视频创作者';state.profileTab=source==='community'?'posts':source==='short-video'?'shortVideos':'videos';state.profileQuery='';state.profileReturnScreen=state.screen;state.screen='profile';render();}
       if(action==='connection-profile'){rememberPage();state.profileUser=target.dataset.name||'公开用户';state.profileUserMeta=target.dataset.meta||'公开用户';state.profileTab='videos';state.profileQuery='';state.profileReturnScreen='profileConnections';state.screen='profile';render();return;}
       if(action==='profile-connections'){ensureLogin(()=>openPage('profileConnections',{connectionTab:target.dataset.value||'粉丝',connectionOwner:'profile'}),'登录后可查看该用户的粉丝与关注列表');return;}
       if(action==='mine-connections'){ensureLogin(()=>openPage('profileConnections',{connectionTab:target.dataset.value||'粉丝',connectionOwner:'mine'}));return;}
       if(action==='connection-tab'){state.connectionTab=target.dataset.value||'粉丝';renderProfileConnections();return;}
-      if(action==='post-detail'){stopPlaybackClock();closeSheet();rememberPage();state.returnScreen=state.screen==='profile'?'profile':'main';const profileSource=target.dataset.source==='profile',matched=(profileSource?profilePosts:communityPosts()).find(post=>post.id===target.dataset.id)||communityFeedPosts[0];state.activePost=profileSource?{...matched,author:state.profileUser||matched.author}:matched;state.screen='postDetail';render();}
+      if(action==='post-detail'){stopPlaybackClock();closeSheet();rememberPage();state.returnScreen=state.screen==='profile'?'profile':'main';const source=target.dataset.source,profileSource=source==='profile',myPostSource=source==='my-post',matched=(profileSource?profilePosts:myPostSource?myPostsForManagement():communityPosts()).find(post=>post.id===target.dataset.id)||communityFeedPosts[0];state.activePost=profileSource?{...matched,author:state.profileUser||matched.author}:matched;state.screen='postDetail';render();}
       if(action==='profile-tab'){state.profileTab=target.dataset.value;state.profileQuery='';renderProfile();}
       if(action==='home-reset'){state.libraryTop='推荐';state.librarySort='推荐';render();}
       if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;render();return;}
       if(action==='home-more-categories'){rememberPage();state.screen='moreCategories';render();return;}
       if(action==='open-hot-ranks'){openPage('hotRankHub',{hotRankType:'play',hotRankPeriod:'day'});return;}
+      if(action==='community-resource-shortcut'){rememberPage();state.tab='community';state.screen='main';state.communityMode='resource';state.communityTopic=target.dataset.value||'小说';state.communityCatalogGenre='推荐';state.communitySort='推荐';render();content.scrollTop=0;return;}
       if(action==='ranking-type'){state.hotRankType=target.dataset.value||'play';renderHotRankHub();return;}
       if(action==='ranking-period'){state.hotRankPeriod=target.dataset.value||'day';renderHotRankHub();return;}
       if(action==='more-filter'){const group=target.dataset.group,value=target.dataset.value;if(group==='dimension'){state.moreDimension=value;state.moreType='全部';}else if(group==='type')state.moreType=value;else if(group==='spec')state.moreSpec=value;else if(group==='sort')state.moreSort=value;renderMoreCategories();return;}
@@ -3228,11 +3349,11 @@
       if(action==='membership-plan'){state.membershipPlan=target.dataset.plan;renderMembership();requestAnimationFrame(()=>{content.scrollTop=content.scrollHeight;});}
       if(action==='membership-pay'){openMembershipCheckout(target.dataset.plan);return;}
       if(action==='membership-checkout-close'){closeMembershipCheckout();return;}
-      if(action==='membership-checkout-confirm'){if(!document.querySelector('#membershipCheckoutConsent')?.checked)return toast('请先确认会员服务协议与退款规则');const plan=plans[target.dataset.plan];if(!plan)return toast('会员商品配置异常，请刷新');closeMembershipCheckout();ensureLogin(()=>openOrder({type:'member',title:plan.name,amount:plan.amount,plan,scope:`${plan.period} · ${plan.scope}`}));return;}
+      if(action==='membership-checkout-confirm'){if(!document.querySelector('#membershipCheckoutConsent')?.checked)return toast('请先确认商品信息与退款规则');const plan=plans[target.dataset.plan];if(!plan)return toast('会员商品配置异常，请刷新');closeMembershipCheckout();ensureLogin(()=>openOrder({type:'member',title:plan.name,amount:plan.amount,plan,scope:`${plan.period} · ${plan.scope}`}));return;}
       if(action==='wallet')ensureLogin(openWallet);
       if(action==='coin-recharge'){ensureLogin(()=>openPage('rechargePage'));return;}
       if(action==='select-plan')ensureLogin(()=>{const plan=plans[target.dataset.plan];if(!plan)return toast('方案配置异常，请刷新');openOrder({type:'member',title:plan.name,amount:plan.amount,plan,scope:`${plan.period} · ${plan.scope}`});});
-      if(action==='buy-pack')ensureLogin(()=>openOrder({type:'coins',title:`充值${target.dataset.coins}金币`,amount:Number(target.dataset.amount),coins:Number(target.dataset.coins),scope:'付费金币余额'}));
+      if(action==='buy-pack')ensureLogin(()=>{const baseCoins=Number(target.dataset.coins),giftCoins=state.firstRechargeUsed?0:Number(target.dataset.giftCoins||0);openOrder({type:'coins',title:`充值${baseCoins}金币`,amount:Number(target.dataset.amount),baseCoins,giftCoins,coins:baseCoins+giftCoins,scope:`统一金币余额${giftCoins?` · 首充赠送${giftCoins}金币`:''}`});});
       if(action==='unlock-content')beginContentUnlock(catalog[target.dataset.id]);
       if(action==='confirm-order'){if(!document.querySelector('#orderConsent')?.checked)return toast('请先确认订单规则');showOrderProcessing();}
       if(action==='query-order')grantOrder();
@@ -3270,11 +3391,12 @@
       if(action==='safety-menu')openSafetyMenu();
       if(action==='post-menu')openPostMenu();
       if(action==='post-like'){const id=target.dataset.id||state.activePost?.id;if(!id)return toast('帖子状态已变化');ensureLogin(()=>{const active=state.likedPosts.has(id);active?state.likedPosts.delete(id):state.likedPosts.add(id);render();toast(active?'已取消帖子点赞':'帖子点赞成功');});return;}
-      if(action==='not-interested'){ensureLogin(()=>{closeSheet();toast('已减少相似内容推荐');});return;}
+      if(action==='block-video-author'){ensureLogin(()=>openSheet(`${sheetTitle('确认拉黑作者','该操作作用于当前登录账号')}<div class="notice" style="margin-top:14px;">拉黑后当前视频退出，推荐、搜索和评论不再展示该作者内容。</div><div class="row"><button class="btn-secondary" data-action="close-sheet">取消</button><button class="btn-primary" data-action="confirm-video-block">确认拉黑</button></div>`),'登录后可管理作者黑名单');return;}
+      if(action==='confirm-video-block'){ensureLogin(()=>{state.blockedAuthors.add('干净演变身影');closeSheet();stopPlaybackClock();state.navigationStack=[];state.screen='main';state.tab='long';render();toast('已拉黑该作者，当前视频已退出');});return;}
       if(action==='copy-link'){closeSheet();toast('合规分享链接已复制');}
       if(action==='block'){ensureLogin(()=>{closeSheet();toast('已拉黑该账号，后续不再展示');});return;}
       if(action==='publish')openPublish();
-      if(action==='open-request-publish')ensureLogin(()=>{state.postDraft={topic:'求片',image:false,video:false,title:state.searchQuery?`求片：${state.searchQuery}`:'',body:'',bounty:20};openPage('postEditor');});
+      if(action==='open-request-publish')ensureLogin(()=>{state.editingPostId='';state.postDraft={topic:'求片',image:false,video:false,title:state.searchQuery?`求片：${state.searchQuery}`:'',body:'',bounty:20};openPage('postEditor');});
       if(action==='select-topic'){state.postDraft.title=document.querySelector('#postTitle')?.value||state.postDraft.title;state.postDraft.body=document.querySelector('#postBody')?.value||state.postDraft.body;state.postDraft.bounty=Number(document.querySelector('#requestBounty')?.value)||state.postDraft.bounty||20;state.postDraft.topic=target.dataset.value;render();return;}
       if(action==='add-post-media'){const kind=target.dataset.kind;state.postDraft[kind]=!state.postDraft[kind];target.classList.toggle('active',state.postDraft[kind]);target.textContent=state.postDraft[kind]?(kind==='image'?'✓ 已添加图片':'✓ 已添加视频'):(kind==='image'?'＋ 添加图片':'▶ 添加视频');}
       if(action==='submit-post'){
@@ -3285,6 +3407,14 @@
         if(request&&(!Number.isFinite(bounty)||bounty<1||bounty>999))return toast('求片赏金请输入1-999金币');
         const sensitive=findSensitiveTerm(`${title} ${body}`);
         if(sensitive){state.postDraft.title=title;state.postDraft.body=body;state.postDraft.bounty=bounty||20;return toast(`命中敏感词“${sensitive}”，发布失败，草稿已保留`);}
+        if(state.editingPostId){
+          const id=state.editingPostId,base=myPostsForManagement().find(item=>item.id===id);
+          if(!base)return toast('原帖子状态已变化，请返回刷新');
+          const previousApproved=base.status==='已发布'?{...base,status:'已发布'}:base.previousApproved;
+          const updated={...base,title:title.slice(0,60),body:body.slice(0,2000),summary:body.slice(0,80),topic:state.postDraft.topic,media:Number(state.postDraft.image)+Number(state.postDraft.video),image:state.postDraft.image,video:state.postDraft.video,status:'审核中',time:'刚刚提交',reason:'修改版本已提交审核；如原帖已发布，审核通过前继续展示上一个已通过版本。',previousApproved};
+          const index=state.posts.findIndex(item=>item.id===id);if(index>=0)state.posts[index]=updated;else state.myPostOverrides[id]=updated;
+          state.editingPostId='';state.postDraft={topic:'影评',image:false,video:false,title:'',body:'',bounty:20};state.navigationStack=[];state.screen='myPostsPage';state.myPostFilter='审核中';render();toast('修改已提交，原已发布版本在审核通过前保持展示');return;
+        }
         const post={id:businessId(request?'REQUEST':'POST'),author:'积极橘子',time:'刚刚',title:title.slice(0,60),body:body.slice(0,2000),summary:body.slice(0,80),topic:state.postDraft.topic,media:Number(state.postDraft.image)+Number(state.postDraft.video),image:state.postDraft.image,video:state.postDraft.video,status:'已发布',views:'0',comments:0,request,bounty:request?bounty:0,wanted:request?1:0,resolved:false};
         state.posts.unshift(post);if(request)state.requestSubmissions[post.id]=[];
         state.postDraft={topic:'影评',image:false,video:false,title:'',body:'',bounty:20};state.navigationStack=[];state.screen='main';state.tab='community';state.communityMode='exchange';state.communityTopic=request?'求片':'最新';render();toast(request?`求片已发布 · 赏金${bounty}金币`:'帖子已发布');
@@ -3333,13 +3463,13 @@
       if(action==='app-icon-apply'){
         const selected=appIconOptions.find(option=>option.id===state.selectedAppIcon)||appIconOptions[0];
         if(selected.id===state.appIcon)return toast('当前已使用该图标');
-        openSheet(`${sheetTitle('确认更换桌面图标',`${selected.name}图标 · APP名称仍为基咔`)}<div class="app-icon-hero" style="margin-top:16px;">${appIconArtwork(selected,'large')}<p class="notice">只切换桌面图标资源，不修改APP名称。系统拒绝或设备不支持时继续保留原图标。</p></div><button class="btn-primary" data-action="confirm-app-icon" data-value="${selected.id}">确认更换图标</button>`);
+        openSheet(`${sheetTitle('确认更换桌面图标','只更换图片 · 应用名称仍为基咔')}<div class="app-icon-hero" style="margin-top:16px;">${appIconArtwork(selected,'large')}<p class="notice">只切换桌面图标图片，不修改应用名称、桌面标签或安装包名称。系统拒绝或设备不支持时继续保留原图标。</p></div><button class="btn-primary" data-action="confirm-app-icon" data-value="${selected.id}">确认更换图标图片</button>`);
       }
-      if(action==='confirm-app-icon'){const selected=appIconOptions.find(option=>option.id===target.dataset.value);if(!selected)return toast('图标配置已更新，请重新选择');state.appIcon=selected.id;state.selectedAppIcon=selected.id;closeSheet();renderAppIconPage();toast(`桌面图标已切换为“${selected.name}”，APP名称仍为基咔`);}
+      if(action==='confirm-app-icon'){const selected=appIconOptions.find(option=>option.id===target.dataset.value);if(!selected)return toast('图标配置已更新，请重新选择');state.appIcon=selected.id;state.selectedAppIcon=selected.id;closeSheet();renderAppIconPage();toast('桌面图标图片已更新，应用名称仍为基咔');}
       if(action==='devices')ensureLogin(()=>openPage('devicesPage'));
       if(action==='logout-device'){const device=state.devices.find(item=>item.id===target.dataset.id);if(!device||device.current)return toast('当前设备不能在此退出');openSheet(`${sheetTitle('验证并退出设备',device.name)}<p class="notice">退出后该设备会话立即失效。原型以二次确认代替真实短信/密码验证。</p><button class="btn-primary" data-action="confirm-logout-device" data-id="${device.id}">确认退出该设备</button>`);}
       if(action==='confirm-logout-device'){state.devices=state.devices.filter(device=>device.id!==target.dataset.id);closeSheet();renderDevicesPage();toast('该设备已退出登录');}
-      if(action==='policy')openSheet(`${sheetTitle(target.dataset.value,'协议、隐私与未成年人保护入口可正常访问')}<div class="notice" style="margin-top:16px;">当前为原型摘要，正式文本由法务确认后以版本号冻结。</div><button class="btn-primary" data-action="close-sheet">我知道了</button>`);
+      if(action==='app-version')openSheet(`${sheetTitle('版本信息','当前安装版本')}<div class="notice" style="margin-top:16px;">基咔 MVP 1.0 · rc30</div><button class="btn-primary" data-action="close-sheet">我知道了</button>`);
       if(action==='logout'){openSheet(`${sheetTitle('退出当前账号','退出后将回到游客状态')}<div class="notice" style="margin-top:16px;">会员、金币、订单和内容记录仍保留在账号中，再次登录后恢复。</div><button class="btn-primary" data-action="confirm-logout">确认退出登录</button><button class="btn-secondary" data-action="close-sheet">取消</button>`);return;}
       if(action==='confirm-logout'){state.accountSnapshot={collectionPurchased:collections.set1.purchased};collections.set1.purchased=false;['following','favorites','likedPosts','shortLiked','wantedRequests','purchased'].forEach(key=>{state.accountSnapshot[key]=[...state[key]];state[key].clear();});state.loggedIn=false;loginContinuation=null;closeSheet();stopPlaybackClock();state.navigationStack=[];state.tab='mine';state.screen='main';render();toast('已退出登录');return;}
       if(action==='account-cancel')ensureLogin(()=>openPage('cancelPage'));
@@ -3351,8 +3481,12 @@
       if(action==='my-request-tab'){state.myRequestTab=target.dataset.value==='liked'?'liked':'requests';renderMyRequestsPage();}
       if(action==='my-post-filter'){state.myPostFilter=target.dataset.value;renderMyPostsPage();}
       if(action==='post-status-detail')openSheet(`${sheetTitle(target.dataset.title,`当前状态：${target.dataset.status}`)}<div class="notice" style="margin-top:16px;">${target.dataset.reason}</div><button class="btn-primary" data-action="close-sheet">我知道了</button>`);
-      if(action==='edit-my-post'){state.postDraft={topic:target.dataset.topic||'影评',image:false,video:false,title:target.dataset.title||'',body:'请补充修改后的正文内容。',bounty:20};openPage('postEditor');}
-      if(action==='post-appeal'){openSheet(`${sheetTitle('帖子下架申诉','提交后由治理人员处理')}<textarea class="input textarea" placeholder="补充授权信息或申诉理由"></textarea><button class="btn-primary" data-action="submit-post-appeal">提交申诉</button>`);}
+      if(action==='edit-my-post'){const post=myPostsForManagement().find(item=>item.id===target.dataset.id);if(!post)return toast('帖子状态已变化，请刷新');closeSheet();state.editingPostId=post.id;state.postDraft={topic:post.topic||'影评',image:Boolean(post.image||post.media),video:Boolean(post.video),title:post.title||'',body:post.body||post.summary||'',bounty:Number(post.bounty)||20};openPage('postEditor');}
+      if(action==='my-post-manage'){const post=myPostsForManagement().find(item=>item.id===target.dataset.id);if(!post||post.status!=='已发布')return toast('帖子状态已变化，请刷新');openSheet(`${sheetTitle('管理帖子',escapeHTML(post.title))}<div class="notice" style="margin-top:14px;">修改后需重新经过服务端校验；删除不可撤销，不影响已产生的审计记录。</div><button class="btn-primary" data-action="edit-my-post" data-id="${post.id}">编辑帖子</button><button class="btn-secondary" data-action="delete-my-post" data-id="${post.id}">删除帖子</button>`);}
+      if(action==='delete-my-post'){const post=myPostsForManagement().find(item=>item.id===target.dataset.id);if(!post)return toast('帖子已删除或不存在');openSheet(`${sheetTitle(post.status==='草稿'?'删除草稿':'删除帖子',escapeHTML(post.title))}<div class="notice" style="margin-top:14px;">删除后用户端立即不可见，且无法撤销。</div><button class="btn-primary" data-action="confirm-delete-my-post" data-id="${post.id}">确认删除</button><button class="btn-secondary" data-action="close-sheet">取消</button>`);}
+      if(action==='confirm-delete-my-post'){const index=state.posts.findIndex(item=>item.id===target.dataset.id);if(index>=0)state.posts.splice(index,1);else state.deletedMyPosts.add(target.dataset.id);closeSheet();renderMyPostsPage();toast('帖子已删除');}
+      if(action==='withdraw-my-post'){const id=target.dataset.id,post=myPostsForManagement().find(item=>item.id===id);if(!post||post.status!=='审核中')return toast('审核状态已变化');const next=post.previousApproved?{...post.previousApproved}:{...post,status:'草稿',time:'刚刚撤回',reason:''},index=state.posts.findIndex(item=>item.id===id);if(index>=0)state.posts[index]=next;else state.myPostOverrides[id]=next;renderMyPostsPage();toast(post.previousApproved?'已撤回修改，恢复上一个已发布版本':'已撤回为草稿，可继续修改');}
+      if(action==='post-appeal'){openSheet(`${sheetTitle('帖子下架申诉','提交后由治理人员处理')}<textarea class="input textarea" placeholder="补充授权信息或申诉理由"></textarea><div class="notice">同一帖子有处理中申诉时不得重复提交；结果通过消息中心通知。</div><button class="btn-primary" data-action="submit-post-appeal" data-id="${target.dataset.id||''}">提交申诉</button>`);}
       if(action==='submit-post-appeal'){closeSheet();addMessage('社区','下架申诉已提交','结果将通过消息中心通知。');toast('申诉已提交');}
       if(action==='privacy')openPrivacy();
     });
