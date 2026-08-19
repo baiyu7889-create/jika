@@ -1369,7 +1369,7 @@
     .more-dimension-tabs button { position:relative; flex:0 0 auto; min-height:38px; padding:0 2px; border:0; background:none; color:#626c78; font-size:13px; }
     .more-dimension-tabs button.active { color:#111820; font-weight:850; }
     .more-dimension-tabs button.active::after { content:''; position:absolute; left:50%; bottom:-1px; width:22px; height:3px; border-radius:3px; background:#111820; transform:translateX(-50%); }
-    .more-filter-row { display:grid; grid-template-columns:44px 1fr; gap:8px; align-items:start; padding:12px 0; border-bottom:1px solid #eef1f4; }
+    .more-filter-row { display:grid; grid-template-columns:62px 1fr; gap:8px; align-items:start; padding:12px 0; border-bottom:1px solid #eef1f4; }
     .more-filter-row > strong { padding-top:9px; font-size:12px; }
     .more-filter-options { display:flex; flex-wrap:wrap; gap:6px 9px; }
     .more-filter-options button { min-width:51px; min-height:34px; padding:0 10px; border:0; border-radius:18px; background:transparent; color:#58626e; font-size:12px; }
@@ -1875,7 +1875,7 @@
         {id:'ORD-DEMO-REJECT',type:'coins',title:'退款拒绝状态样例',amount:6,status:'退款拒绝',time:'08-04 11:20',refundReason:'资产已消费，已转人工核算。',granted:true}
       ], pending:null, posts:[], activePost:null, activeResource:null, activeResourceUnit:1, resourceDirectoryExpanded:false,
       libraryTop:'推荐', libraryCategory:'全部', librarySort:'推荐', libraryLoading:false, sectionRefresh:{}, hotRankType:'play', hotRankPeriod:'day',
-      moreDimension:'主题', moreType:'全部', moreSpec:'全部', moreSort:'最新',
+      moreDimension:'类型', moreType:'全部', moreSpec:'全部', moreSort:'最新',
       communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', communityCatalogGenre:'推荐', communityRandomSeed:0, wantedRequests:new Set(), likedPosts:new Set(),
       searchQuery:'', searchExecuted:false, searchType:'作品', searchSource:'short', searchHistory:[],
       profileTab:'videos', profileQuery:'', profileUser:'干净演变身影', profileUserMeta:'视频创作者', connectionTab:'粉丝', connectionOwner:'profile',
@@ -2186,13 +2186,23 @@
 
     const referenceHomeTabs=['关注','推荐','独家','发现','类型','性癖','厂商','地区'];
     const moreCategoryDimensions={
-      主题:['全部','约会','自拍','综艺','按摩','剧情','校园'],
-      角色:['全部','学生','职场','运动员','邻家','成熟','新人'],
-      场景:['全部','城市','海边','校园','居家','旅行','户外'],
-      原创精品:['全部','独家','首发','系列','高分','编辑精选'],
-      玩法:['全部','访谈','记录','互动','故事','训练','挑战'],
-      体型:['全部','清瘦','匀称','健身','高挑','成熟']
+      类型:['全部','剧情短片','纪实访谈','旅行记录','运动健身','校园故事','职场日常','轻松喜剧','音乐现场','动画作品'],
+      性癖:['全部','角色偏好','情绪氛围','镜头风格','人物关系','故事节奏','视觉审美','轻松日常','深夜陪伴','小众发现'],
+      厂商:['全部','光影厂牌','城市制作','青禾影像','蓝屿工作室','远山映画','纸飞机社','新锐导演','独立作者','联合出品'],
+      地区:['全部','内地精选','港台作品','日韩新作','东南亚','欧美佳作','其他地区','城市专题','海岛故事','海外生活']
     };
+    function isCategoryDimension(value) {
+      return Object.prototype.hasOwnProperty.call(moreCategoryDimensions,value);
+    }
+    function syncMoreCategoryToHome() {
+      state.libraryTop=state.moreDimension;
+      state.libraryCategory=state.moreType;
+      const previous=state.navigationStack[state.navigationStack.length-1];
+      if(previous?.screen==='main'&&previous.tab==='long') {
+        previous.libraryTop=state.moreDimension;
+        previous.libraryCategory=state.moreType;
+      }
+    }
     const referenceAds=['蓝颜约会','精选合辑','开元棋牌','专题游戏','热门活动','新作速递','平行世界','男色狂欢','头条解析','男孩日记','免费专区','高清频道','城市故事','动画专区','AI创作','旅行记录','运动生活','经典影库'];
     const referenceCategories={
       '推荐':['城市故事','运动时光','旅行记录','校园故事','编辑精选','本周高分'],
@@ -2302,11 +2312,11 @@
       content.innerHTML=`<div class="reference-home" data-od-id="long-video-home">${referenceHeader()}${referenceAdMatrix()}${body}</div>`;
     }
     function renderMoreCategories() {
-      const groups=referenceHomeTabs.filter(name=>name!=='关注').map(name=>{
-        const children=referenceCategories[name]||[];
-        return `<section class="more-category-group"><div class="more-category-group-head"><strong>${name}</strong><button data-action="home-top" data-value="${name}">进入一级页面 ›</button></div><div class="more-category-links">${children.map(child=>`<button data-action="home-category" data-value="${child}">${child}</button>`).join('')}</div></section>`;
-      }).join('');
-      content.innerHTML=`<div class="reference-home" data-od-id="long-more-categories"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>全部分类</strong><span></span></div><div class="more-category-body"><div class="more-directory-intro"><strong>一级页面与二级分类</strong>展示所有已启用分类；点击一级页面返回对应频道，点击二级分类进入作品列表。列表仅展示单部作品，不展示或拆解作品合集。</div><div class="more-category-groups">${groups}</div><section class="reference-section more-directory-results" aria-label="热门作品"><div class="reference-title"><strong>热门作品</strong><small>作品维度</small></div>${referenceMediaCards(6,0,'最热','全部')}</section></div></div>`;
+      const dimensions=Object.keys(moreCategoryDimensions);
+      const options=moreCategoryDimensions[state.moreDimension]||moreCategoryDimensions.类型;
+      const categoryOffset=Math.max(0,options.indexOf(state.moreType)-1);
+      const row=(label,group,values,current)=>`<div class="more-filter-row"><strong>${label}</strong><div class="more-filter-options">${values.map(value=>`<button class="${value===current?'active':''}" data-action="more-filter" data-group="${group}" data-value="${value}">${value}</button>`).join('')}</div></div>`;
+      content.innerHTML=`<div class="reference-home" data-od-id="long-more-categories"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>更多分类</strong><span></span></div><div class="more-category-body">${row('一级类目','dimension',dimensions,state.moreDimension)}${row('二级类目','type',options,state.moreType)}${row('内容规格','spec',['全部','金币','VIP'],state.moreSpec)}${row('排序','sort',['最新','最热'],state.moreSort)}<div class="more-filter-summary">当前筛选：${state.moreDimension} / ${state.moreType} / ${state.moreSpec} / ${state.moreSort}</div><section class="reference-section more-filter-results" aria-label="筛选结果"><div class="reference-title"><strong>筛选结果</strong><small>共 ${Math.min(10,referenceTitles.length-categoryOffset)} 条</small></div>${referenceMediaCards(10,categoryOffset,state.moreSort,state.moreSpec)}</section></div></div>`;
     }
     function renderLongCategories() {
       const categories=referenceCategories[state.libraryTop]||referenceCategories['发现'];
@@ -3302,16 +3312,16 @@
       if(action==='post-detail'){stopPlaybackClock();closeSheet();rememberPage();state.returnScreen=state.screen==='profile'?'profile':'main';const source=target.dataset.source,profileSource=source==='profile',myPostSource=source==='my-post',matched=(profileSource?profilePosts:myPostSource?myPostsForManagement():communityPosts()).find(post=>post.id===target.dataset.id)||communityFeedPosts[0];state.activePost=profileSource?{...matched,author:state.profileUser||matched.author}:matched;state.screen='postDetail';render();}
       if(action==='profile-tab'){state.profileTab=target.dataset.value;state.profileQuery='';renderProfile();}
       if(action==='home-reset'){state.libraryTop='推荐';state.librarySort='推荐';render();}
-      if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';if(state.screen==='moreCategories')state.screen='main';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;if(state.screen==='moreCategories')state.screen='main';render();return;}
-      if(action==='home-more-categories'){rememberPage();state.screen='moreCategories';render();return;}
+      if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';if(state.screen==='moreCategories')state.screen='main';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;if(isCategoryDimension(nextTop)){state.moreDimension=nextTop;state.moreType='全部';}if(state.screen==='moreCategories')state.screen='main';render();return;}
+      if(action==='home-more-categories'){if(isCategoryDimension(state.libraryTop)){state.moreDimension=state.libraryTop;state.moreType=state.libraryCategory||'全部';}rememberPage();state.screen='moreCategories';render();return;}
       if(action==='open-hot-ranks'){openPage('hotRankHub',{hotRankType:'play',hotRankPeriod:'day'});return;}
       if(action==='community-resource-shortcut'){rememberPage();state.tab='community';state.screen='main';state.communityMode='resource';state.communityTopic=target.dataset.value||'小说';state.communityCatalogGenre='推荐';state.communitySort='推荐';render();content.scrollTop=0;return;}
       if(action==='ranking-type'){state.hotRankType=target.dataset.value||'play';renderHotRankHub();return;}
       if(action==='ranking-period'){state.hotRankPeriod=target.dataset.value||'day';renderHotRankHub();return;}
-      if(action==='more-filter'){const group=target.dataset.group,value=target.dataset.value;if(group==='dimension'){state.moreDimension=value;state.moreType='全部';}else if(group==='type')state.moreType=value;else if(group==='spec')state.moreSpec=value;else if(group==='sort')state.moreSort=value;renderMoreCategories();return;}
+      if(action==='more-filter'){const group=target.dataset.group,value=target.dataset.value;if(group==='dimension'){state.moreDimension=value;state.moreType='全部';syncMoreCategoryToHome();}else if(group==='type'){state.moreType=value;syncMoreCategoryToHome();}else if(group==='spec')state.moreSpec=value;else if(group==='sort')state.moreSort=value;renderMoreCategories();return;}
       if(action==='apply-more-filter'){rememberPage();state.libraryCategory=`${state.moreDimension}·${state.moreType}`;state.librarySort=state.moreSort;state.screen='longCategoryVideos';render();return;}
       if(action==='home-all-categories'){rememberPage();state.returnScreen='main';state.screen='longCategories';render();}
-      if(action==='home-category'){rememberPage();state.libraryCategory=target.dataset.value;state.returnScreen=state.screen==='main'?'main':'longCategories';state.screen='longCategoryVideos';render();}
+      if(action==='home-category'){state.libraryCategory=target.dataset.value;if(isCategoryDimension(state.libraryTop)){state.moreDimension=state.libraryTop;state.moreType=state.libraryCategory;}rememberPage();state.returnScreen=state.screen==='main'?'main':'longCategories';state.screen='longCategoryVideos';render();}
       if(action==='home-list-filter'){state.librarySort=target.dataset.value;state.libraryLoading=true;render();clearTimeout(renderLongHome.filterTimer);renderLongHome.filterTimer=setTimeout(()=>{state.libraryLoading=false;render();},520);}
       if(action==='reference-ad'){e.preventDefault();toast(`${target.dataset.value}：广告跳转由后台配置`);return;}
       if(action==='community-topic'){const nextTopic=target.dataset.value;if(nextTopic==='关注'&&!state.loggedIn){ensureLogin(()=>{state.communityTopic='关注';renderCommunity();content.scrollTop=0;},'登录后可查看已关注用户的社区内容');return;}if(['男色','小说','动漫'].includes(nextTopic)&&state.communityTopic!==nextTopic){state.communityCatalogGenre='推荐';state.communitySort='推荐';}state.communityTopic=nextTopic;renderCommunity();content.scrollTop=0;toast(`已切换栏目：${state.communityTopic}`);return;}
