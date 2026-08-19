@@ -1355,13 +1355,14 @@
     .reference-search svg { width:20px; height:20px; flex:0 0 20px; fill:none; stroke:#17212c; stroke-width:2; }
     .reference-publish { border:0; background:none; color:#16202b; font-size:9px; padding:0; }
     .reference-publish i { display:grid; place-items:center; width:27px; height:27px; margin:0 auto 1px; border-radius:9px; background:#22303c; color:#78dcff; font-size:14px; font-style:normal; box-shadow:inset 0 0 0 3px rgba(255,255,255,.82); }
-    .reference-tabs { display:flex; gap:23px; overflow-x:auto; margin:7px -11px 0; padding:0 12px; scrollbar-width:none; }
-    .reference-tabs::-webkit-scrollbar { display:none; }
+    .reference-tabs { display:grid; grid-template-columns:minmax(0,1fr) 42px; overflow:hidden; margin:7px -11px 0; padding-left:12px; }
+    .reference-tab-scroll { display:flex; gap:14px; min-width:0; overflow-x:auto; scrollbar-width:none; }
+    .reference-tab-scroll::-webkit-scrollbar { display:none; }
     .reference-tab { position:relative; min-height:39px; padding:9px 0 8px; border:0; background:none; color:#687286; white-space:nowrap; font-size:15px; }
     .reference-tab.active { color:#151a20; font-weight:850; }
     .reference-tab.active::after { content:''; position:absolute; left:50%; bottom:3px; width:18px; height:6px; transform:translateX(-50%); border-radius:50%; background:rgba(55,181,238,.42); }
     .reference-tab.active::before { content:'✦'; position:absolute; right:-7px; top:2px; color:#168dea; font-size:8px; }
-    .reference-tab-more { position:sticky; right:-1px; z-index:2; flex:0 0 38px; min-height:39px; display:grid; place-items:center; padding:0; border:0; background:linear-gradient(90deg,rgba(235,249,255,.72) 0,#ebf9ff 38%); color:#303944; }
+    .reference-tab-more { position:relative; z-index:2; width:42px; min-height:39px; display:grid; place-items:center; padding:0; border:0; background:linear-gradient(90deg,rgba(235,249,255,.72) 0,#ebf9ff 38%); color:#303944; box-shadow:-10px 0 16px -16px rgba(18,43,60,.65); }
     .hamburger-lines { width:21px; display:grid; gap:4px; }
     .hamburger-lines i { display:block; width:100%; height:2px; border-radius:2px; background:currentColor; }
     .more-category-body { padding:14px 13px 26px; }
@@ -1875,7 +1876,7 @@
         {id:'ORD-DEMO-REJECT',type:'coins',title:'退款拒绝状态样例',amount:6,status:'退款拒绝',time:'08-04 11:20',refundReason:'资产已消费，已转人工核算。',granted:true}
       ], pending:null, posts:[], activePost:null, activeResource:null, activeResourceUnit:1, resourceDirectoryExpanded:false,
       libraryTop:'推荐', libraryCategory:'全部', librarySort:'推荐', libraryLoading:false, sectionRefresh:{}, hotRankType:'play', hotRankPeriod:'day',
-      moreDimension:'类型', moreType:'全部', moreSpec:'全部', moreSort:'最新',
+      moreDimension:'推荐', moreType:'全部', moreSpec:'全部', moreSort:'最新',
       communityMode:'exchange', communityTopic:'推荐', communitySort:'推荐', communityCatalogGenre:'推荐', communityRandomSeed:0, wantedRequests:new Set(), likedPosts:new Set(),
       searchQuery:'', searchExecuted:false, searchType:'作品', searchSource:'short', searchHistory:[],
       profileTab:'videos', profileQuery:'', profileUser:'干净演变身影', profileUserMeta:'视频创作者', connectionTab:'粉丝', connectionOwner:'profile',
@@ -2186,6 +2187,10 @@
 
     const referenceHomeTabs=['关注','推荐','独家','发现','类型','性癖','厂商','地区'];
     const moreCategoryDimensions={
+      关注:['全部'],
+      推荐:['全部','城市故事','运动时光','旅行记录','校园故事','编辑精选','本周高分'],
+      独家:['全部','独家首发','新锐作者','原创系列','限时内容','编辑严选','作者专栏'],
+      发现:['全部','今日精选','编辑推荐','人气合集','城市故事','旅行记录','运动生活','口碑佳作','限时更新','经典重温'],
       类型:['全部','剧情短片','纪实访谈','旅行记录','运动健身','校园故事','职场日常','轻松喜剧','音乐现场','动画作品'],
       性癖:['全部','角色偏好','情绪氛围','镜头风格','人物关系','故事节奏','视觉审美','轻松日常','深夜陪伴','小众发现'],
       厂商:['全部','光影厂牌','城市制作','青禾影像','蓝屿工作室','远山映画','纸飞机社','新锐导演','独立作者','联合出品'],
@@ -2248,7 +2253,7 @@
       ]}
     ];
     function referenceHeader() {
-      return `<header class="reference-head" data-od-id="long-home-header"><div class="reference-search-row"><span class="brand-logo reference-brand" aria-label="长视频首页">基<i>咔</i></span><button class="reference-search" data-action="search">${icons.search}<span>搜索用户 / 作品 / 标签</span></button></div><nav class="reference-tabs" aria-label="长视频分类">${referenceHomeTabs.map(name=>`<button class="reference-tab ${state.libraryTop===name?'active':''}" data-action="home-top" data-value="${name}">${name}</button>`).join('')}<button class="reference-tab-more" data-action="home-more-categories" aria-label="查看更多分类"><span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span></button></nav></header>`;
+      return `<header class="reference-head" data-od-id="long-home-header"><div class="reference-search-row"><span class="brand-logo reference-brand" aria-label="长视频首页">基<i>咔</i></span><button class="reference-search" data-action="search">${icons.search}<span>搜索用户 / 作品 / 标签</span></button></div><nav class="reference-tabs" aria-label="长视频分类"><div class="reference-tab-scroll">${referenceHomeTabs.map(name=>`<button class="reference-tab ${state.libraryTop===name?'active':''}" data-action="home-top" data-value="${name}">${name}</button>`).join('')}</div><button class="reference-tab-more" data-action="home-more-categories" aria-label="查看更多分类"><span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span></button></nav></header>`;
     }
     function referenceAd(name,i) {
       const route=name==='AI创作'?'data-action="open-ai"':`data-action="reference-ad" data-value="${name}"`;
@@ -2310,10 +2315,14 @@
       if(state.libraryTop==='关注')body=referenceFeed();
       else body=`${state.libraryTop==='推荐'?referenceShortcuts():''}${referenceFeaturedCollections()}${referenceThemeSections()}`;
       content.innerHTML=`<div class="reference-home" data-od-id="long-video-home">${referenceHeader()}${referenceAdMatrix()}${body}</div>`;
+      requestAnimationFrame(()=>{
+        const rail=content.querySelector('.reference-tab-scroll'),active=rail?.querySelector('.reference-tab.active');
+        if(rail&&active)rail.scrollLeft=Math.max(0,active.offsetLeft-(rail.clientWidth-active.offsetWidth)/2);
+      });
     }
     function renderMoreCategories() {
-      const dimensions=Object.keys(moreCategoryDimensions);
-      const options=moreCategoryDimensions[state.moreDimension]||moreCategoryDimensions.类型;
+      const dimensions=referenceHomeTabs;
+      const options=moreCategoryDimensions[state.moreDimension]||moreCategoryDimensions.推荐;
       const categoryOffset=Math.max(0,options.indexOf(state.moreType)-1);
       const row=(label,group,values,current)=>`<div class="more-filter-row"><strong>${label}</strong><div class="more-filter-options">${values.map(value=>`<button class="${value===current?'active':''}" data-action="more-filter" data-group="${group}" data-value="${value}">${value}</button>`).join('')}</div></div>`;
       content.innerHTML=`<div class="reference-home" data-od-id="long-more-categories"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>更多分类</strong><span></span></div><div class="more-category-body">${row('一级类目','dimension',dimensions,state.moreDimension)}${row('二级类目','type',options,state.moreType)}${row('内容规格','spec',['全部','金币','VIP'],state.moreSpec)}${row('排序','sort',['最新','最热'],state.moreSort)}<div class="more-filter-summary">当前筛选：${state.moreDimension} / ${state.moreType} / ${state.moreSpec} / ${state.moreSort}</div><section class="reference-section more-filter-results" aria-label="筛选结果"><div class="reference-title"><strong>筛选结果</strong><small>共 ${Math.min(10,referenceTitles.length-categoryOffset)} 条</small></div>${referenceMediaCards(10,categoryOffset,state.moreSort,state.moreSpec)}</section></div></div>`;
