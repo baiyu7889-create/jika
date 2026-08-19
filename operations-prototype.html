@@ -1377,6 +1377,17 @@
     .more-filter-summary { margin-top:16px; padding:13px; border-radius:14px; background:#f6f8fa; color:#697582; font-size:10px; line-height:1.7; }
     .more-filter-results { margin:14px -2px 0; padding:0; background:transparent; }
     .more-filter-results .reference-title { padding:0 2px 8px; }
+    .more-directory-intro { margin:0 0 13px; padding:12px 13px; border-radius:14px; background:#f4f9fc; color:#61707d; font-size:11px; line-height:1.65; }
+    .more-directory-intro strong { display:block; margin-bottom:2px; color:#17212b; font-size:13px; }
+    .more-category-groups { display:grid; gap:10px; }
+    .more-category-group { padding:12px; border:1px solid #e8edf1; border-radius:15px; background:#fff; box-shadow:0 5px 16px rgba(31,55,77,.045); }
+    .more-category-group-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:9px; }
+    .more-category-group-head strong { color:#17212b; font-size:14px; }
+    .more-category-group-head button { border:0; background:none; color:#269dd7; font-size:11px; }
+    .more-category-links { display:flex; flex-wrap:wrap; gap:7px; }
+    .more-category-links button { min-height:31px; padding:0 11px; border:0; border-radius:16px; background:#f1f5f8; color:#53606c; font-size:11px; }
+    .more-category-links button:active { background:#ddf3ff; color:#118dc6; }
+    .more-directory-results { margin:14px 0 0; padding:0; }
 
     .reference-section { padding:11px 11px 0; background:#fff; }
     .reference-title { display:flex; align-items:center; justify-content:space-between; gap:10px; min-height:32px; }
@@ -1414,6 +1425,7 @@
     .reference-discovery-card:nth-child(3n+2) { --cover1:#c68f6a; --cover2:#654047; }
     .reference-discovery-card:nth-child(3n) { --cover1:#77b5a8; --cover2:#314c69; }
     .reference-discovery-card span { position:absolute; inset:auto 0 0; z-index:2; padding:7px 3px; background:linear-gradient(transparent,rgba(13,20,28,.78)); font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .reference-discovery-card b { position:absolute; z-index:2; left:7px; top:7px; padding:3px 6px; border-radius:8px; background:rgba(17,25,35,.66); color:#fff; font-size:8px; letter-spacing:.04em; }
     .reference-filter { display:flex; gap:21px; overflow-x:auto; padding:5px 1px 8px; border-bottom:1px solid #eff1f3; scrollbar-width:none; }
     .reference-filter button { border:0; background:none; color:#4f5760; padding:5px 0; white-space:nowrap; font-size:13px; }
     .reference-filter button.active { color:#15191e; font-weight:850; }
@@ -2183,11 +2195,22 @@
     };
     const referenceAds=['蓝颜约会','精选合辑','开元棋牌','专题游戏','热门活动','新作速递','平行世界','男色狂欢','头条解析','男孩日记','免费专区','高清频道','城市故事','动画专区','AI创作','旅行记录','运动生活','经典影库'];
     const referenceCategories={
+      '推荐':['城市故事','运动时光','旅行记录','校园故事','编辑精选','本周高分'],
+      '独家':['独家首发','新锐作者','原创系列','限时内容','编辑严选','作者专栏'],
       '发现':['今日精选','编辑推荐','人气合集','城市故事','旅行记录','运动生活','口碑佳作','限时更新','经典重温'],
       '类型':['剧情短片','纪实访谈','旅行记录','运动健身','校园故事','职场日常','轻松喜剧','音乐现场','动画作品'],
       '性癖':['角色偏好','情绪氛围','镜头风格','人物关系','故事节奏','视觉审美','轻松日常','深夜陪伴','小众发现'],
       '厂商':['光影厂牌','城市制作','青禾影像','蓝屿工作室','远山映画','纸飞机社','新锐导演','独立作者','联合出品'],
       '地区':['内地精选','港台作品','日韩新作','东南亚','欧美佳作','其他地区','城市专题','海岛故事','海外生活']
+    };
+    const referencePageContent={
+      '推荐':{featured:true,collections:['城市故事合集','本周高分合集','旅行记录合集'],sections:[['城市故事','关于相遇、成长与日常'],['运动时光','力量、健康与生活方式']]},
+      '独家':{featured:true,collections:['独家首发合集','新锐作者合集','限时内容合集'],sections:[['独家首发','编辑部严选的原创作品'],['新锐作者','持续更新的独立作品']]},
+      '发现':{featured:false,collections:[],sections:[['今日精选','运营直接关联的单部作品'],['人气内容','按配置顺序展示作品']]},
+      '类型':{featured:true,collections:['剧情精选合集','纪实访谈合集','旅行记录合集'],sections:[['剧情短片','直接关联的剧情作品'],['纪实访谈','直接关联的纪实作品']]},
+      '性癖':{featured:false,collections:[],sections:[['角色偏好','运营直接关联的单部作品'],['情绪氛围','按配置顺序展示作品']]},
+      '厂商':{featured:false,collections:[],sections:[['光影厂牌','厂牌直接关联作品'],['新锐导演','作者直接关联作品']]},
+      '地区':{featured:false,collections:[],sections:[['内地精选','地区直接关联作品'],['海外生活','地区直接关联作品']]}
     };
     const referenceTitles=['城市夜航特别篇','海边假日记录','本周高分长片','运动时光：训练日','校园故事新章','人物访谈：远方','午夜电台精选','旅行中的相遇','编辑部特别推荐','经典系列回顾'];
     const referenceCatalogIds=['lv1','lv2','lv3','lv4','lv5','lv6','lv7'];
@@ -2258,35 +2281,37 @@
       const visibleCount=Math.min(count,order.length);
       return `<div class="reference-media-grid">${Array.from({length:visibleCount},(_,i)=>{const index=order[(offset+i)%order.length],item=catalog[referenceCatalogIds[index%referenceCatalogIds.length]],label=entitlement(item),author=index%2?'蓝屿':'干净演变身影';return `<article class="reference-media-card" data-content-index="${index}"><button class="reference-media-main" data-action="open-detail" data-id="${item.id}"><span class="reference-media-thumb"><span class="reference-media-badge ${label==='金币'?'coin':''}">${label}</span><span class="reference-media-overlay"><span>● ${item.views}</span><span>${item.duration}</span></span></span><span class="reference-media-name">${referenceTitles[index]}</span></button><button class="reference-media-author" data-action="open-profile" data-source="video" aria-label="查看${author}个人页">${author}</button></article>`;}).join('')}</div>`;
     }
-    function referenceDiscovery() {
-      const categories=referenceCategories[state.libraryTop]||referenceCategories['发现'];
-      return `<section class="reference-section"><div class="reference-title"><strong>发现精彩</strong><button class="reference-more" data-action="home-all-categories">查看更多</button></div><div class="reference-discovery">${categories.slice(0,3).map(name=>`<button class="reference-discovery-card" data-action="home-category" data-value="${name}"><span>${name}</span></button>`).join('')}</div>${referenceFilter()}${state.libraryLoading?'<div class="reference-loading"><span class="reference-spinner"></span>正在获取数据</div>':referenceMediaCards(6)}</section>`;
+    function referenceFeaturedCollections() {
+      const config=referencePageContent[state.libraryTop]||referencePageContent['发现'];
+      if(!config.featured||!config.collections.length)return '';
+      return `<section class="reference-section" data-od-id="featured-collections"><div class="reference-title"><strong>发现精彩<span class="reference-section-subtitle">运营配置的作品合集</span></strong></div><div class="reference-discovery">${config.collections.slice(0,3).map(name=>`<button class="reference-discovery-card" data-action="open-collection" data-value="${name}"><b>合集</b><span>${name}</span></button>`).join('')}</div></section>`;
     }
     function referenceFeed() {
       const items=[catalog.lv1,catalog.lv2];
       return `<section class="reference-feed">${items.map((item,i)=>`<article class="reference-feed-card"><div class="reference-author"><button class="reference-profile-link" data-action="open-profile" data-source="video"><span class="avatar"></span><span><strong>${i?'文静等于悟空':'积极等于鸭子'}</strong><small class="meta" style="display:block;">${i?'已关注':'认证作者'}</small></span></button><button class="reference-follow" data-action="follow">${i?'已关注':'+ 关注'}</button></div><button class="reference-feed-cover" data-action="open-detail" data-id="${item.id}"><span>${item.views}次播放</span><span>${item.duration}</span></button><h3>${i?'《城市里的相遇》EP3':'《城市里的相遇》EP4'}</h3><div class="reference-feed-actions"><button data-action="comments">▢ ${state.videoComments.length}</button><button data-action="favorite">♡ ${i?'9979':'7388'}</button><button data-action="safety-menu">↗ 分享</button></div></article>`).join('')}</section>`;
     }
     function referenceThemeSections() {
-      const sections=state.libraryTop==='独家'?[['独家首发','编辑部严选的原创系列'],['新锐作者','持续更新的独立作品']]:[['城市故事','关于相遇、成长与日常'],['运动时光','力量、健康与生活方式']];
+      const config=referencePageContent[state.libraryTop]||referencePageContent['发现'];
+      const sections=config.sections;
       return sections.map((section,i)=>{const key=`${state.libraryTop}:${section[0]}`,sectionState=state.sectionRefresh[key]||(state.sectionRefresh[key]={offset:i*3,loading:false});return `<section class="reference-section reference-section-block ${sectionState.loading?'section-refreshing':''}" data-section-key="${key}" aria-busy="${sectionState.loading?'true':'false'}"><div class="reference-title"><strong>${section[0]}<span class="reference-section-subtitle">${section[1]}</span></strong><button class="reference-more" data-action="home-category" data-value="${section[0]}">查看更多</button></div>${referenceMediaCards(6,sectionState.offset)}<span class="section-refreshing-indicator"><span class="reference-spinner"></span>正在更换${section[0]}</span><div class="reference-section-actions"><button data-action="refresh-section" data-section="${key}" ${sectionState.loading?'disabled':''}>${sectionState.loading?'刷新中…':'↻ 换一换'}</button><button data-action="home-category" data-value="${section[0]}">▦ 查看更多</button></div></section>`;}).join('');
     }
     function renderLongHome() {
       let body='';
       if(state.libraryTop==='关注')body=referenceFeed();
-      else if(state.libraryTop==='推荐')body=`${referenceShortcuts()}${referenceThemeSections()}`;
-      else if(state.libraryTop==='独家')body=referenceThemeSections();
-      else body=referenceDiscovery();
+      else body=`${state.libraryTop==='推荐'?referenceShortcuts():''}${referenceFeaturedCollections()}${referenceThemeSections()}`;
       content.innerHTML=`<div class="reference-home" data-od-id="long-video-home">${referenceHeader()}${referenceAdMatrix()}${body}</div>`;
     }
     function renderMoreCategories() {
-      const dimensions=Object.keys(moreCategoryDimensions),options=moreCategoryDimensions[state.moreDimension]||moreCategoryDimensions.主题;
-      const row=(label,group,values,current)=>`<div class="more-filter-row"><strong>${label}</strong><div class="more-filter-options">${values.map(value=>`<button class="${value===current?'active':''}" data-action="more-filter" data-group="${group}" data-value="${value}">${value}</button>`).join('')}</div></div>`;
-      content.innerHTML=`<div class="reference-home" data-od-id="long-more-categories"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>更多分类</strong><span></span></div><div class="more-category-body"><nav class="more-dimension-tabs">${dimensions.map(value=>`<button class="${value===state.moreDimension?'active':''}" data-action="more-filter" data-group="dimension" data-value="${value}">${value}</button>`).join('')}</nav>${row('类型','type',options,state.moreType)}${row('规格','spec',['全部','VIP','金币'],state.moreSpec)}${row('排序','sort',['最新','最热'],state.moreSort)}<div class="more-filter-summary">当前筛选：${state.moreDimension} / ${state.moreType} / ${state.moreSpec} / ${state.moreSort}</div><section class="reference-section more-filter-results" aria-label="筛选视频结果"><div class="reference-title"><strong>筛选结果</strong><small>共 ${state.moreSpec==='全部'?10:5} 条</small></div>${referenceMediaCards(10,0,state.moreSort,state.moreSpec)}</section></div></div>`;
+      const groups=referenceHomeTabs.filter(name=>name!=='关注').map(name=>{
+        const children=referenceCategories[name]||[];
+        return `<section class="more-category-group"><div class="more-category-group-head"><strong>${name}</strong><button data-action="home-top" data-value="${name}">进入一级页面 ›</button></div><div class="more-category-links">${children.map(child=>`<button data-action="home-category" data-value="${child}">${child}</button>`).join('')}</div></section>`;
+      }).join('');
+      content.innerHTML=`<div class="reference-home" data-od-id="long-more-categories"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>全部分类</strong><span></span></div><div class="more-category-body"><div class="more-directory-intro"><strong>一级页面与二级分类</strong>展示所有已启用分类；点击一级页面返回对应频道，点击二级分类进入作品列表。列表仅展示单部作品，不展示或拆解作品合集。</div><div class="more-category-groups">${groups}</div><section class="reference-section more-directory-results" aria-label="热门作品"><div class="reference-title"><strong>热门作品</strong><small>作品维度</small></div>${referenceMediaCards(6,0,'最热','全部')}</section></div></div>`;
     }
     function renderLongCategories() {
       const categories=referenceCategories[state.libraryTop]||referenceCategories['发现'];
       const body=state.listState==='loading'?'<div class="loading-state"><i>◌</i><strong>正在加载分类</strong></div>':state.listState==='empty'?'<div class="empty-state"><i>⌁</i><strong>当前频道暂无分类</strong><button data-action="home-reset">返回推荐</button></div>':state.listState==='error'?'<div class="error-state"><i>!</i><strong>分类加载失败</strong><button data-action="page-retry">重新加载</button></div>':`<div class="reference-category-grid">${categories.map(name=>`<button class="reference-category-card" data-action="home-category" data-value="${name}"><span>《${name}》</span></button>`).join('')}</div><div class="reference-bottom-note">~~ 我也是有底线的 ~~</div>`;
-      content.innerHTML=`<div class="reference-home" data-od-id="long-category-directory"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>发现精彩</strong><button data-action="toggle-list-state" aria-label="切换验收状态" style="font-size:9px;">状态</button></div>${body}</div>`;
+      content.innerHTML=`<div class="reference-home" data-od-id="long-category-directory"><div class="reference-page-head"><button data-action="back-main" aria-label="返回">‹</button><strong>全部二级分类</strong><button data-action="toggle-list-state" aria-label="切换验收状态" style="font-size:9px;">状态</button></div>${body}</div>`;
     }
     function renderLongCategoryVideos() {
       const current=state.libraryLoading?'loading':state.listState;
@@ -3277,7 +3302,7 @@
       if(action==='post-detail'){stopPlaybackClock();closeSheet();rememberPage();state.returnScreen=state.screen==='profile'?'profile':'main';const source=target.dataset.source,profileSource=source==='profile',myPostSource=source==='my-post',matched=(profileSource?profilePosts:myPostSource?myPostsForManagement():communityPosts()).find(post=>post.id===target.dataset.id)||communityFeedPosts[0];state.activePost=profileSource?{...matched,author:state.profileUser||matched.author}:matched;state.screen='postDetail';render();}
       if(action==='profile-tab'){state.profileTab=target.dataset.value;state.profileQuery='';renderProfile();}
       if(action==='home-reset'){state.libraryTop='推荐';state.librarySort='推荐';render();}
-      if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;render();return;}
+      if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';if(state.screen==='moreCategories')state.screen='main';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;if(state.screen==='moreCategories')state.screen='main';render();return;}
       if(action==='home-more-categories'){rememberPage();state.screen='moreCategories';render();return;}
       if(action==='open-hot-ranks'){openPage('hotRankHub',{hotRankType:'play',hotRankPeriod:'day'});return;}
       if(action==='community-resource-shortcut'){rememberPage();state.tab='community';state.screen='main';state.communityMode='resource';state.communityTopic=target.dataset.value||'小说';state.communityCatalogGenre='推荐';state.communitySort='推荐';render();content.scrollTop=0;return;}
