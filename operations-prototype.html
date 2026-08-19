@@ -2172,7 +2172,6 @@
       return `<div class="media-grid">${items.slice(0,6).map((item,i)=>`<article class="media-card"><button class="media-card-main" data-action="open-detail" data-id="${item.id}"><span class="media-thumb"><span class="media-badge">${entitlement(item)}</span><span class="media-duration">${item.duration}</span></span><span class="media-name">${item.title}</span><span class="media-meta"><span>${i%2?'今日更新':'人气推荐'}</span><span>▶ ${item.views}次</span></span></button>${showAuthor?'<button class="media-author-link" data-action="open-profile" data-source="video" aria-label="查看视频作者个人页">干净演变身影</button>':''}</article>`).join('')}</div>`;
     }
 
-    const referenceHomeTabs=['关注','推荐','独家','发现','类型','性癖','厂商','地区'];
     const moreCategoryDimensions={
       主题:['全部','约会','自拍','综艺','按摩','剧情','校园'],
       角色:['全部','学生','职场','运动员','邻家','成熟','新人'],
@@ -2181,14 +2180,22 @@
       玩法:['全部','访谈','记录','互动','故事','训练','挑战'],
       体型:['全部','清瘦','匀称','健身','高挑','成熟']
     };
+    const referenceHomeTabs=['关注','推荐','独家','发现',...Object.keys(moreCategoryDimensions)];
     const referenceAds=['蓝颜约会','精选合辑','开元棋牌','专题游戏','热门活动','新作速递','平行世界','男色狂欢','头条解析','男孩日记','免费专区','高清频道','城市故事','动画专区','AI创作','旅行记录','运动生活','经典影库'];
     const referenceCategories={
       '发现':['今日精选','编辑推荐','人气合集','城市故事','旅行记录','运动生活','口碑佳作','限时更新','经典重温'],
-      '类型':['剧情短片','纪实访谈','旅行记录','运动健身','校园故事','职场日常','轻松喜剧','音乐现场','动画作品'],
-      '性癖':['角色偏好','情绪氛围','镜头风格','人物关系','故事节奏','视觉审美','轻松日常','深夜陪伴','小众发现'],
-      '厂商':['光影厂牌','城市制作','青禾影像','蓝屿工作室','远山映画','纸飞机社','新锐导演','独立作者','联合出品'],
-      '地区':['内地精选','港台作品','日韩新作','东南亚','欧美佳作','其他地区','城市专题','海岛故事','海外生活']
+      ...Object.fromEntries(Object.entries(moreCategoryDimensions).map(([dimension,children])=>[dimension,children.filter(child=>child!=='全部')]))
     };
+    function isCategoryDimension(value) { return Object.prototype.hasOwnProperty.call(moreCategoryDimensions,value); }
+    function syncMoreCategoryToHome() {
+      state.libraryTop=state.moreDimension;
+      state.libraryCategory=state.moreType;
+      const previous=state.navigationStack[state.navigationStack.length-1];
+      if(previous?.screen==='main'&&previous.tab==='long') {
+        previous.libraryTop=state.moreDimension;
+        previous.libraryCategory=state.moreType;
+      }
+    }
     const referenceTitles=['城市夜航特别篇','海边假日记录','本周高分长片','运动时光：训练日','校园故事新章','人物访谈：远方','午夜电台精选','旅行中的相遇','编辑部特别推荐','经典系列回顾'];
     const referenceCatalogIds=['lv1','lv2','lv3','lv4','lv5','lv6','lv7'];
     const hotRankDefinitions=[
@@ -2260,7 +2267,9 @@
     }
     function referenceDiscovery() {
       const categories=referenceCategories[state.libraryTop]||referenceCategories['发现'];
-      return `<section class="reference-section"><div class="reference-title"><strong>发现精彩</strong><button class="reference-more" data-action="home-all-categories">查看更多</button></div><div class="reference-discovery">${categories.slice(0,3).map(name=>`<button class="reference-discovery-card" data-action="home-category" data-value="${name}"><span>${name}</span></button>`).join('')}</div>${referenceFilter()}${state.libraryLoading?'<div class="reference-loading"><span class="reference-spinner"></span>正在获取数据</div>':referenceMediaCards(6)}</section>`;
+      const dimension=isCategoryDimension(state.libraryTop)?state.libraryTop:'';
+      const moreAction=dimension?'home-more-categories':'home-all-categories';
+      return `<section class="reference-section"><div class="reference-title"><strong>${dimension||'发现精彩'}</strong><button class="reference-more" data-action="${moreAction}">查看更多</button></div><div class="reference-discovery">${categories.slice(0,3).map(name=>`<button class="reference-discovery-card" data-action="home-category" data-dimension="${dimension}" data-value="${name}"><span>${name}</span></button>`).join('')}</div>${referenceFilter()}${state.libraryLoading?'<div class="reference-loading"><span class="reference-spinner"></span>正在获取数据</div>':referenceMediaCards(6)}</section>`;
     }
     function referenceFeed() {
       const items=[catalog.lv1,catalog.lv2];
@@ -2277,6 +2286,10 @@
       else if(state.libraryTop==='独家')body=referenceThemeSections();
       else body=referenceDiscovery();
       content.innerHTML=`<div class="reference-home" data-od-id="long-video-home">${referenceHeader()}${referenceAdMatrix()}${body}</div>`;
+      requestAnimationFrame(()=>{
+        const tabs=content.querySelector('.reference-tabs'),active=tabs?.querySelector('.reference-tab.active');
+        if(tabs&&active&&isCategoryDimension(state.libraryTop))tabs.scrollLeft=Math.max(0,active.offsetLeft-(tabs.clientWidth-active.offsetWidth)/2);
+      });
     }
     function renderMoreCategories() {
       const dimensions=Object.keys(moreCategoryDimensions),options=moreCategoryDimensions[state.moreDimension]||moreCategoryDimensions.主题;
@@ -3277,16 +3290,16 @@
       if(action==='post-detail'){stopPlaybackClock();closeSheet();rememberPage();state.returnScreen=state.screen==='profile'?'profile':'main';const source=target.dataset.source,profileSource=source==='profile',myPostSource=source==='my-post',matched=(profileSource?profilePosts:myPostSource?myPostsForManagement():communityPosts()).find(post=>post.id===target.dataset.id)||communityFeedPosts[0];state.activePost=profileSource?{...matched,author:state.profileUser||matched.author}:matched;state.screen='postDetail';render();}
       if(action==='profile-tab'){state.profileTab=target.dataset.value;state.profileQuery='';renderProfile();}
       if(action==='home-reset'){state.libraryTop='推荐';state.librarySort='推荐';render();}
-      if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;render();return;}
-      if(action==='home-more-categories'){rememberPage();state.screen='moreCategories';render();return;}
+      if(action==='home-top'){const nextTop=target.dataset.value;if(nextTop==='关注'&&!state.loggedIn){ensureLogin(()=>{state.libraryTop='关注';state.libraryCategory='全部';state.librarySort='推荐';render();},'登录后可查看已关注作者的长视频');return;}state.libraryTop=nextTop;state.libraryCategory='全部';state.librarySort='推荐';state.libraryLoading=false;if(isCategoryDimension(nextTop)){state.moreDimension=nextTop;state.moreType='全部';}render();return;}
+      if(action==='home-more-categories'){if(isCategoryDimension(state.libraryTop)){state.moreDimension=state.libraryTop;state.moreType=state.libraryCategory||'全部';}rememberPage();state.screen='moreCategories';render();return;}
       if(action==='open-hot-ranks'){openPage('hotRankHub',{hotRankType:'play',hotRankPeriod:'day'});return;}
       if(action==='community-resource-shortcut'){rememberPage();state.tab='community';state.screen='main';state.communityMode='resource';state.communityTopic=target.dataset.value||'小说';state.communityCatalogGenre='推荐';state.communitySort='推荐';render();content.scrollTop=0;return;}
       if(action==='ranking-type'){state.hotRankType=target.dataset.value||'play';renderHotRankHub();return;}
       if(action==='ranking-period'){state.hotRankPeriod=target.dataset.value||'day';renderHotRankHub();return;}
-      if(action==='more-filter'){const group=target.dataset.group,value=target.dataset.value;if(group==='dimension'){state.moreDimension=value;state.moreType='全部';}else if(group==='type')state.moreType=value;else if(group==='spec')state.moreSpec=value;else if(group==='sort')state.moreSort=value;renderMoreCategories();return;}
+      if(action==='more-filter'){const group=target.dataset.group,value=target.dataset.value;if(group==='dimension'){state.moreDimension=value;state.moreType='全部';syncMoreCategoryToHome();}else if(group==='type'){state.moreType=value;syncMoreCategoryToHome();}else if(group==='spec')state.moreSpec=value;else if(group==='sort')state.moreSort=value;renderMoreCategories();return;}
       if(action==='apply-more-filter'){rememberPage();state.libraryCategory=`${state.moreDimension}·${state.moreType}`;state.librarySort=state.moreSort;state.screen='longCategoryVideos';render();return;}
       if(action==='home-all-categories'){rememberPage();state.returnScreen='main';state.screen='longCategories';render();}
-      if(action==='home-category'){rememberPage();state.libraryCategory=target.dataset.value;state.returnScreen=state.screen==='main'?'main':'longCategories';state.screen='longCategoryVideos';render();}
+      if(action==='home-category'){const dimension=target.dataset.dimension;state.libraryCategory=target.dataset.value;if(dimension){state.libraryTop=dimension;state.moreDimension=dimension;state.moreType=target.dataset.value;}rememberPage();state.returnScreen=state.screen==='main'?'main':'longCategories';state.screen='longCategoryVideos';render();}
       if(action==='home-list-filter'){state.librarySort=target.dataset.value;state.libraryLoading=true;render();clearTimeout(renderLongHome.filterTimer);renderLongHome.filterTimer=setTimeout(()=>{state.libraryLoading=false;render();},520);}
       if(action==='reference-ad'){e.preventDefault();toast(`${target.dataset.value}：广告跳转由后台配置`);return;}
       if(action==='community-topic'){const nextTopic=target.dataset.value;if(nextTopic==='关注'&&!state.loggedIn){ensureLogin(()=>{state.communityTopic='关注';renderCommunity();content.scrollTop=0;},'登录后可查看已关注用户的社区内容');return;}if(['男色','小说','动漫'].includes(nextTopic)&&state.communityTopic!==nextTopic){state.communityCatalogGenre='推荐';state.communitySort='推荐';}state.communityTopic=nextTopic;renderCommunity();content.scrollTop=0;toast(`已切换栏目：${state.communityTopic}`);return;}
