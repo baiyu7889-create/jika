@@ -950,10 +950,12 @@
     .membership-card.video { background:linear-gradient(145deg,#fb6a78 0%,#f33d66 46%,#b92569 100%); }
     .membership-card.ai { background:linear-gradient(145deg,#8073f7 0%,#5e48d9 48%,#342271 100%); }
     .membership-card.all { background:radial-gradient(circle at 78% 10%,#77613a 0,transparent 28%),linear-gradient(145deg,#25262b 0%,#121318 54%,#07080b 100%); }
+    .membership-card.limited { background:radial-gradient(circle at 82% 6%,rgba(255,235,157,.64) 0,transparent 30%),linear-gradient(145deg,#ffb53d 0%,#f46943 46%,#a9325c 100%); }
     .membership-card-top { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:8px; }
     .membership-mark { display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:850; letter-spacing:.08em; }
     .membership-mark i { width:24px; height:24px; display:grid; place-items:center; border-radius:50%; background:rgba(255,255,255,.17); font-style:normal; }
     .membership-level { padding:4px 8px; border:1px solid rgba(255,255,255,.28); border-radius:999px; font-size:8px; letter-spacing:.08em; }
+    .membership-level.is-promo { border-color:#ffe08a; background:#fff3ba; color:#8b3b25; font-weight:900; letter-spacing:0; box-shadow:0 5px 14px rgba(112,38,28,.16); }
     .membership-card h1 { position:relative; z-index:2; margin:29px 0 4px; font-family:var(--font-body); font-size:27px; letter-spacing:-.04em; }
     .membership-card > p { position:relative; z-index:2; margin:0; color:rgba(255,255,255,.72); font-size:10px; }
     .membership-benefits { position:relative; z-index:2; display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:25px; }
@@ -1418,10 +1420,6 @@
     .reference-shortcut.is-anime .reference-shortcut-icon { background:linear-gradient(155deg,#fff1d4 0%,#ffe2ee 100%); }
     .reference-shortcut.is-novel .reference-shortcut-icon { background:linear-gradient(155deg,#e4f3ff 0%,#eee5ff 100%); }
     .reference-shortcut.is-activity .reference-shortcut-icon { background:linear-gradient(155deg,#e6eaff 0%,#d9f3f1 100%); }
-    .reference-shortcut.is-vip .reference-shortcut-icon { background:radial-gradient(circle at 72% 18%,rgba(255,226,138,.36),transparent 34%),linear-gradient(155deg,#2b2a2d 0%,#121318 64%,#090a0d 100%); box-shadow:inset 0 1px 0 rgba(255,240,190,.22),0 7px 16px rgba(18,17,14,.18); }
-    .reference-shortcuts[data-visible-count="6"] { gap:4px; padding-inline:7px; }
-    .reference-shortcuts[data-visible-count="6"] .reference-shortcut-icon { width:52px; height:50px; }
-    .reference-shortcuts[data-visible-count="6"] .reference-shortcut-icon svg { width:37px; height:37px; }
     .reference-shortcut-icon svg { position:relative; z-index:1; width:40px; height:40px; overflow:visible; }
     .reference-shortcut:active .reference-shortcut-icon { transform:scale(.93); box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 7px rgba(80,93,116,.12); }
     .reference-discovery { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding:7px 0 11px; }
@@ -1852,12 +1850,11 @@
     ];
     const recommendShortcutConfig={
       available:true,
-      version:'shortcut-2026-08-20-v5-vip-card',
-      maxVisible:6,
+      version:'shortcut-2026-08-18-v4-page-address',
+      maxVisible:5,
       items:[
         ...recommendShortcutFallbackItems,
-        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',route:'/activity/current',enabled:true,status:'published',startAt:'2026-08-01T00:00:00+08:00',endAt:'2026-12-31T23:59:59+08:00',order:50},
-        {id:'vip-card',label:'VIP',icon:'vip',type:'vip',family:'video',route:'/membership/video',enabled:true,status:'published',order:60}
+        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',route:'/activity/current',enabled:true,status:'published',startAt:'2026-08-01T00:00:00+08:00',endAt:'2026-12-31T23:59:59+08:00',order:50}
       ]
     };
     const appIconOptions=[
@@ -2275,18 +2272,17 @@
       drama:'<svg viewBox="0 0 48 48"><path d="M10 17h30v22H10z" rx="5" fill="#ff6e9d"/><path d="M10 17h30v7H10z" fill="#fff1f6"/><path d="m14 17 5 7m5-7 5 7m5-7 5 7" stroke="#7e63dc" stroke-width="3"/><path d="m21 28 9 5-9 5Z" fill="#fff"/><path d="M8 10h31l2 7H10Z" fill="#ffc44f"/><path d="m12 10 5 7m6-7 5 7m6-7 5 7" stroke="#fff7d8" stroke-width="3"/></svg>',
       anime:'<svg viewBox="0 0 48 48"><path d="m12 17 4-9 7 7m13 2-4-9-7 7" fill="#7fcff5" stroke="#5799db" stroke-width="2" stroke-linejoin="round"/><path d="M10 25c0-10 6-15 14-15s14 5 14 15-5 15-14 15-14-5-14-15Z" fill="#72c7ef"/><path d="M14 24c3-6 16-8 20 0v7c-2 6-18 6-20 0Z" fill="#fff6ea"/><path d="M18 27h1m10 0h1" stroke="#334b74" stroke-width="4" stroke-linecap="round"/><path d="M21 32c2 2 4 2 6 0" fill="none" stroke="#ef7f9d" stroke-width="2" stroke-linecap="round"/><path d="m14 20 8-8 12 9" fill="#ff82ad" opacity=".72"/></svg>',
       novel:'<svg viewBox="0 0 48 48"><path d="M9 10c8-3 13-1 15 2v28c-3-3-8-4-15-2Z" fill="#71b8ef"/><path d="M39 10c-8-3-13-1-15 2v28c3-3 8-4 15-2Z" fill="#9e7ee8"/><path d="M24 12v28" stroke="#fff" stroke-width="2" opacity=".8"/><path d="M13 17h7m-7 6h7m8-6h7m-7 6h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".85"/></svg>',
-      activity:'<svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg>',
-      vip:'<svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="29" rx="8" fill="#17181d" stroke="#d7b45d" stroke-width="1.5"/><path d="m14 19 6 4 4-8 4 8 6-4-2 11H16Z" fill="#e4c46b"/><path d="M16 33h16" stroke="#f7e4a4" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="13" r="2" fill="#fff0b5"/><path d="m37 7 1.2 3.2L41 11.5l-2.8 1.2L37 16l-1.2-3.3-2.8-1.2 2.8-1.3Z" fill="#f5d67c"/></svg>'
+      activity:'<svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg>'
     };
     function activeRecommendShortcuts() {
-      const limit=Math.max(0,Math.min(6,Number(recommendShortcutConfig.maxVisible)||6));
+      const limit=Math.max(0,Math.min(5,Number(recommendShortcutConfig.maxVisible)||5));
       const now=Date.now(),source=recommendShortcutConfig.available?recommendShortcutConfig.items:recommendShortcutFallbackItems;
       const valid=source.filter(item=>item.enabled!==false&&item.status!=='disabled'&&(!item.startAt||Date.parse(item.startAt)<=now)&&(!item.endAt||Date.parse(item.endAt)>now));
       return [...new Map(valid.sort((a,b)=>(a.order||0)-(b.order||0)).map(item=>[item.id,item])).values()].slice(0,limit);
     }
     function referenceShortcut(item) {
-      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='resource'?`data-action="community-resource-shortcut" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='vip'?`data-action="open-membership-popup" data-family="${escapeHTML(item.family||'video')}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
-      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:item.type==='resource'?`进入${item.label}资源列表`:item.type==='vip'?'打开VIP会员中心':`打开${item.label}落地页`;
+      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='resource'?`data-action="community-resource-shortcut" data-value="${escapeHTML(item.value||item.label)}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
+      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:item.type==='resource'?`进入${item.label}资源列表`:`打开${item.label}落地页`;
       return `<button class="reference-shortcut is-${escapeHTML(item.icon||'activity')}" ${action} data-shortcut-id="${escapeHTML(item.id)}" data-target-address="${escapeHTML(item.route||item.landing||'')}" aria-label="${escapeHTML(aria)}"><span class="reference-shortcut-icon" aria-hidden="true">${referenceShortcutIcons[item.icon]||referenceShortcutIcons.activity}</span><span>${escapeHTML(item.label)}</span></button>`;
     }
     function referenceShortcuts() {
@@ -3059,12 +3055,14 @@
     const plans={
       video_year:{family:'video',name:'基础VIP年卡',period:'365天',termDays:365,amount:108,ai:0,coinGift:0,video:true,coinDiscount:false,scope:'标准短/长视频 · 高清线路 · 免播放干扰广告 · 进度同步'},
       ai_year:{family:'ai',name:'AI专区年卡',period:'365天',termDays:365,amount:168,ai:300,aiCycle:true,coinGift:0,video:false,coinDiscount:false,scope:'每30日300 AI额度 · AI任务8折 · 优先生成队列'},
-      all_year:{family:'all',name:'年度全站通卡',period:'365天',termDays:365,amount:198,ai:0,coinGift:500,video:true,coinDiscount:false,scope:'标准视频库 · AI任务8.5折 · 一次性赠送500金币'}
+      all_year:{family:'all',name:'年度全站通卡',period:'365天',termDays:365,amount:198,ai:0,coinGift:500,video:true,coinDiscount:false,scope:'标准视频库 · AI任务8.5折 · 一次性赠送500金币'},
+      limited_60:{family:'limited',name:'限时狂欢卡',period:'60天',termDays:60,amount:128,ai:100,coinGift:500,video:true,coinDiscount:false,scope:'60天标准视频VIP · 一次性赠送500金币与100 AI额度'}
     };
     const membershipFamilies={
       video:{label:'基础VIP',level:'VIDEO',title:'全年畅看标准片库',copy:'365天视频权益，不含金币付费内容与AI创作额度',benefits:[['标准片库','短/长视频畅看'],['高清免广告','多线路切换'],['进度同步','跨端续播']],plans:['video_year']},
       ai:{label:'AI专区年卡',level:'CREATOR',title:'持续创作，按期到账',copy:'AI额度每30日发放，未使用额度到期清零',benefits:[['AI额度','每30日300'],['AI 8折','卡面结算一致'],['优先队列','优先生成']],plans:['ai_year']},
-      all:{label:'全站通卡',level:'PREMIUM',title:'视频与AI核心权益',copy:'标准片库、AI优惠与赠送金币',benefits:[['视频VIP','标准片库畅看'],['AI优惠','任务8.5折'],['赠送金币','一次性500']],plans:['all_year']}
+      all:{label:'全站通卡',level:'PREMIUM',title:'视频与AI核心权益',copy:'标准片库、AI优惠与赠送金币',benefits:[['视频VIP','标准片库畅看'],['AI优惠','任务8.5折'],['赠送金币','一次性500']],plans:['all_year']},
+      limited:{label:'限时特惠',level:'LIMITED',tag:'限时特惠',title:'60天限时狂欢卡',copy:'活动期限定组合权益，售完或到期即下架',benefits:[['视频VIP','60天标准片库'],['赠送金币','一次性500'],['AI额度','一次性100']],plans:['limited_60']}
     };
     function membershipMarkup(modal=false) {
       const family=membershipFamilies[state.membershipFamily]||membershipFamilies.all;
@@ -3072,7 +3070,7 @@
       if(!planKeys.includes(state.membershipPlan))state.membershipPlan=planKeys[0];
       const selected=plans[state.membershipPlan];
       const owned=state.memberships.filter(item=>item.family===state.membershipFamily);
-      const cards=Object.entries(membershipFamilies).map(([key,item])=>`<button class="membership-card ${key} ${key===state.membershipFamily?'active':''}" data-action="membership-family" data-value="${key}" aria-label="选择${item.label}"><div class="membership-card-top"><span class="membership-mark"><i>JK</i> 基咔</span><span class="membership-level">${item.level}</span></div><h1>${item.title}</h1><p>${item.copy}</p><div class="membership-benefits">${item.benefits.map(([title,copy])=>`<span class="membership-benefit"><b>${title}</b><span>${copy}</span></span>`).join('')}</div></button>`).join('');
+      const cards=Object.entries(membershipFamilies).map(([key,item])=>`<button class="membership-card ${key} ${key===state.membershipFamily?'active':''}" data-action="membership-family" data-value="${key}" aria-label="选择${item.label}"><div class="membership-card-top"><span class="membership-mark"><i>JK</i> 基咔</span><span class="membership-level ${item.tag?'is-promo':''}">${item.tag||item.level}</span></div><h1>${item.title}</h1><p>${item.copy}</p><div class="membership-benefits">${item.benefits.map(([title,copy])=>`<span class="membership-benefit"><b>${title}</b><span>${copy}</span></span>`).join('')}</div></button>`).join('');
       const header=modal?`<header class="membership-head"><span></span><strong>会员中心</strong><button class="membership-popup-close" data-action="close-sheet" aria-label="关闭会员中心">×</button></header>`:`<header class="membership-head"><button class="back-btn" data-action="back-main" aria-label="返回">‹</button><strong>会员中心</strong><span></span></header>`;
       return `<div class="membership-page" data-od-id="${modal?'membership-popup':'membership-page'}">${header}<section class="membership-intro"><div class="membership-kicker">MVP 1.0 · Choose your membership</div><div class="membership-tier-tabs">${Object.entries(membershipFamilies).map(([key,item])=>`<button class="membership-tier-tab ${key===state.membershipFamily?'active':''}" data-action="membership-family" data-value="${key}">${item.label}</button>`).join('')}</div><div id="membershipRail" class="membership-card-rail" aria-label="会员卡种，可左右滑动">${cards}</div><div class="membership-current"><i>${owned.length?'✓':'i'}</i><span>${owned.length?`当前已拥有 ${owned.map(item=>item.name).join('、')}；同卡种再次购买将顺延到期时间。`:'当前未开通该卡种。不同卡种可并存，权益按并集生效。'}</span></div></section><section class="membership-pay"><div class="membership-pay-title"><h2>确认付款方案</h2><span>一次性购买 · 不自动续费</span></div><div class="membership-plans"><div class="membership-plan active"><strong>${selected.name} · ${selected.period}</strong><b><span>¥</span>${selected.amount}</b><small>${selected.scope}</small></div></div><div class="membership-summary"><span>${selected.period} · 权益与赠送以订单快照为准</span><strong>¥${selected.amount}</strong></div><button class="membership-cta" data-action="membership-pay" data-plan="${state.membershipPlan}">立即开通 ${family.label}</button><p class="membership-terms">支付即表示已确认价格、适用范围、周期发放、排除项与退款规则。会员不绕过内容规则或风控；金币付费内容仍按独立金币订单解锁。</p><div class="membership-links"><button data-action="orders">购买记录</button><button data-action="support">支付帮助</button></div></section></div>`;
     }
