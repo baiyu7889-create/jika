@@ -1418,6 +1418,10 @@
     .reference-shortcut.is-anime .reference-shortcut-icon { background:linear-gradient(155deg,#fff1d4 0%,#ffe2ee 100%); }
     .reference-shortcut.is-novel .reference-shortcut-icon { background:linear-gradient(155deg,#e4f3ff 0%,#eee5ff 100%); }
     .reference-shortcut.is-activity .reference-shortcut-icon { background:linear-gradient(155deg,#e6eaff 0%,#d9f3f1 100%); }
+    .reference-shortcut.is-vip .reference-shortcut-icon { background:radial-gradient(circle at 72% 18%,rgba(255,226,138,.36),transparent 34%),linear-gradient(155deg,#2b2a2d 0%,#121318 64%,#090a0d 100%); box-shadow:inset 0 1px 0 rgba(255,240,190,.22),0 7px 16px rgba(18,17,14,.18); }
+    .reference-shortcuts[data-visible-count="6"] { gap:4px; padding-inline:7px; }
+    .reference-shortcuts[data-visible-count="6"] .reference-shortcut-icon { width:52px; height:50px; }
+    .reference-shortcuts[data-visible-count="6"] .reference-shortcut-icon svg { width:37px; height:37px; }
     .reference-shortcut-icon svg { position:relative; z-index:1; width:40px; height:40px; overflow:visible; }
     .reference-shortcut:active .reference-shortcut-icon { transform:scale(.93); box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 2px 7px rgba(80,93,116,.12); }
     .reference-discovery { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding:7px 0 11px; }
@@ -1848,11 +1852,12 @@
     ];
     const recommendShortcutConfig={
       available:true,
-      version:'shortcut-2026-08-18-v4-page-address',
-      maxVisible:5,
+      version:'shortcut-2026-08-20-v5-vip-card',
+      maxVisible:6,
       items:[
         ...recommendShortcutFallbackItems,
-        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',route:'/activity/current',enabled:true,status:'published',startAt:'2026-08-01T00:00:00+08:00',endAt:'2026-12-31T23:59:59+08:00',order:50}
+        {id:'campaign-current',label:'活动',icon:'activity',type:'activity',landing:'landing.html',route:'/activity/current',enabled:true,status:'published',startAt:'2026-08-01T00:00:00+08:00',endAt:'2026-12-31T23:59:59+08:00',order:50},
+        {id:'vip-card',label:'VIP',icon:'vip',type:'vip',family:'video',route:'/membership/video',enabled:true,status:'published',order:60}
       ]
     };
     const appIconOptions=[
@@ -2270,17 +2275,18 @@
       drama:'<svg viewBox="0 0 48 48"><path d="M10 17h30v22H10z" rx="5" fill="#ff6e9d"/><path d="M10 17h30v7H10z" fill="#fff1f6"/><path d="m14 17 5 7m5-7 5 7m5-7 5 7" stroke="#7e63dc" stroke-width="3"/><path d="m21 28 9 5-9 5Z" fill="#fff"/><path d="M8 10h31l2 7H10Z" fill="#ffc44f"/><path d="m12 10 5 7m6-7 5 7m6-7 5 7" stroke="#fff7d8" stroke-width="3"/></svg>',
       anime:'<svg viewBox="0 0 48 48"><path d="m12 17 4-9 7 7m13 2-4-9-7 7" fill="#7fcff5" stroke="#5799db" stroke-width="2" stroke-linejoin="round"/><path d="M10 25c0-10 6-15 14-15s14 5 14 15-5 15-14 15-14-5-14-15Z" fill="#72c7ef"/><path d="M14 24c3-6 16-8 20 0v7c-2 6-18 6-20 0Z" fill="#fff6ea"/><path d="M18 27h1m10 0h1" stroke="#334b74" stroke-width="4" stroke-linecap="round"/><path d="M21 32c2 2 4 2 6 0" fill="none" stroke="#ef7f9d" stroke-width="2" stroke-linecap="round"/><path d="m14 20 8-8 12 9" fill="#ff82ad" opacity=".72"/></svg>',
       novel:'<svg viewBox="0 0 48 48"><path d="M9 10c8-3 13-1 15 2v28c-3-3-8-4-15-2Z" fill="#71b8ef"/><path d="M39 10c-8-3-13-1-15 2v28c3-3 8-4 15-2Z" fill="#9e7ee8"/><path d="M24 12v28" stroke="#fff" stroke-width="2" opacity=".8"/><path d="M13 17h7m-7 6h7m8-6h7m-7 6h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" opacity=".85"/></svg>',
-      activity:'<svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg>'
+      activity:'<svg viewBox="0 0 48 48"><path d="M10 20h28v21H10z" rx="5" fill="#6f8eee"/><path d="M8 17h32v9H8z" rx="4" fill="#58c8e8"/><path d="M21 17h6v24h-6z" fill="#fff1a8"/><path d="M8 22h32" stroke="#fff" stroke-width="2" opacity=".45"/><path d="M24 17c-8 0-13-3-11-7 2-4 9 1 11 7Zm0 0c8 0 13-3 11-7-2-4-9 1-11 7Z" fill="#ff789c"/><circle cx="9" cy="10" r="2" fill="#ffb42d"/><path d="m39 6 1 3 3 1-3 1-1 3-1-3-3-1 3-1Z" fill="#ffcf42"/></svg>',
+      vip:'<svg viewBox="0 0 48 48"><rect x="7" y="10" width="34" height="29" rx="8" fill="#17181d" stroke="#d7b45d" stroke-width="1.5"/><path d="m14 19 6 4 4-8 4 8 6-4-2 11H16Z" fill="#e4c46b"/><path d="M16 33h16" stroke="#f7e4a4" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="13" r="2" fill="#fff0b5"/><path d="m37 7 1.2 3.2L41 11.5l-2.8 1.2L37 16l-1.2-3.3-2.8-1.2 2.8-1.3Z" fill="#f5d67c"/></svg>'
     };
     function activeRecommendShortcuts() {
-      const limit=Math.max(0,Math.min(5,Number(recommendShortcutConfig.maxVisible)||5));
+      const limit=Math.max(0,Math.min(6,Number(recommendShortcutConfig.maxVisible)||6));
       const now=Date.now(),source=recommendShortcutConfig.available?recommendShortcutConfig.items:recommendShortcutFallbackItems;
       const valid=source.filter(item=>item.enabled!==false&&item.status!=='disabled'&&(!item.startAt||Date.parse(item.startAt)<=now)&&(!item.endAt||Date.parse(item.endAt)>now));
       return [...new Map(valid.sort((a,b)=>(a.order||0)-(b.order||0)).map(item=>[item.id,item])).values()].slice(0,limit);
     }
     function referenceShortcut(item) {
-      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='resource'?`data-action="community-resource-shortcut" data-value="${escapeHTML(item.value||item.label)}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
-      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:item.type==='resource'?`进入${item.label}资源列表`:`打开${item.label}落地页`;
+      const action=item.type==='ranking'?'data-action="open-hot-ranks"':item.type==='tag'?`data-action="search-tag" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='resource'?`data-action="community-resource-shortcut" data-value="${escapeHTML(item.value||item.label)}"`:item.type==='vip'?`data-action="open-membership-popup" data-family="${escapeHTML(item.family||'video')}"`:`data-action="promo-jump" data-source="recommend-activity" data-landing="${escapeHTML(item.landing||promotionConfig.landing)}"`;
+      const aria=item.type==='ranking'?'查看热榜集合':item.type==='tag'?`进入${item.label}标签集合`:item.type==='resource'?`进入${item.label}资源列表`:item.type==='vip'?'打开VIP会员中心':`打开${item.label}落地页`;
       return `<button class="reference-shortcut is-${escapeHTML(item.icon||'activity')}" ${action} data-shortcut-id="${escapeHTML(item.id)}" data-target-address="${escapeHTML(item.route||item.landing||'')}" aria-label="${escapeHTML(aria)}"><span class="reference-shortcut-icon" aria-hidden="true">${referenceShortcutIcons[item.icon]||referenceShortcutIcons.activity}</span><span>${escapeHTML(item.label)}</span></button>`;
     }
     function referenceShortcuts() {
